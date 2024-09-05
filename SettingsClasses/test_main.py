@@ -5,6 +5,7 @@ import tempfile
 from unittest.mock import patch, mock_open
 from DesignPatterns.SettingsClasses.main import settings_manager
 
+
 class TestSettingsManager(unittest.TestCase):
 
     @patch("builtins.open", new_callable=mock_open,
@@ -46,6 +47,23 @@ class TestSettingsManager(unittest.TestCase):
         self.assertFalse(result)
         self.assertEqual(manager.settings.organization_name, "Рога и копыта (default)")
         self.assertEqual(manager.settings.inn, "380000000038")
+
+    @patch("builtins.open", new_callable=mock_open,
+           read_data='{"organization_name": "TestNameOrg", "inn": "123456789101"}')
+    def test_singleton(self, mock_file):
+        manager1 = settings_manager()
+        manager1.open("settings.json")
+
+        self.assertEqual(manager1.settings.inn, "123456789101")
+        self.assertEqual(manager1.settings.organization_name, "TestNameOrg")
+
+        manager2 = settings_manager()
+
+        self.assertIs(manager1, manager2)
+
+        self.assertEqual(manager2.settings.inn, "123456789101")
+        self.assertEqual(manager2.settings.organization_name, "TestNameOrg")
+
 
 if __name__ == '__main__':
     unittest.main()
