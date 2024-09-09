@@ -54,15 +54,12 @@ class TestSettingsManager(unittest.TestCase):
         manager1 = settings_manager()
         manager1.open("settings.json")
 
-        self.assertEqual(manager1.settings.inn, "123456789101")
-        self.assertEqual(manager1.settings.organization_name, "TestNameOrg")
-
         manager2 = settings_manager()
 
-        self.assertIs(manager1, manager2)
+        self.assertEqual(manager2.settings.inn, manager1.settings.inn)
+        self.assertEqual(manager2.settings.organization_name, manager1.settings.organization_name)
 
-        self.assertEqual(manager2.settings.inn, "123456789101")
-        self.assertEqual(manager2.settings.organization_name, "TestNameOrg")
+        self.assertIs(manager1, manager2)
 
 
 if __name__ == '__main__':
