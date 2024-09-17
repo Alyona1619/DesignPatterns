@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 import uuid
 
-from DesignPatterns.src.custom_exception import argument_exception
+from src.core.custom_exception import argument_exception
 
 """
 Абстрактный класс для наследования моделей данных

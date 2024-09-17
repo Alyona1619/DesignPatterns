@@ -1,7 +1,7 @@
 """
 Настройки
 """
-from DesignPatterns.src.custom_exception import argument_exception
+from src.core.custom_exception import argument_exception
 
 
 class settings:

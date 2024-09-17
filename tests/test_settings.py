@@ -4,10 +4,10 @@ import os
 import tempfile
 from unittest.mock import patch, mock_open
 
-from DesignPatterns.src.custom_exception import argument_exception
-from DesignPatterns.src.settings_manager import settings_manager
-from DesignPatterns.src.abstract_logic import abstract_logic
-from DesignPatterns.src.models.settings_model import settings
+from src.core.custom_exception import argument_exception
+from src.settings_manager import settings_manager
+from src.core.abstract_logic import abstract_logic
+from src.models.settings_model import settings
 
 
 class TestSettingsManager(unittest.TestCase):

@@ -1,5 +1,5 @@
-from DesignPatterns.src.abstract_reference import abstract_reference
-from DesignPatterns.src.custom_exception import argument_exception
+from src.core.abstract_reference import abstract_reference
+from src.core.custom_exception import argument_exception
 
 """
 Модель единицы измерения

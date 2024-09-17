@@ -1,7 +1,7 @@
-from DesignPatterns.src.abstract_reference import abstract_reference
-from DesignPatterns.src.custom_exception import argument_exception
-from DesignPatterns.src.models.group_nomenclature_model import group_nomenclature_model
-from DesignPatterns.src.models.range_model import range_model
+from src.core.abstract_reference import abstract_reference
+from src.core.custom_exception import argument_exception
+from src.models.group_nomenclature_model import group_nomenclature_model
+from src.models.range_model import range_model
 """
 Модель номенклатуры
 """
