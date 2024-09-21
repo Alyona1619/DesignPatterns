@@ -29,13 +29,29 @@ class data_repository(abstract_logic):
     def group_key() -> str:
         return "group"
 
+    """
+    Ключ для хранения номенклатуры
+    """
+
     @staticmethod
     def nomenclature_key() -> str:
         return "nomenclature"
 
+    """
+    Ключ для хранения единиц измерения
+    """
+
     @staticmethod
     def range_key() -> str:
         return "range"
+
+    """
+    Ключ для хранения рецептов
+    """
+
+    @staticmethod
+    def recipe_key() -> str:
+        return "recipes"
 
     """
     Перегрузка абстрактного метода

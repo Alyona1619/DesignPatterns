@@ -13,7 +13,7 @@ class TestStart(unittest.TestCase):
     Проверить создание инстанса start_service
     """
 
-    def test_create_start_service(self):
+    def test_start_service(self):
         # Подготовка
         manager = settings_manager()
         manager.open("../settings1.json")
@@ -24,3 +24,13 @@ class TestStart(unittest.TestCase):
 
         # Проверки
         assert start is not None
+
+    def test_start_service_create(self):
+        manager = settings_manager()
+        manager.open("../settings1.json")
+        repository = data_repository()
+
+        assert repository.nomenclature_key() in repository.data
+        assert repository.group_key() in repository.data
+        assert repository.range_key() in repository.data
+        assert repository.recipe_key() in repository.data

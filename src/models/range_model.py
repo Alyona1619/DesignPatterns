@@ -41,13 +41,30 @@ class range_model(abstract_reference):
     def to_base(self):
         if self.base is None:
             return self
-        base_unit = self.base
-        conversion_factor = self.coef
-        while base_unit.base is not None:
-            base_unit = base_unit.base
-            conversion_factor *= base_unit.coef
-        base_unit.coef = conversion_factor
-        return base_unit
+        return self.base
+        # base_unit = self.base
+        # conversion_factor = self.coef
+        # while base_unit.base is not None:
+        #     base_unit = base_unit.base
+        #     conversion_factor *= base_unit.coef
+        # base_unit.coef = conversion_factor
+        # return base_unit
+
+    @staticmethod
+    def default_range_gramm():
+        item = range_model()
+        item.name = "грамм"
+        item.base = None
+        item.coef = 1
+        return item
+
+    @staticmethod
+    def default_range_piece():
+        item = range_model()
+        item.name = "штука"
+        item.base = None
+        item.coef = 1
+        return item
 
     """
     Режим сравнения (по наименованию)
@@ -59,4 +76,6 @@ class range_model(abstract_reference):
             return False
 
         return self.name == other_object.name
+
+
 
