@@ -33,4 +33,3 @@ class recipe_model(abstract_reference):
 
     def set_compare_mode(self, other_object) -> bool:
         super().set_compare_mode(other_object)
-

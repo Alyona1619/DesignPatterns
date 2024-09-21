@@ -1,18 +1,16 @@
 from src.core.abstract_reference import abstract_reference
 from src.core.custom_exception import argument_exception
 
-"""
-Модель единицы измерения
-"""
+
 class range_model(abstract_reference):
+    """Модель единицы измерения"""
     __base_unit = None
     __conversion_coeff = 1.0
 
-    """
-    Базовая единица измерения
-    """
+
     @property
     def base(self):
+        """Базовая единица измерения"""
         return self.__base_unit
 
     @base.setter
@@ -21,11 +19,10 @@ class range_model(abstract_reference):
             argument_exception.raise_type_error("base", "range_model or None")
         self.__base_unit = value
 
-    """
-    Коэффициент пересчета
-    """
+
     @property
     def coef(self):
+        """Коэффициент пересчета"""
         return self.__conversion_coeff
 
     @coef.setter
@@ -34,11 +31,10 @@ class range_model(abstract_reference):
             argument_exception.raise_value_error("coef", "positive number")
         self.__conversion_coeff = value
 
-    """
-    Метод для преобразования в базовую единицу измерения
-    """
+
     @property
     def to_base(self):
+        """Метод для преобразования в базовую единицу измерения"""
         if self.base is None:
             return self
         return self.base
@@ -66,10 +62,9 @@ class range_model(abstract_reference):
         item.coef = 1
         return item
 
-    """
-    Режим сравнения (по наименованию)
-    """
+
     def set_compare_mode(self, other_object) -> bool:
+        """Режим сравнения (по наименованию)"""
         if other_object is None:
             return False
         if not isinstance(other_object, range_model):

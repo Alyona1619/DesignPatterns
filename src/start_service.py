@@ -9,12 +9,9 @@ from src.models.ingredient import ingredient
 from src.settings_manager import settings_manager
 from src.models.settings_model import settings
 
-"""
-Сервис для реализации первого старта приложения
-"""
-
 
 class start_service(abstract_logic):
+    """Сервис для реализации первого старта приложения"""
     __repository: data_repository = None
     __settings_manager: settings_manager = None
 
@@ -25,68 +22,60 @@ class start_service(abstract_logic):
         self.__repository = repository
         self.__settings_manager = manager
 
-    """
-    Текущие настройки
-    """
-
     @property
     def settings(self) -> settings:
+        """Текущие настройки"""
         return self.__settings_manager.current_settings
 
-    """
-    Сформировать группы номенклатуры
-    """
-
     def __create_nomenclature_groups(self):
+        """Сформировать группы номенклатуры"""
         nglist = []
         nglist.append(group_nomenclature_model.default_group_cold())
         nglist.append(group_nomenclature_model.default_group_source())
         self.__repository.data[data_repository.group_key()] = nglist
 
-    """
-    Сформировать номенклатуру
-    """
-
     def __create_nomenclature(self):
+        """Сформировать номенклатуру"""
         group_source = group_nomenclature_model.default_group_source()
         nomenclature_list = [nomenclature_model.default_nomenclature("Мука пшеничная", group_source),
                              nomenclature_model.default_nomenclature("Сахар", group_source)]
         self.__repository.data[data_repository.nomenclature_key()] = nomenclature_list
 
-    """
-    Сформировать единицы измерения
-    """
-
     def __create_range(self):
+        """Сформировать единицы измерения"""
         range_list = [range_model.default_range_gramm(), range_model.default_range_gramm()]
         self.__repository.data[data_repository.range_key()] = range_list
 
+    def __create_ingredients(self, ingredients_config):
+        """Создать список ингредиентов"""
+        nomenclature_group = group_nomenclature_model.default_group_source()
+        return [self.__create_ingredient(ing, nomenclature_group) for ing in ingredients_config]
+
+    def __create_ingredient(self, ing, nomenclature_group):
+        """Cоздание одного ингредиента"""
+        nomenclature = nomenclature_model.default_nomenclature(ing["full_name"], nomenclature_group)
+        row = ingredient()
+        row.nomenclature = nomenclature
+        row.range = ing["range"]
+        row.value = ing["value"]
+        return row
+
     def __create_recipe(self):
+        """Cоздание рецепта"""
         recipe = recipe_model()
 
-        nomenclature_group = group_nomenclature_model.default_group_source()
-        range_gramm = range_model.default_range_gramm()
-        range_piece = range_model.default_range_piece()
-
         ings = [
-            {"name": "Пшеничная мука", "full_name": "Пшеничная мука", "value": 100, "range": range_gramm},
-            {"name": "Сахар", "full_name": "Сахар", "value": 80, "range": range_gramm},
-            {"name": "Сливочное масло", "full_name": "Сливочное масло", "value": 70, "range": range_gramm},
-            {"name": "Яйца", "full_name": "Яйца", "value": 1, "range": range_piece},
-            {"name": "Ванилин", "full_name": "Ванилин", "value": 5, "range": range_gramm}
+            {"name": "Пшеничная мука", "full_name": "Пшеничная мука", "value": 100,
+             "range": range_model.default_range_gramm()},
+            {"name": "Сахар", "full_name": "Сахар", "value": 80, "range": range_model.default_range_gramm()},
+            {"name": "Сливочное масло", "full_name": "Сливочное масло", "value": 70,
+             "range": range_model.default_range_gramm()},
+            {"name": "Яйца", "full_name": "Яйца", "value": 1, "range": range_model.default_range_piece()},
+            {"name": "Ванилин", "full_name": "Ванилин", "value": 5, "range": range_model.default_range_gramm()}
         ]
 
-        data = []
-        for ing in ings:
-            nomenclature = nomenclature_model.default_nomenclature(ing["full_name"], nomenclature_group)
-            row = ingredient()
-            row.nomenclature = nomenclature
-            row.range = range_piece
-            row.value = ing["value"]
-            data.append(row)
-
+        recipe.ingredients = self.__create_ingredients(ings)
         recipe.name = 'ВАФЛИ ХРУСТЯЩИЕ В ВАФЕЛЬНИЦЕ'
-        recipe.ingredients = data
         recipe.step = '''1. Как испечь вафли хрустящие в вафельнице? Подготовьте необходимые продукты. Из данного 
         количества у меня получилось 8 штук диаметром около 10 см. 2. Масло положите в сотейник с толстым дном. 
         Растопите его на маленьком огне на плите, на водяной бане либо в микроволновке. 3. Добавьте в теплое масло 
@@ -102,19 +91,13 @@ class start_service(abstract_logic):
 
         self.__repository.data[data_repository.recipe_key()] = recipe
 
-    """
-    Первый старт
-    """
-
     def create(self):
+        """Первый старт"""
         self.__create_nomenclature_groups()
         self.__create_range()
         self.__create_nomenclature()
         self.__create_recipe()
 
-    """
-    Перегрузка абстрактного метода
-    """
-
     def set_exception(self, ex: Exception):
+        """Перегрузка абстрактного метода"""
         self._inner_set_exception(ex)
