@@ -1,6 +1,6 @@
-from DesignPatterns.src.custom_exception import argument_exception
-from DesignPatterns.src.models.settings_model import settings
-from DesignPatterns.src.abstract_logic import abstract_logic
+from src.core.custom_exception import argument_exception
+from src.models.settings_model import settings
+from src.core.abstract_logic import abstract_logic
 
 import json
 import os

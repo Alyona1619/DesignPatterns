@@ -1,6 +1,6 @@
-from DesignPatterns.src.abstract_reference import abstract_reference
-from DesignPatterns.src.custom_exception import argument_exception
-from DesignPatterns.src.models.settings_model import settings
+from src.core.abstract_reference import abstract_reference
+from src.core.custom_exception import argument_exception
+from src.models.settings_model import settings
 
 
 class organization_model(abstract_reference):

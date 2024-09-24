@@ -1,11 +1,11 @@
-from DesignPatterns.src.abstract_reference import abstract_reference
-from DesignPatterns.src.custom_exception import argument_exception
-from DesignPatterns.src.models.group_nomenclature_model import group_nomenclature_model
-from DesignPatterns.src.models.range_model import range_model
+from src.core.abstract_reference import abstract_reference
+from src.core.custom_exception import argument_exception
+from src.models.group_nomenclature_model import group_nomenclature_model
+from src.models.range_model import range_model
+
 """
 Модель номенклатуры
 """
-
 
 class nomenclature_model(abstract_reference):
     __full_name: str = ''
@@ -44,3 +44,10 @@ class nomenclature_model(abstract_reference):
     def set_compare_mode(self, other_object) -> bool:
         super().set_compare_mode(other_object)
 
+    @staticmethod
+    def default_nomenclature(full_name, group, unit):
+        nomenclature = nomenclature_model()
+        nomenclature.full_name = full_name
+        nomenclature.group = group
+        nomenclature.unit = unit
+        return nomenclature

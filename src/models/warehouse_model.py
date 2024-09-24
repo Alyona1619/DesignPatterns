@@ -1,4 +1,4 @@
-from DesignPatterns.src.abstract_reference import abstract_reference
+from src.core.abstract_reference import abstract_reference
 
 
 class storage_model(abstract_reference):

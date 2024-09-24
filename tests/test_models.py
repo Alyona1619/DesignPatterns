@@ -1,9 +1,9 @@
 import unittest
 
-from DesignPatterns.src.custom_exception import argument_exception
-from DesignPatterns.src.models.range_model import range_model
-from DesignPatterns.src.settings_manager import settings_manager
-from DesignPatterns.src.models.organization_model import organization_model
+from src.core.custom_exception import argument_exception
+from src.models.range_model import range_model
+from src.settings_manager import settings_manager
+from src.models.organization_model import organization_model
 
 
 class test_models(unittest.TestCase):
