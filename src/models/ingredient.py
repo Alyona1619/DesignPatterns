@@ -34,3 +34,11 @@ class ingredient(abstract_reference):
 
     def set_compare_mode(self, other_object) -> bool:
         super().set_compare_mode(other_object)
+
+    @staticmethod
+    def default_ingredient(nomenclature: nomenclature_model, range: range_model, quantity: int):
+        ing = ingredient()
+        ing.nomenclature = nomenclature
+        ing.range = range
+        ing.value = quantity
+        return ing

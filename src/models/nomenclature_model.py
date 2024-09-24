@@ -45,8 +45,9 @@ class nomenclature_model(abstract_reference):
         super().set_compare_mode(other_object)
 
     @staticmethod
-    def default_nomenclature(full_name, group):
+    def default_nomenclature(full_name, group, unit):
         nomenclature = nomenclature_model()
         nomenclature.full_name = full_name
         nomenclature.group = group
+        nomenclature.unit = unit
         return nomenclature

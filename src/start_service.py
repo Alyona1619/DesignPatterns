@@ -37,8 +37,9 @@ class start_service(abstract_logic):
     def __create_nomenclature(self):
         """Сформировать номенклатуру"""
         group_source = group_nomenclature_model.default_group_source()
-        nomenclature_list = [nomenclature_model.default_nomenclature("Мука пшеничная", group_source),
-                             nomenclature_model.default_nomenclature("Сахар", group_source)]
+        range = range_model.default_range_gramm()
+        nomenclature_list = [nomenclature_model.default_nomenclature("Мука пшеничная", group_source, range),
+                             nomenclature_model.default_nomenclature("Сахар", group_source, range)]
         self.__repository.data[data_repository.nomenclature_key()] = nomenclature_list
 
     def __create_range(self):
@@ -49,16 +50,13 @@ class start_service(abstract_logic):
     def __create_ingredients(self, ingredients_config):
         """Создать список ингредиентов"""
         nomenclature_group = group_nomenclature_model.default_group_source()
-        return [self.__create_ingredient(ing, nomenclature_group) for ing in ingredients_config]
+        return [self.__create_ingredient(ing, nomenclature_group, ing["range"]) for ing in ingredients_config] # брать еще range из ngredient config
 
-    def __create_ingredient(self, ing, nomenclature_group):
+    def __create_ingredient(self, ing, nomenclature_group, range):
         """Cоздание одного ингредиента"""
-        nomenclature = nomenclature_model.default_nomenclature(ing["full_name"], nomenclature_group)
-        row = ingredient()
-        row.nomenclature = nomenclature
-        row.range = ing["range"]
-        row.value = ing["value"]
-        return row
+        nomenclature = nomenclature_model.default_nomenclature(ing["full_name"], nomenclature_group, range)
+        elem = ingredient.default_ingredient(nomenclature, ing["range"], ing["value"])
+        return elem
 
     def __create_recipe(self):
         """Cоздание рецепта"""
