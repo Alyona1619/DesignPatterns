@@ -34,11 +34,11 @@ class nomenclature_model(abstract_reference):
         self.__group = value
 
     @property
-    def range(self) -> range_model:
+    def unit(self) -> range_model:
         return self.__unit
 
-    @range.setter
-    def range(self, value: range_model):
+    @unit.setter
+    def unit(self, value: range_model):
         self.__unit = value
 
     def set_compare_mode(self, other_object) -> bool:

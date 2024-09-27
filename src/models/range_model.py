@@ -8,6 +8,9 @@ class range_model(abstract_reference):
     __conversion_coeff = 1.0
 
 
+    def __init__(self):
+        super().__init__()
+
     @property
     def base(self):
         """Базовая единица измерения"""

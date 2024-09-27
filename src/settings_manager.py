@@ -5,6 +5,7 @@ from src.core.abstract_logic import abstract_logic
 import json
 import os
 
+
 class settings_manager(abstract_logic):
     __file_name = "../settings.json"
     # __settings: settings = settings()
@@ -62,7 +63,6 @@ class settings_manager(abstract_logic):
 
     def set_exception(self, ex: Exception):
         self._inner_set_exception(ex)
-
 
 # Пример использования
 # manager1 = settings_manager()

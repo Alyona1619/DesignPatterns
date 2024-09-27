@@ -1,16 +1,16 @@
-"""
-Настройки
-"""
 from src.core.custom_exception import argument_exception
+from src.core.format_reporting import format_reporting
 
 
 class settings:
+    """Настройки"""
     __organization_name = ""
     __inn = ""
     __account_number = ""
     __correspondent_account = ""
     __bik = ""
     __ownership_type = ""
+    __report_format = format_reporting.CSV
 
     @property
     def organization_name(self):
@@ -81,3 +81,22 @@ class settings:
         if len(value) != 5:
             argument_exception.raise_value_error("ownership_type", 5)
         self.__ownership_type = value
+
+    @property
+    def report_format(self) -> format_reporting:
+        return self.__report_format
+
+    @report_format.setter
+    def report_format(self, value: format_reporting):
+        if not isinstance(value, format_reporting):
+            argument_exception.raise_type_error("report_format", "format_reporting")
+        self.__report_format = value
+
+    # def create_report(self):
+    #     """Создать отчет в нужном формате"""
+    #     factory = report_factory(self)
+    #     report = factory.create_default()
+    #     if report:
+    #         return report
+    #     else:
+    #         raise ValueError(f"Отчет в формате {self.__report_format.name} не может быть создан.")

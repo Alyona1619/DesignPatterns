@@ -47,3 +47,6 @@ class abstract_reference(ABC):
 
     def __eq__(self, value: object) -> bool:
         return self.set_compare_mode(value)
+
+    def __str__(self) -> str:
+        return str(self.unique_code)
