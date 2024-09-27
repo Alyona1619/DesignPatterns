@@ -1,4 +1,16 @@
 [
-    {},
-    {}
+  {
+    "base": null,
+    "coef": 1,
+    "name": "грамм",
+    "to_base": {},
+    "unique_code": "f03078db-0ba9-437d-b83e-8931610a1646"
+  },
+  {
+    "base": null,
+    "coef": 1,
+    "name": "грамм",
+    "to_base": {},
+    "unique_code": "f03078db-0ba9-437d-b83e-8931610a1646"
+  }
 ]
