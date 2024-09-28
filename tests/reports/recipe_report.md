@@ -1,6 +1,6 @@
 **name**  | **nomenclature**  | **unique_code**  | **value**  | 
-  | 73d23629-2f1e-4bb2-ab7f-1d2a26f5d778  | 73d23629-2f1e-4bb2-ab7f-1d2a26f5d778  | 100  | 
-  | 73d23629-2f1e-4bb2-ab7f-1d2a26f5d778  | 73d23629-2f1e-4bb2-ab7f-1d2a26f5d778  | 80  | 
-  | 73d23629-2f1e-4bb2-ab7f-1d2a26f5d778  | 73d23629-2f1e-4bb2-ab7f-1d2a26f5d778  | 70  | 
-  | 73d23629-2f1e-4bb2-ab7f-1d2a26f5d778  | 73d23629-2f1e-4bb2-ab7f-1d2a26f5d778  | 1  | 
-  | 73d23629-2f1e-4bb2-ab7f-1d2a26f5d778  | 73d23629-2f1e-4bb2-ab7f-1d2a26f5d778  | 5  | 
+  | 41af2afc-741c-4490-a2e8-69b75d72994d  | 41af2afc-741c-4490-a2e8-69b75d72994d  | 100  | 
+  | 41af2afc-741c-4490-a2e8-69b75d72994d  | 41af2afc-741c-4490-a2e8-69b75d72994d  | 80  | 
+  | 41af2afc-741c-4490-a2e8-69b75d72994d  | 41af2afc-741c-4490-a2e8-69b75d72994d  | 70  | 
+  | 41af2afc-741c-4490-a2e8-69b75d72994d  | 41af2afc-741c-4490-a2e8-69b75d72994d  | 1  | 
+  | 41af2afc-741c-4490-a2e8-69b75d72994d  | 41af2afc-741c-4490-a2e8-69b75d72994d  | 5  | 

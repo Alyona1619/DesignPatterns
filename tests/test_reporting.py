@@ -149,6 +149,12 @@ class test_reporting(unittest.TestCase):
         with open("reports/recipe_report.rtf", "w", encoding="utf-8") as f:
             f.write(rtf_report_instance.result)
 
+    def test_report_factory_default_create1(self):
+        """Создания отчета по умолчанию"""
+        factory = report_factory(self.manager)
+        report = factory.default_create()
+        assert report is not None
+
 
     # def test_generate_recipe_reports(self):
     #     """Сгенерировать отчеты для рецептов в разных форматах"""

@@ -22,12 +22,12 @@ class json_report(abstract_report):
             report.append(self.serialize(row))
         self.result = json.dumps(report, ensure_ascii=False, indent=2)
 
+
     @staticmethod
     def serialize(data, visited=None) -> dict:
         if visited is None:
             visited = set()
 
-            # Проверка, чтобы избежать повторной сериализации
         if id(data) in visited:
             return {}
 
@@ -35,8 +35,14 @@ class json_report(abstract_report):
 
         row_data = {}
         fields = list(filter(lambda x: not x.startswith("_") and not callable(getattr(data.__class__, x)), dir(data)))
+
         for field in fields:
             value = getattr(data, field)
+
+            # if field == "to_base":
+            #     continue
+            if isinstance(value, property):
+                continue
 
             # Обработка UUID
             if isinstance(value, uuid.UUID):
@@ -51,21 +57,5 @@ class json_report(abstract_report):
                 row_data[field] = value
         return row_data
 
-    # def create(self, data: list):
-    #     validator.validate(data, list)
-    #     if len(data) == 0:
-    #         raise operation_exception("Набор данных пуст!")
-    #
-    #     result_data = []
-    #     for row in data:
-    #         row_dict = self.serialize_row(row)
-    #         result_data.append(row_dict)
-    #
-    #     self.result = json.dumps(result_data, ensure_ascii=False, indent=4)
-    #
-    # def serialize_row(self, row):
-    #     if hasattr(row, "__dict__"):
-    #         return {k: v for k, v in row.__dict__.items() if not k.startswith("_") and not callable(v)}
-    #     return {}
 
 
