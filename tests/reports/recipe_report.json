@@ -1,0 +1,107 @@
+[
+  {
+    "name": "",
+    "nomenclature": {
+      "full_name": "Пшеничная мука",
+      "group": {
+        "name": "Сырье",
+        "unique_code": "73d23629-2f1e-4bb2-ab7f-1d2a26f5d778"
+      },
+      "name": "",
+      "unique_code": "73d23629-2f1e-4bb2-ab7f-1d2a26f5d778",
+      "unit": {
+        "base": null,
+        "coef": 1,
+        "name": "грамм",
+        "to_base": {},
+        "unique_code": "73d23629-2f1e-4bb2-ab7f-1d2a26f5d778"
+      }
+    },
+    "unique_code": "73d23629-2f1e-4bb2-ab7f-1d2a26f5d778",
+    "value": 100
+  },
+  {
+    "name": "",
+    "nomenclature": {
+      "full_name": "Сахар",
+      "group": {
+        "name": "Сырье",
+        "unique_code": "73d23629-2f1e-4bb2-ab7f-1d2a26f5d778"
+      },
+      "name": "",
+      "unique_code": "73d23629-2f1e-4bb2-ab7f-1d2a26f5d778",
+      "unit": {
+        "base": null,
+        "coef": 1,
+        "name": "грамм",
+        "to_base": {},
+        "unique_code": "73d23629-2f1e-4bb2-ab7f-1d2a26f5d778"
+      }
+    },
+    "unique_code": "73d23629-2f1e-4bb2-ab7f-1d2a26f5d778",
+    "value": 80
+  },
+  {
+    "name": "",
+    "nomenclature": {
+      "full_name": "Сливочное масло",
+      "group": {
+        "name": "Сырье",
+        "unique_code": "73d23629-2f1e-4bb2-ab7f-1d2a26f5d778"
+      },
+      "name": "",
+      "unique_code": "73d23629-2f1e-4bb2-ab7f-1d2a26f5d778",
+      "unit": {
+        "base": null,
+        "coef": 1,
+        "name": "грамм",
+        "to_base": {},
+        "unique_code": "73d23629-2f1e-4bb2-ab7f-1d2a26f5d778"
+      }
+    },
+    "unique_code": "73d23629-2f1e-4bb2-ab7f-1d2a26f5d778",
+    "value": 70
+  },
+  {
+    "name": "",
+    "nomenclature": {
+      "full_name": "Яйца",
+      "group": {
+        "name": "Сырье",
+        "unique_code": "73d23629-2f1e-4bb2-ab7f-1d2a26f5d778"
+      },
+      "name": "",
+      "unique_code": "73d23629-2f1e-4bb2-ab7f-1d2a26f5d778",
+      "unit": {
+        "base": null,
+        "coef": 1,
+        "name": "штука",
+        "to_base": {},
+        "unique_code": "73d23629-2f1e-4bb2-ab7f-1d2a26f5d778"
+      }
+    },
+    "unique_code": "73d23629-2f1e-4bb2-ab7f-1d2a26f5d778",
+    "value": 1
+  },
+  {
+    "name": "",
+    "nomenclature": {
+      "full_name": "Ванилин",
+      "group": {
+        "name": "Сырье",
+        "unique_code": "73d23629-2f1e-4bb2-ab7f-1d2a26f5d778"
+      },
+      "name": "",
+      "unique_code": "73d23629-2f1e-4bb2-ab7f-1d2a26f5d778",
+      "unit": {
+        "base": null,
+        "coef": 1,
+        "name": "грамм",
+        "to_base": {},
+        "unique_code": "73d23629-2f1e-4bb2-ab7f-1d2a26f5d778"
+      }
+    },
+    "unique_code": "73d23629-2f1e-4bb2-ab7f-1d2a26f5d778",
+    "value": 5
+  }
+]

@@ -11,6 +11,7 @@ class csv_report(abstract_report):
         self.__format = format_reporting.CSV
 
     def create(self, data: list):
+
         validator.validate(data, list)
         if len(data) == 0:
             raise operation_exception("Набор данных пуст!")

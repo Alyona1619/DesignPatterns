@@ -118,3 +118,65 @@ class test_reporting(unittest.TestCase):
         with open("reports/range_report.rtf", "w", encoding="utf-8") as f:
             f.write(rtf_report_instance.result)
 
+    def test_generate_recipe_reports(self):
+        """Сгенерировать отчеты для рецептов в разных форматах"""
+
+        recipe = self.repository.data[data_repository.recipe_key()]
+        recipe_data = recipe.ingredients
+
+        csv_report_instance = csv_report()
+        csv_report_instance.create(recipe_data)
+        with open("reports/recipe_report.csv", "w", encoding="utf-8") as f:
+            f.write(csv_report_instance.result)
+
+        markdown_report_instance = markdown_report()
+        markdown_report_instance.create(recipe_data)
+        with open("reports/recipe_report.md", "w", encoding="utf-8") as f:
+            f.write(markdown_report_instance.result)
+
+        json_report_instance = json_report()
+        json_report_instance.create(recipe_data)
+        with open("reports/recipe_report.json", "w", encoding="utf-8") as f:
+            f.write(json_report_instance.result)
+
+        xml_report_instance = xml_report()
+        xml_report_instance.create(recipe_data)
+        with open("reports/recipe_report.xml", "w", encoding="utf-8") as f:
+            f.write(xml_report_instance.result)
+
+        rtf_report_instance = rtf_report()
+        rtf_report_instance.create(recipe_data)
+        with open("reports/recipe_report.rtf", "w", encoding="utf-8") as f:
+            f.write(rtf_report_instance.result)
+
+
+    # def test_generate_recipe_reports(self):
+    #     """Сгенерировать отчеты для рецептов в разных форматах"""
+    #
+    #
+    #     csv_report_instance = csv_report()
+    #     csv_report_instance.create(self.repository.data[data_repository.recipe_key()])
+    #     with open("reports/recipe_report.csv", "w", encoding="utf-8") as f:
+    #         f.write(csv_report_instance.result)
+
+        # markdown_report_instance = markdown_report()
+        # markdown_report_instance.create(self.repository.data[data_repository.recipe_key()])
+        # with open("reports/recipe_report.md", "w", encoding="utf-8") as f:
+        #     f.write(markdown_report_instance.result)
+
+        # json_report_instance = json_report()
+        # json_report_instance.create(self.repository.data[data_repository.recipe_key()])
+        # with open("reports/recipe_report.json", "w", encoding="utf-8") as f:
+        #     f.write(json_report_instance.result)
+        #
+        # xml_report_instance = xml_report()
+        # xml_report_instance.create(self.repository.data[data_repository.recipe_key()])
+        # with open("reports/recipe_report.xml", "w", encoding="utf-8") as f:
+        #     f.write(xml_report_instance.result)
+        #
+        # rtf_report_instance = rtf_report()
+        # rtf_report_instance.create(self.repository.data[data_repository.recipe_key()])
+        # with open("reports/recipe_report.rtf", "w", encoding="utf-8") as f:
+        #     f.write(rtf_report_instance.result)
+
+

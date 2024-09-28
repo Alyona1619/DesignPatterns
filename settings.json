@@ -4,5 +4,12 @@
     "account_number": "12345678901",
     "correspondent_account": "12345678901",
     "bik": "123456789",
-    "ownership_type": "ООООО"
+    "ownership_type": "ООООО",
+    "report_settings": {
+        "CSV": "csv_report",
+        "MARKDOWN": "markdown_report",
+        "JSON": "json_report",
+        "XML": "xml_report",
+        "RTF": "rtf_report"
+    }
 }

@@ -51,6 +51,9 @@ class settings_manager(abstract_logic):
             if hasattr(self.__settings, key):
                 setattr(self.__settings, key, value)
 
+        if self.__settings.report_settings is None:
+            self.__settings.report_settings = {}
+
     @property
     def current_settings(self) -> settings:
         return self.__settings

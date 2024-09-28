@@ -4,13 +4,13 @@
     "coef": 1,
     "name": "грамм",
     "to_base": {},
-    "unique_code": "f03078db-0ba9-437d-b83e-8931610a1646"
+    "unique_code": "73d23629-2f1e-4bb2-ab7f-1d2a26f5d778"
   },
   {
     "base": null,
     "coef": 1,
-    "name": "грамм",
+    "name": "штука",
     "to_base": {},
-    "unique_code": "f03078db-0ba9-437d-b83e-8931610a1646"
+    "unique_code": "73d23629-2f1e-4bb2-ab7f-1d2a26f5d778"
   }
 ]

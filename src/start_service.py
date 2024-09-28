@@ -44,7 +44,7 @@ class start_service(abstract_logic):
 
     def __create_range(self):
         """Сформировать единицы измерения"""
-        range_list = [range_model.default_range_gramm(), range_model.default_range_gramm()]
+        range_list = [range_model.default_range_gramm(), range_model.default_range_piece()]
         self.__repository.data[data_repository.range_key()] = range_list
 
     def __create_ingredients(self, ingredients_config):

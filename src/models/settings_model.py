@@ -11,6 +11,7 @@ class settings:
     __bik = ""
     __ownership_type = ""
     __report_format = format_reporting.CSV
+    __report_settings: dict = None
 
     @property
     def organization_name(self):
@@ -92,11 +93,11 @@ class settings:
             argument_exception.raise_type_error("report_format", "format_reporting")
         self.__report_format = value
 
-    # def create_report(self):
-    #     """Создать отчет в нужном формате"""
-    #     factory = report_factory(self)
-    #     report = factory.create_default()
-    #     if report:
-    #         return report
-    #     else:
-    #         raise ValueError(f"Отчет в формате {self.__report_format.name} не может быть создан.")
+    @property
+    def report_settings(self):
+        return self.__report_settings
+
+    @report_settings.setter
+    def report_settings(self, value: str):
+        self.__report_settings = value
+

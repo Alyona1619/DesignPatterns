@@ -12,7 +12,8 @@ class group_nomenclature_model(base_model_name):
 
     def to_dict(self):
         return {
-            "name": self.name
+            "name": self.name,
+            "unique_code": self.unique_code
         }
 
     @staticmethod
