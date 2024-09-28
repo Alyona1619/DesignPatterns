@@ -11,5 +11,6 @@
         "JSON": "json_report",
         "XML": "xml_report",
         "RTF": "rtf_report"
-    }
+    },
+    "default_format": 3
 }

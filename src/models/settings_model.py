@@ -10,8 +10,9 @@ class settings:
     __correspondent_account = ""
     __bik = ""
     __ownership_type = ""
-    __report_format = format_reporting.CSV
+    __report_format = format_reporting.JSON
     __report_settings: dict = None
+    #__default_format: ""
 
     @property
     def organization_name(self):
@@ -100,4 +101,14 @@ class settings:
     @report_settings.setter
     def report_settings(self, value: str):
         self.__report_settings = value
+
+    @property
+    def default_format(self):
+        return self.__default_format
+
+    @default_format.setter
+    def default_format(self, value: str):
+        if not isinstance(value, str):
+            argument_exception.raise_type_error("default_format", "int")
+        self.__default_format = value
 
