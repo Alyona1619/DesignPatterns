@@ -1,4 +1,11 @@
 {
     "organization_name": "TestNameOrg1",
-    "inn": "123111123111"
+    "inn": "123111123111",
+    "report_settings": {
+        "CSV": "csv_report",
+        "MARKDOWN": "markdown_report",
+        "JSON": "json_report",
+        "XML": "xml_report",
+        "RTF": "rtf_report"
+    }
 }

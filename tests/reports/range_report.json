@@ -1,0 +1,14 @@
+[
+  {
+    "base": null,
+    "coef": 1,
+    "name": "грамм",
+    "unique_code": "7cc6560e-4f5a-483f-a53a-ef71bbf6a0f9"
+  },
+  {
+    "base": null,
+    "coef": 1,
+    "name": "штука",
+    "unique_code": "7cc6560e-4f5a-483f-a53a-ef71bbf6a0f9"
+  }
+]

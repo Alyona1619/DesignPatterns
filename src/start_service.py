@@ -44,7 +44,7 @@ class start_service(abstract_logic):
 
     def __create_range(self):
         """Сформировать единицы измерения"""
-        range_list = [range_model.default_range_gramm(), range_model.default_range_gramm()]
+        range_list = [range_model.default_range_gramm(), range_model.default_range_piece()]
         self.__repository.data[data_repository.range_key()] = range_list
 
     def __create_ingredients(self, ingredients_config):
@@ -52,11 +52,18 @@ class start_service(abstract_logic):
         nomenclature_group = group_nomenclature_model.default_group_source()
         return [self.__create_ingredient(ing, nomenclature_group, ing["range"]) for ing in ingredients_config] # брать еще range из ngredient config
 
+
     def __create_ingredient(self, ing, nomenclature_group, range):
         """Cоздание одного ингредиента"""
         nomenclature = nomenclature_model.default_nomenclature(ing["full_name"], nomenclature_group, range)
-        elem = ingredient.default_ingredient(nomenclature, ing["range"], ing["value"])
+        elem = ingredient.default_ingredient(nomenclature, ing["value"])
         return elem
+
+    # def __create_ingredient(self, ing, nomenclature_group):
+    #     """Cоздание одного ингредиента"""
+    #     nomenclature = nomenclature_model.default_nomenclature(ing["full_name"], nomenclature_group)
+    #     elem = ingredient.default_ingredient(nomenclature, ing["value"])
+    #     return elem
 
     def __create_recipe(self):
         """Cоздание рецепта"""
@@ -89,12 +96,17 @@ class start_service(abstract_logic):
 
         self.__repository.data[data_repository.recipe_key()] = recipe
 
-    def create(self):
+    def create(self) -> bool:
         """Первый старт"""
-        self.__create_nomenclature_groups()
-        self.__create_range()
-        self.__create_nomenclature()
-        self.__create_recipe()
+        try:
+            self.__create_nomenclature_groups()
+            self.__create_range()
+            self.__create_nomenclature()
+            self.__create_recipe()
+            return True
+        except Exception as ex:
+            self.set_exception(ex)
+            return False
 
     def set_exception(self, ex: Exception):
         """Перегрузка абстрактного метода"""

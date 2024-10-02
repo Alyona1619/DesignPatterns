@@ -1,16 +1,18 @@
-"""
-Настройки
-"""
 from src.core.custom_exception import argument_exception
+from src.core.format_reporting import format_reporting
 
 
 class settings:
+    """Настройки"""
     __organization_name = ""
     __inn = ""
     __account_number = ""
     __correspondent_account = ""
     __bik = ""
     __ownership_type = ""
+    __report_format = format_reporting.JSON
+    __report_settings: dict = None
+    __default_format: format_reporting = format_reporting.JSON
 
     @property
     def organization_name(self):
@@ -81,3 +83,38 @@ class settings:
         if len(value) != 5:
             argument_exception.raise_value_error("ownership_type", 5)
         self.__ownership_type = value
+
+    @property
+    def report_format(self) -> format_reporting:
+        return self.__report_format
+
+    @report_format.setter
+    def report_format(self, value: format_reporting):
+        if not isinstance(value, format_reporting):
+            argument_exception.raise_type_error("report_format", "format_reporting")
+        self.__report_format = value
+
+    @property
+    def report_settings(self):
+        return self.__report_settings
+
+    @report_settings.setter
+    def report_settings(self, value: str):
+        self.__report_settings = value
+
+    @property
+    def default_format(self):
+        return self.__default_format
+
+    @default_format.setter
+    def default_format(self, value: int):
+        if not isinstance(value, int):
+            argument_exception.raise_type_error("default_format", "int")
+
+        try:
+            self.__default_format = format_reporting(value)
+        except ValueError:
+            argument_exception.raise_value_error("default_format", "valid format integer (1-6)")
+
+        #self.__default_format = value
+

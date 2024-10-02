@@ -8,6 +8,9 @@ class range_model(abstract_reference):
     __conversion_coeff = 1.0
 
 
+    def __init__(self):
+        super().__init__()
+
     @property
     def base(self):
         """Базовая единица измерения"""
@@ -31,8 +34,6 @@ class range_model(abstract_reference):
             argument_exception.raise_value_error("coef", "positive number")
         self.__conversion_coeff = value
 
-
-    @property
     def to_base(self):
         """Метод для преобразования в базовую единицу измерения"""
         if self.base is None:
@@ -61,7 +62,6 @@ class range_model(abstract_reference):
         item.base = None
         item.coef = 1
         return item
-
 
     def set_compare_mode(self, other_object) -> bool:
         """Режим сравнения (по наименованию)"""
