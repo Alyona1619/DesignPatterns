@@ -12,7 +12,7 @@ class settings:
     __ownership_type = ""
     __report_format = format_reporting.JSON
     __report_settings: dict = None
-    #__default_format: ""
+    __default_format: format_reporting = format_reporting.JSON
 
     @property
     def organization_name(self):
@@ -107,8 +107,14 @@ class settings:
         return self.__default_format
 
     @default_format.setter
-    def default_format(self, value: str):
-        if not isinstance(value, str):
+    def default_format(self, value: int):
+        if not isinstance(value, int):
             argument_exception.raise_type_error("default_format", "int")
-        self.__default_format = value
+
+        try:
+            self.__default_format = format_reporting(value)
+        except ValueError:
+            argument_exception.raise_value_error("default_format", "valid format integer (1-6)")
+
+        #self.__default_format = value
 

@@ -43,11 +43,10 @@ class report_factory(abstract_logic):
         # return report()
 
     def create_default(self) -> abstract_report:
-        format = self.__settings.report_format
-        return self.create(format)
-
-        # format = self.__settings.default_format
+        # format = self.__settings.report_format
         # return self.create(format)
+        format = self.__settings.default_format
+        return self.create(format)
 
 
     def set_exception(self, ex: Exception):
