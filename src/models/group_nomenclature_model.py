@@ -32,3 +32,10 @@ class group_nomenclature_model(base_model_name):
 
     def set_compare_mode(self, other_object) -> bool:
         super().set_compare_mode(other_object)
+
+    @staticmethod
+    def from_json(data):
+        """Фабричный метод для десериализации группы номенклатуры из JSON."""
+        group_instance = group_nomenclature_model()
+        group_instance.name = data.get('name', '')
+        return group_instance

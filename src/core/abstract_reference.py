@@ -15,7 +15,6 @@ class abstract_reference(ABC):
     """
     Уникальный код
     """
-
     @property
     def unique_code(self) -> str:
         return self.__unique_code
@@ -50,3 +49,8 @@ class abstract_reference(ABC):
 
     def __str__(self) -> str:
         return str(self.unique_code)
+
+    """
+        Класс у аттрибута
+        """
+

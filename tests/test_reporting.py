@@ -9,6 +9,13 @@ from src.reports.json_report import json_report
 from src.reports.xml_report import xml_report
 from src.reports.rtf_report import rtf_report
 
+import json
+#from src.reports.json_deserialize import JsonDeserializer
+from src.deserializers.json_deserializer import JsonDeserializer
+from src.models.ingredient import ingredient
+from src.models.range_model import range_model
+
+
 import unittest
 import os
 
@@ -18,12 +25,16 @@ class test_reporting(unittest.TestCase):
     def setUp(self):
         """Подготовка тестовой среды перед каждым тестом"""
         self.manager = settings_manager()
-        self.manager.open("../settings1.json")
+        self.manager.open("../settings.json")
         self.repository = data_repository()
         self.start = start_service(self.repository, self.manager)
         self.start.create()
 
         os.makedirs("reports", exist_ok=True)
+
+        self.reports_path = "./tests/reports"
+        os.makedirs(self.reports_path, exist_ok=True)
+        self.report_json = json_report()
 
     def test_csv_report_create_range(self):
         """Проверка работы отчета CSV"""
@@ -43,7 +54,7 @@ class test_reporting(unittest.TestCase):
         report.create(self.repository.data[data_repository.nomenclature_key()])
         assert report.result != ""
 
-    def test_json_report_create_nomenclature(self):  #############
+    def test_json_report_create_nomenclature(self):
         """Проверка работы отчета JSON для номенклатуры"""
         report = json_report()
         report.create(self.repository.data[data_repository.nomenclature_key()])
@@ -157,6 +168,32 @@ class test_reporting(unittest.TestCase):
         assert report is not None
         assert isinstance(report, json_report)
 
+    def test_deserialize_json_recipe(self):
+        """Проверка десериализации данных из JSON для recipe"""
+        file_name = "reports/recipe_report.json"
+        with open(file_name, 'r', encoding='utf-8') as file:
+            json_data = json.load(file)
+        ingredients = JsonDeserializer.deserialize_recipe(json_data)
 
+        self.assertEqual(len(ingredients), len(json_data), "Количество ингредиентов не совпадает.")
 
+        for index, ingredient_instance in enumerate(ingredients):
+            self.assertIsInstance(ingredient_instance, ingredient,
+                                  f"Элемент {index} не является экземпляром ingredient.")
 
+            self.assertEqual(ingredient_instance.value, json_data[index]['value'],
+                             f"Значение ингредиента {index} не совпадает.")
+
+            nomenclature_data = json_data[index]['nomenclature']
+            self.assertEqual(ingredient_instance.nomenclature.full_name, nomenclature_data['full_name'],
+                             f"Имя номенклатуры ингредиента {index} не совпадает.")
+
+            group_data = nomenclature_data['group']
+            self.assertEqual(ingredient_instance.nomenclature.group.name, group_data['name'],
+                             f"Имя группы номенклатуры ингредиента {index} не совпадает.")
+
+            unit_data = nomenclature_data['unit']
+            self.assertEqual(ingredient_instance.nomenclature.unit.name, unit_data['name'],
+                             f"Единица измерения ингредиента {index} не совпадает.")
+            self.assertEqual(ingredient_instance.nomenclature.unit.coef, unit_data['coef'],
+                             f"Коэффициент единицы измерения ингредиента {index} не совпадает.")

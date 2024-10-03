@@ -7,7 +7,6 @@ class range_model(abstract_reference):
     __base_unit = None
     __conversion_coeff = 1.0
 
-
     def __init__(self):
         super().__init__()
 
@@ -72,5 +71,11 @@ class range_model(abstract_reference):
 
         return self.name == other_object.name
 
-
-
+    @staticmethod
+    def from_json(data):
+        """Фабричный метод для десериализации единиц измерения из JSON."""
+        range_instance = range_model()
+        range_instance.name = data.get('name', '')
+        range_instance.coef = data.get('coef', 1)
+        # Если нужно добавить логику для базовой единицы, она может быть включена здесь
+        return range_instance
