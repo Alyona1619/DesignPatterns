@@ -21,7 +21,6 @@ class range_model(abstract_reference):
             argument_exception.raise_type_error("base", "range_model or None")
         self.__base_unit = value
 
-
     @property
     def coef(self):
         """Коэффициент пересчета"""
@@ -73,9 +72,12 @@ class range_model(abstract_reference):
 
     @staticmethod
     def from_json(data):
-        """Фабричный метод для десериализации единиц измерения из JSON."""
         range_instance = range_model()
         range_instance.name = data.get('name', '')
         range_instance.coef = data.get('coef', 1)
-        # Если нужно добавить логику для базовой единицы, она может быть включена здесь
         return range_instance
+
+    # def from_json(self, data):
+    #     self.name = data.get('name', '')
+    #     self.coef = data.get('coef', 1)
+    #     return self

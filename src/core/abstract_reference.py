@@ -50,7 +50,6 @@ class abstract_reference(ABC):
     def __str__(self) -> str:
         return str(self.unique_code)
 
-    """
-        Класс у аттрибута
-        """
-
+    # @abstractmethod
+    # def from_json(self, data):
+    #     pass

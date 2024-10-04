@@ -1,7 +1,5 @@
 from src.models.ingredient import ingredient
 
-
-
 class JsonDeserializer:
     """Класс для десериализации рецептов из JSON через фабричные методы моделей."""
 

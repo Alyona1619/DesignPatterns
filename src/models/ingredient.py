@@ -39,3 +39,9 @@ class ingredient(abstract_reference):
         ingredient_instance.value = data.get('value', 0)
         ingredient_instance.nomenclature = nomenclature_model.from_json(data['nomenclature'])
         return ingredient_instance
+
+    # def from_json(self, data):
+    #     """Метод для десериализации ингредиента из JSON."""
+    #     self.value = data.get('value', 0)
+    #     self.nomenclature = nomenclature_model().from_json(data['nomenclature'])
+    #     return self

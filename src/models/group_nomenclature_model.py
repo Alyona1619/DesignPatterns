@@ -35,7 +35,12 @@ class group_nomenclature_model(base_model_name):
 
     @staticmethod
     def from_json(data):
-        """Фабричный метод для десериализации группы номенклатуры из JSON."""
         group_instance = group_nomenclature_model()
         group_instance.name = data.get('name', '')
         return group_instance
+    #
+    # def from_json(self, data):
+    #     self.name = data.get('name', '')
+    #     return self
+
+

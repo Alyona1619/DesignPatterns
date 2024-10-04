@@ -3,12 +3,12 @@
     "base": null,
     "coef": 1,
     "name": "грамм",
-    "unique_code": "ed242710-b98e-49bd-82d0-e96912ed0cbb"
+    "unique_code": "42a67b99-8dbf-47cb-9148-129a8073a27b"
   },
   {
     "base": null,
     "coef": 1,
     "name": "штука",
-    "unique_code": "ed242710-b98e-49bd-82d0-e96912ed0cbb"
+    "unique_code": "42a67b99-8dbf-47cb-9148-129a8073a27b"
   }
 ]

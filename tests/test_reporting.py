@@ -197,3 +197,40 @@ class test_reporting(unittest.TestCase):
                              f"Единица измерения ингредиента {index} не совпадает.")
             self.assertEqual(ingredient_instance.nomenclature.unit.coef, unit_data['coef'],
                              f"Коэффициент единицы измерения ингредиента {index} не совпадает.")
+
+    def test_deserialize_json_recipe1(self):
+        """Проверка десериализации данных для рецепта с данными из data_repository"""
+        file_name = "reports/recipe_report.json"
+        with open(file_name, 'r', encoding='utf-8') as file:
+            json_data = json.load(file)
+
+        ingredients = JsonDeserializer.deserialize_recipe(json_data)
+
+        original_recipe = self.repository.data[data_repository.recipe_key()]
+        original_ingredients = original_recipe.ingredients
+
+        self.assertEqual(len(ingredients), len(original_ingredients), "Количество ингредиентов не совпадает.")
+
+        for index, ingredient_instance in enumerate(ingredients):
+            self.assertIsInstance(ingredient_instance, ingredient,
+                                  f"Элемент {index} не является экземпляром ingredient.")
+
+            self.assertEqual(ingredient_instance.value, original_ingredients[index].value,
+                             f"Значение ингредиента {index} не совпадает.")
+
+            self.assertEqual(ingredient_instance.nomenclature.full_name,
+                             original_ingredients[index].nomenclature.full_name,
+                             f"Имя номенклатуры ингредиента {index} не совпадает.")
+
+            self.assertEqual(ingredient_instance.nomenclature.group.name,
+                             original_ingredients[index].nomenclature.group.name,
+                             f"Имя группы номенклатуры ингредиента {index} не совпадает.")
+
+            self.assertEqual(ingredient_instance.nomenclature.unit.name,
+                             original_ingredients[index].nomenclature.unit.name,
+                             f"Единица измерения ингредиента {index} не совпадает.")
+            self.assertEqual(ingredient_instance.nomenclature.unit.coef,
+                             original_ingredients[index].nomenclature.unit.coef,
+                             f"Коэффициент единицы измерения ингредиента {index} не совпадает.")
+
+

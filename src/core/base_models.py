@@ -33,3 +33,6 @@ class base_model_name(abstract_reference):
         if not isinstance(other_object, base_model_name): return False
 
         return self.name == other_object.name
+
+    # def from_json(self, data):
+    #     pass
