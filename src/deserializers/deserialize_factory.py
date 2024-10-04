@@ -3,7 +3,6 @@ from src.core.validator import argument_exception
 
 
 class DeserializeFactory:
-    """Фабрика для создания десериализаторов различных моделей"""
 
     @staticmethod
     def get_deserializer(data_type):

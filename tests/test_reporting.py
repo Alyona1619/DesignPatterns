@@ -204,7 +204,7 @@ class test_reporting(unittest.TestCase):
         with open(file_name, 'r', encoding='utf-8') as file:
             json_data = json.load(file)
 
-        ingredients = JsonDeserializer.deserialize_recipe(json_data)
+        ingredients = JsonDeserializer.deserialize(json_data, 'ingredient')
 
         original_recipe = self.repository.data[data_repository.recipe_key()]
         original_ingredients = original_recipe.ingredients
