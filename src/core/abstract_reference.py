@@ -50,6 +50,6 @@ class abstract_reference(ABC):
     def __str__(self) -> str:
         return str(self.unique_code)
 
-    # @abstractmethod
-    # def from_json(self, data):
-    #     pass
+    @abstractmethod
+    def from_json(self, data):
+        pass

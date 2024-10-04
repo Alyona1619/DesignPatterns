@@ -4,37 +4,32 @@ from src.deserializers.deserialize_factory import DeserializeFactory
 class JsonDeserializer:
     @staticmethod
     def deserialize(json_data, data_type):
-        factory = DeserializeFactory.get_deserializer(data_type)
+        # Получаем класс модели из фабрики
+        model_class = DeserializeFactory.get_deserializer(data_type)
+
+        # Создаем экземпляр модели data_type
+        instance = model_class()  # Создаем экземпляр класса
+
+        # Заполняем модель данными из json_data
         if isinstance(json_data, list):
-            return [factory.from_json(item) for item in json_data]
+            for item in json_data:
+                instance.from_json(item)  # Заполняем экземпляр данными
+
+            return instance  # Возвращаем заполненный экземпляр
         else:
-            return factory.from_json(json_data)
-
-
-# from src.models.ingredient import ingredient
-#
-#
-# class JsonDeserializer:
-#
-#     @staticmethod
-#     def deserialize_recipe(json_data):
-#         recipe_list = []
-#         for item in json_data:
-#             ingredient_instance = ingredient.from_json(item)
-#             recipe_list.append(ingredient_instance)
-#         return recipe_list
+            raise ValueError("json_data должен быть списком")
 
 
 
-# from src.deserializers.deserialize_factory import DeserializeFactory
-#
-#
+
+
 # class JsonDeserializer:
 #     @staticmethod
 #     def deserialize(json_data, data_type):
 #         factory = DeserializeFactory.get_deserializer(data_type)
-#         return factory.from_json(json_data)
-#
-#     @staticmethod
-#     def deserialize_recipe(json_data):
-#         return [JsonDeserializer.deserialize(item, 'ingredient') for item in json_data]
+#         if isinstance(json_data, list):
+#             print("factory.from_json(json_data)", [factory.from_json(item) for item in json_data])
+#             return [factory.from_json(item) for item in json_data]
+#         else:
+#             print("factory.from_json(json_data)", factory.from_json(json_data))
+#             return factory.from_json(json_data)

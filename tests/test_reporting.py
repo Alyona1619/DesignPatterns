@@ -10,7 +10,6 @@ from src.reports.xml_report import xml_report
 from src.reports.rtf_report import rtf_report
 
 import json
-#from src.reports.json_deserialize import JsonDeserializer
 from src.deserializers.json_deserializer import JsonDeserializer
 from src.models.ingredient import ingredient
 from src.models.range_model import range_model
@@ -168,69 +167,25 @@ class test_reporting(unittest.TestCase):
         assert report is not None
         assert isinstance(report, json_report)
 
-    def test_deserialize_json_recipe(self):
+    def test_deserialize_json(self):
         """Проверка десериализации данных из JSON для recipe"""
         file_name = "reports/recipe_report.json"
         with open(file_name, 'r', encoding='utf-8') as file:
             json_data = json.load(file)
-        ingredients = JsonDeserializer.deserialize_recipe(json_data)
 
-        self.assertEqual(len(ingredients), len(json_data), "Количество ингредиентов не совпадает.")
+        des_recipe = JsonDeserializer.deserialize(json_data, 'recipe_model')
 
-        for index, ingredient_instance in enumerate(ingredients):
-            self.assertIsInstance(ingredient_instance, ingredient,
-                                  f"Элемент {index} не является экземпляром ingredient.")
+        stored_recipe = self.repository.data[data_repository.recipe_key()]
 
-            self.assertEqual(ingredient_instance.value, json_data[index]['value'],
-                             f"Значение ингредиента {index} не совпадает.")
+        print("des_recipe.ingredients", des_recipe.ingredients)
+        print("stored_recipe.ingredients", stored_recipe.ingredients)
 
-            nomenclature_data = json_data[index]['nomenclature']
-            self.assertEqual(ingredient_instance.nomenclature.full_name, nomenclature_data['full_name'],
-                             f"Имя номенклатуры ингредиента {index} не совпадает.")
+        self.assertEqual(len(des_recipe.ingredients), len(stored_recipe.ingredients),
+                         "Количество ингредиентов должно совпадать")
 
-            group_data = nomenclature_data['group']
-            self.assertEqual(ingredient_instance.nomenclature.group.name, group_data['name'],
-                             f"Имя группы номенклатуры ингредиента {index} не совпадает.")
-
-            unit_data = nomenclature_data['unit']
-            self.assertEqual(ingredient_instance.nomenclature.unit.name, unit_data['name'],
-                             f"Единица измерения ингредиента {index} не совпадает.")
-            self.assertEqual(ingredient_instance.nomenclature.unit.coef, unit_data['coef'],
-                             f"Коэффициент единицы измерения ингредиента {index} не совпадает.")
-
-    def test_deserialize_json_recipe1(self):
-        """Проверка десериализации данных для рецепта с данными из data_repository"""
-        file_name = "reports/recipe_report.json"
-        with open(file_name, 'r', encoding='utf-8') as file:
-            json_data = json.load(file)
-
-        ingredients = JsonDeserializer.deserialize(json_data, 'ingredient')
-
-        original_recipe = self.repository.data[data_repository.recipe_key()]
-        original_ingredients = original_recipe.ingredients
-
-        self.assertEqual(len(ingredients), len(original_ingredients), "Количество ингредиентов не совпадает.")
-
-        for index, ingredient_instance in enumerate(ingredients):
-            self.assertIsInstance(ingredient_instance, ingredient,
-                                  f"Элемент {index} не является экземпляром ingredient.")
-
-            self.assertEqual(ingredient_instance.value, original_ingredients[index].value,
-                             f"Значение ингредиента {index} не совпадает.")
-
-            self.assertEqual(ingredient_instance.nomenclature.full_name,
-                             original_ingredients[index].nomenclature.full_name,
-                             f"Имя номенклатуры ингредиента {index} не совпадает.")
-
-            self.assertEqual(ingredient_instance.nomenclature.group.name,
-                             original_ingredients[index].nomenclature.group.name,
-                             f"Имя группы номенклатуры ингредиента {index} не совпадает.")
-
-            self.assertEqual(ingredient_instance.nomenclature.unit.name,
-                             original_ingredients[index].nomenclature.unit.name,
-                             f"Единица измерения ингредиента {index} не совпадает.")
-            self.assertEqual(ingredient_instance.nomenclature.unit.coef,
-                             original_ingredients[index].nomenclature.unit.coef,
-                             f"Коэффициент единицы измерения ингредиента {index} не совпадает.")
-
+        for deserialized_ingredient, stored_ingredient in zip(des_recipe.ingredients, stored_recipe.ingredients):
+            self.assertEqual(deserialized_ingredient.nomenclature.full_name, stored_ingredient.nomenclature.full_name,
+                             f"Ингредиенты должны совпадать: {deserialized_ingredient.nomenclature.full_name} != {stored_ingredient.nomenclature.full_name}")
+            self.assertEqual(deserialized_ingredient.value, stored_ingredient.value,
+                             f"Значения ингредиентов должны совпадать: {deserialized_ingredient.value} != {stored_ingredient.value}")
 

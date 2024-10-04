@@ -70,14 +70,14 @@ class range_model(abstract_reference):
 
         return self.name == other_object.name
 
-    @staticmethod
-    def from_json(data):
-        range_instance = range_model()
-        range_instance.name = data.get('name', '')
-        range_instance.coef = data.get('coef', 1)
-        return range_instance
+    # @staticmethod
+    # def from_json(data):
+    #     range_instance = range_model()
+    #     range_instance.name = data.get('name', '')
+    #     range_instance.coef = data.get('coef', 1)
+    #     return range_instance
 
-    # def from_json(self, data):
-    #     self.name = data.get('name', '')
-    #     self.coef = data.get('coef', 1)
-    #     return self
+    def from_json(self, data):
+        self.name = data.get('name', '')
+        self.coef = data.get('coef', 1)
+        return self
