@@ -95,6 +95,10 @@ class start_service(abstract_logic):
         вафельницу, она очень горячая! Снимите вафлю лопаткой. Горячая она очень мягкая, как блинчик. '''
 
         self.__repository.data[data_repository.recipe_key()] = recipe
+        # if data_repository.recipe_key() not in self.__repository.data:
+        #     self.__repository.data[data_repository.recipe_key()] = []
+        #
+        # self.__repository.data[data_repository.recipe_key()].append(recipe)
 
     def create(self) -> bool:
         """Первый старт"""

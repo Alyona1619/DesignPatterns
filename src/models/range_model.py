@@ -7,7 +7,6 @@ class range_model(abstract_reference):
     __base_unit = None
     __conversion_coeff = 1.0
 
-
     def __init__(self):
         super().__init__()
 
@@ -21,7 +20,6 @@ class range_model(abstract_reference):
         if value is not None and not isinstance(value, range_model):
             argument_exception.raise_type_error("base", "range_model or None")
         self.__base_unit = value
-
 
     @property
     def coef(self):
@@ -72,5 +70,14 @@ class range_model(abstract_reference):
 
         return self.name == other_object.name
 
+    # @staticmethod
+    # def from_json(data):
+    #     range_instance = range_model()
+    #     range_instance.name = data.get('name', '')
+    #     range_instance.coef = data.get('coef', 1)
+    #     return range_instance
 
-
+    def from_json(self, data):
+        self.name = data.get('name', '')
+        self.coef = data.get('coef', 1)
+        return self

@@ -1,11 +1,9 @@
 from src.core.abstract_reference import abstract_reference
-#from src.models.range_model import range_model
 from src.models.nomenclature_model import nomenclature_model
 
 
 class ingredient(abstract_reference):
     __nomenclature: nomenclature_model = None
-    # __range: range_model = None
     __value: float = 0
 
     @property
@@ -15,14 +13,6 @@ class ingredient(abstract_reference):
     @nomenclature.setter
     def nomenclature(self, value):
         self.__nomenclature = value
-
-    # @property
-    # def range(self):
-    #     return self.__range
-    #
-    # @range.setter
-    # def range(self, value):
-    #     self.__range = value
 
     @property
     def value(self):
@@ -36,10 +26,27 @@ class ingredient(abstract_reference):
         super().set_compare_mode(other_object)
 
     @staticmethod
-    # def default_ingredient(nomenclature: nomenclature_model, range: range_model, quantity: int):
     def default_ingredient(nomenclature: nomenclature_model, quantity: int):
         ing = ingredient()
         ing.nomenclature = nomenclature
-        # ing.range = range
         ing.value = quantity
         return ing
+
+    # @staticmethod
+    # def from_json(data):
+    #     """Фабричный метод для десериализации ингредиента из JSON."""
+    #     ingredient_instance = ingredient()
+    #     ingredient_instance.value = data.get('value', 0)
+    #     ingredient_instance.nomenclature = nomenclature_model.from_json(data['nomenclature'])
+    #     return ingredient_instance
+
+    def from_json(self, data):
+        """Метод для десериализации ингредиента из JSON."""
+        try:
+            self.value = data.get('value', 0)
+            self.nomenclature = nomenclature_model().from_json(data['nomenclature'])
+            print("Вытащили nomenclature:", self.nomenclature.full_name)
+            return self
+        except KeyError as e:
+            print(f"Ошибка десериализации: отсутствует ключ {e}")
+            raise

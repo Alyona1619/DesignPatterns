@@ -9,6 +9,12 @@ from src.reports.json_report import json_report
 from src.reports.xml_report import xml_report
 from src.reports.rtf_report import rtf_report
 
+import json
+from src.deserializers.json_deserializer import JsonDeserializer
+from src.models.ingredient import ingredient
+from src.models.range_model import range_model
+
+
 import unittest
 import os
 
@@ -18,12 +24,16 @@ class test_reporting(unittest.TestCase):
     def setUp(self):
         """Подготовка тестовой среды перед каждым тестом"""
         self.manager = settings_manager()
-        self.manager.open("../settings1.json")
+        self.manager.open("../settings.json")
         self.repository = data_repository()
         self.start = start_service(self.repository, self.manager)
         self.start.create()
 
         os.makedirs("reports", exist_ok=True)
+
+        self.reports_path = "./tests/reports"
+        os.makedirs(self.reports_path, exist_ok=True)
+        self.report_json = json_report()
 
     def test_csv_report_create_range(self):
         """Проверка работы отчета CSV"""
@@ -43,7 +53,7 @@ class test_reporting(unittest.TestCase):
         report.create(self.repository.data[data_repository.nomenclature_key()])
         assert report.result != ""
 
-    def test_json_report_create_nomenclature(self):  #############
+    def test_json_report_create_nomenclature(self):
         """Проверка работы отчета JSON для номенклатуры"""
         report = json_report()
         report.create(self.repository.data[data_repository.nomenclature_key()])
@@ -157,6 +167,26 @@ class test_reporting(unittest.TestCase):
         assert report is not None
         assert isinstance(report, json_report)
 
+    def test_deserialize_json(self):
+        """Проверка десериализации данных из JSON для recipe"""
+        file_name = "reports/recipe_report.json"
+        with open(file_name, 'r', encoding='utf-8') as file:
+            json_data = json.load(file)
 
+        des_recipe = JsonDeserializer.deserialize(json_data, 'recipe_model')
+
+        stored_recipe = self.repository.data[data_repository.recipe_key()]
+
+        print("des_recipe.ingredients", des_recipe.ingredients)
+        print("stored_recipe.ingredients", stored_recipe.ingredients)
+
+        self.assertEqual(len(des_recipe.ingredients), len(stored_recipe.ingredients),
+                         "Количество ингредиентов должно совпадать")
+
+        for deserialized_ingredient, stored_ingredient in zip(des_recipe.ingredients, stored_recipe.ingredients):
+            self.assertEqual(deserialized_ingredient.nomenclature.full_name, stored_ingredient.nomenclature.full_name,
+                             f"Ингредиенты должны совпадать: {deserialized_ingredient.nomenclature.full_name} != {stored_ingredient.nomenclature.full_name}")
+            self.assertEqual(deserialized_ingredient.value, stored_ingredient.value,
+                             f"Значения ингредиентов должны совпадать: {deserialized_ingredient.value} != {stored_ingredient.value}")
 
 
