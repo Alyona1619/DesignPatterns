@@ -4,18 +4,15 @@ from src.deserializers.deserialize_factory import DeserializeFactory
 class JsonDeserializer:
     @staticmethod
     def deserialize(json_data, data_type):
-        # Получаем класс модели из фабрики
         model_class = DeserializeFactory.get_deserializer(data_type)
 
-        # Создаем экземпляр модели data_type
-        instance = model_class()  # Создаем экземпляр класса
+        instance = model_class()
 
-        # Заполняем модель данными из json_data
         if isinstance(json_data, list):
             for item in json_data:
-                instance.from_json(item)  # Заполняем экземпляр данными
+                instance.from_json(item)
 
-            return instance  # Возвращаем заполненный экземпляр
+            return instance
         else:
             raise ValueError("json_data должен быть списком")
 

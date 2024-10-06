@@ -189,3 +189,4 @@ class test_reporting(unittest.TestCase):
             self.assertEqual(deserialized_ingredient.value, stored_ingredient.value,
                              f"Значения ингредиентов должны совпадать: {deserialized_ingredient.value} != {stored_ingredient.value}")
 
+
