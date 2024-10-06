@@ -1,3 +1,3 @@
 **base**  | **coef**  | **name**  | **unique_code**  | 
-None  | 1  | грамм  | 42a67b99-8dbf-47cb-9148-129a8073a27b  | 
-None  | 1  | штука  | 42a67b99-8dbf-47cb-9148-129a8073a27b  | 
+None  | 1  | грамм  | 5eb71b27-1d62-4816-8a7e-eecb8f516991  | 
+None  | 1  | штука  | 5eb71b27-1d62-4816-8a7e-eecb8f516991  | 

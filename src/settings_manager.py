@@ -7,7 +7,7 @@ import os
 
 
 class settings_manager(abstract_logic):
-    __file_name = "../settings.json"
+    __file_name = "../settings1.json"
     # __settings: settings = settings()
     __settings: settings = None
 
@@ -27,11 +27,6 @@ class settings_manager(abstract_logic):
         if file_path == "":
             file_path = os.path.join(os.curdir, self.__file_name)
 
-        # if not os.path.isfile(file_path):
-        #     print(f"Файл '{file_path}' не существует.")
-        #     self.__settings = self.__default_settings()
-        #     return False
-
         try:
             with open(file_path, 'r', encoding='utf-8') as stream:
                 data = json.load(stream)
@@ -42,9 +37,6 @@ class settings_manager(abstract_logic):
             self.__settings = self.__default_settings()
             self.set_exception(ex)
             return False
-
-        # self.__settings = self.__default_settings()
-        # return False
 
     def convert(self, data: dict):
         for key, value in data.items():

@@ -33,18 +33,11 @@ class report_factory(abstract_logic):
                                report_class_name)
 
         return report_class()
-        # validator.validate(format, format_reporting)
-        #
-        # if format not in self.__reports.keys():
-        #     self.set_exception(operation_exception(f"Указанный вариант формата {format} не реализован!"))
-        #     return None
-        #
+
         # report = self.__reports[format]
         # return report()
 
     def create_default(self) -> abstract_report:
-        # format = self.__settings.report_format
-        # return self.create(format)
         format = self.__settings.default_format
         return self.create(format)
 
