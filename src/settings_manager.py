@@ -27,11 +27,6 @@ class settings_manager(abstract_logic):
         if file_path == "":
             file_path = os.path.join(os.curdir, self.__file_name)
 
-        # if not os.path.isfile(file_path):
-        #     print(f"Файл '{file_path}' не существует.")
-        #     self.__settings = self.__default_settings()
-        #     return False
-
         try:
             with open(file_path, 'r', encoding='utf-8') as stream:
                 data = json.load(stream)
@@ -42,9 +37,6 @@ class settings_manager(abstract_logic):
             self.__settings = self.__default_settings()
             self.set_exception(ex)
             return False
-
-        # self.__settings = self.__default_settings()
-        # return False
 
     def convert(self, data: dict):
         for key, value in data.items():
@@ -62,6 +54,7 @@ class settings_manager(abstract_logic):
         data = settings()
         data.inn = "380000000038"
         data.organization_name = "Рога и копыта (default)"
+
         return data
 
     def set_exception(self, ex: Exception):
