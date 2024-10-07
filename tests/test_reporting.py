@@ -14,9 +14,9 @@ from src.deserializers.json_deserializer import JsonDeserializer
 from src.models.ingredient import ingredient
 from src.models.range_model import range_model
 
-
 import unittest
 import os
+
 
 class test_reporting(unittest.TestCase):
     """Набор тестов для проверки работы формирование отчетов"""
@@ -58,6 +58,7 @@ class test_reporting(unittest.TestCase):
         report = json_report()
         report.create(self.repository.data[data_repository.nomenclature_key()])
         assert report.result != ""
+        assert report.result != None
 
     def test_xml_report_create_nomenclature(self):
         """Проверка работы отчета XML для номенклатуры"""
@@ -74,7 +75,9 @@ class test_reporting(unittest.TestCase):
     def test_report_factory_create(self):
         """Проверить работу фабрики для получения инстанса нужного отчета"""
         factory = report_factory(self.manager)
-        report = factory.create(format_reporting.CSV)
+        f = format_reporting.CSV
+        print(type(f))  # type(f) = <enum 'format_reporting'>
+        report = factory.create(f)
         assert report is not None
         assert isinstance(report, csv_report)
 
@@ -188,5 +191,3 @@ class test_reporting(unittest.TestCase):
                              f"Ингредиенты должны совпадать: {deserialized_ingredient.nomenclature.full_name} != {stored_ingredient.nomenclature.full_name}")
             self.assertEqual(deserialized_ingredient.value, stored_ingredient.value,
                              f"Значения ингредиентов должны совпадать: {deserialized_ingredient.value} != {stored_ingredient.value}")
-
-

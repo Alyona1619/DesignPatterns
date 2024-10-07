@@ -99,7 +99,7 @@ class settings:
         return self.__report_settings
 
     @report_settings.setter
-    def report_settings(self, value: str):
+    def report_settings(self, value: dict):
         self.__report_settings = value
 
     @property

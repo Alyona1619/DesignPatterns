@@ -7,7 +7,7 @@ import os
 
 
 class settings_manager(abstract_logic):
-    __file_name = "../settings1.json"
+    __file_name = "../settings.json"
     # __settings: settings = settings()
     __settings: settings = None
 
@@ -54,6 +54,7 @@ class settings_manager(abstract_logic):
         data = settings()
         data.inn = "380000000038"
         data.organization_name = "Рога и копыта (default)"
+
         return data
 
     def set_exception(self, ex: Exception):
