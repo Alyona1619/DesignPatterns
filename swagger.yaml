@@ -59,3 +59,39 @@ paths:
       description: Наименование формата отчёта (CSV, MARKDOWN, JSON, XML, RTF)
       required: true
       type: string
+  /filter/{category}:
+    post:
+      summary: Фильтрация данных по заданной категории
+      operationId: main.filter_data
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: category
+          in: path
+          description: Наименование категории данных (nomenclature, group_nomenclature, range, recipe)
+          required: true
+          type: string
+        - name: body
+          in: body
+          description: Фильтр для данных
+          required: true
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+              id:
+                type: string
+              name_filter_option:
+                type: string
+              id_filter_option:
+                type: string
+      responses:
+        200:
+          description: Данные успешно отфильтрованы
+        400:
+          description: Ошибка ввода данных
+        500:
+          description: Ошибка на сервере

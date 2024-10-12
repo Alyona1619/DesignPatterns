@@ -29,13 +29,8 @@ class test_prototype(unittest.TestCase):
         item_filter.name = item.full_name
         prototype = model_prototype(data)
 
-        print(data)
-
         # Действие
         result = prototype.create(data, item_filter)
-
-        print(result)
-        print(result.data)
 
         # Проверка
         assert len(result.data) == 1
