@@ -180,10 +180,14 @@ class test_reporting(unittest.TestCase):
 
         stored_recipe = self.repository.data[data_repository.recipe_key()]
 
-        print("des_recipe.ingredients", des_recipe.ingredients)
-        print("stored_recipe.ingredients", stored_recipe.ingredients)
+        print("des_recipe.ingredients", des_recipe)
+        print("stored_recipe.ingredients", stored_recipe)
 
-        self.assertEqual(len(des_recipe.ingredients), len(stored_recipe.ingredients),
+        self.assertNotEqual(des_recipe.ingredients, 0)
+
+        self.assertEqual(des_recipe.name, "ВАФЛИ ХРУСТЯЩИЕ В ВАФЕЛЬНИЦЕ")
+
+        self.assertEqual(len(des_recipe), len(stored_recipe.ingredients),
                          "Количество ингредиентов должно совпадать")
 
         for deserialized_ingredient, stored_ingredient in zip(des_recipe.ingredients, stored_recipe.ingredients):

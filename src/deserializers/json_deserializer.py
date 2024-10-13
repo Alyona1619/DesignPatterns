@@ -11,10 +11,11 @@ class JsonDeserializer:
         if isinstance(json_data, list):
             for item in json_data:
                 instance.from_json(item)
-
-            return instance
+        elif isinstance(json_data, dict):  # Обработка одиночного объекта
+            instance.from_json(json_data)
         else:
-            raise ValueError("json_data должен быть списком")
+            raise ValueError("json_data должен быть списком или объектом")
+        return instance
 
 
 

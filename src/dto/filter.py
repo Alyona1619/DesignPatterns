@@ -1,8 +1,9 @@
+from src.core.abstract_reference import abstract_reference
 from src.core.validator import validator
 from src.dto.filter_options import filter_option
 
 
-class filter:
+class filter(abstract_reference):
     __name: str = ""
     __id: str = ""
 
@@ -52,3 +53,6 @@ class filter:
         self.name_filter_option = filter_option[data.get('name_filter_option', '').upper()]
         self.id_filter_option = filter_option[data.get('id_filter_option', '').upper()]
         return self
+
+    def set_compare_mode(self, other_object) -> bool:
+        pass

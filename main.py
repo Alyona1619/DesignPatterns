@@ -2,13 +2,12 @@ import connexion
 from flask import Response
 from src.core.format_reporting import format_reporting
 from src.data_repository import data_repository
-from src.dto.filter_options import filter_option
 from src.logics.model_prototype import model_prototype
 from src.settings_manager import settings_manager
 from src.start_service import start_service
 from src.reports.report_factory import report_factory
-from src.dto.filter import filter
 from flask import request
+from src.deserializers.json_deserializer import JsonDeserializer
 
 app = connexion.FlaskApp(__name__)
 
@@ -64,10 +63,10 @@ def filter_data(category):
     try:
         filter_dto = request.get_json()
 
-        filter_obj = filter().from_json(filter_dto)
+        # filter_obj = filter().from_json(filter_dto)
+        filter_obj = JsonDeserializer.deserialize(filter_dto, 'filter')
 
         prototype = model_prototype(repository.data[category]).create(repository.data[category], filter_obj)
-
         report = factory.create_default()
         report.create(prototype.data)
 
