@@ -23,7 +23,8 @@ class model_prototype(abstract_prototype):
         result = []
         for item in source:
             filter_option_instance = filter_by_option(filter_dto.name_filter_option)
-            if hasattr(item, 'full_name') and item.full_name and filter_option_instance.filtration(filter_dto.name, item.full_name):
+            if hasattr(item, 'full_name') and item.full_name and filter_option_instance.filtration(filter_dto.name,
+                                                                                                   item.full_name):
                 result.append(item)
             elif hasattr(item, 'name') and item.name and filter_option_instance.filtration(filter_dto.name, item.name):
                 result.append(item)

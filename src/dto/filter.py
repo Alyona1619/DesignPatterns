@@ -1,3 +1,4 @@
+from src.core.validator import validator
 from src.dto.filter_options import filter_option
 
 
@@ -14,6 +15,7 @@ class filter:
 
     @name.setter
     def name(self, value: str):
+        validator.validate(value, str, 255)
         self.__name = value
 
     @property
@@ -22,6 +24,7 @@ class filter:
 
     @id.setter
     def id(self, value: str):
+        validator.validate(value, str, 36)
         self.__id = value
 
     @property
@@ -30,6 +33,7 @@ class filter:
 
     @name_filter_option.setter
     def name_filter_option(self, value: filter_option):
+        validator.validate(value, filter_option)
         self.__name_filter_option = value
 
     @property
@@ -38,4 +42,13 @@ class filter:
 
     @id_filter_option.setter
     def id_filter_option(self, value: filter_option):
+        validator.validate(value, filter_option)
         self.__id_filter_option = value
+
+    def from_json(self, data):
+        """Метод для десериализации объекта filter из JSON."""
+        self.name = data.get('name', "")
+        self.id = data.get('id', "")
+        self.name_filter_option = filter_option[data.get('name_filter_option', '').upper()]
+        self.id_filter_option = filter_option[data.get('id_filter_option', '').upper()]
+        return self

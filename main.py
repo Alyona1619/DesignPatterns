@@ -63,40 +63,15 @@ def filter_data(category):
 
     try:
         filter_dto = request.get_json()
-        filter_obj = filter()
 
-        filter_obj.name = filter_dto.get('name', "")
-        filter_obj.id = filter_dto.get('id', "")
+        filter_obj = filter().from_json(filter_dto)
 
-        if filter_dto.get('name_filter_option', "").upper() not in filter_option.__members__:
-            return Response("Неправильный тип фильтра для name_filter_option", 400)
-
-        if filter_dto.get('id_filter_option', "").upper() not in filter_option.__members__:
-            return Response("Неправильный тип фильтра для id_filter_option", 400)
-
-        # filter_obj.name_filter_option = filter_option[filter_dto.get('name_filter_option', 'EQUAL').upper()]
-        name = filter_dto.get('name_filter_option', 'EQUAL').upper()
-        filter_obj.name_filter_option = getattr(filter_option, name, filter_option.EQUAL)
-
-        # filter_obj.id_filter_option = filter_option[filter_dto.get('id_filter_option', 'EQUAL').upper()]
-        id = filter_dto.get('id_filter_option', 'EQUAL').upper()
-        filter_obj.id_filter_option = getattr(filter_option, id, filter_option.EQUAL)
-
-        data = repository.data[category]
-        prototype = model_prototype(data)
-        result = prototype.create(data, filter_obj)
-
-        # serialized_data = [item.to_dict() for item in result.data]
-        #
-        # return Response({"result": serialized_data}, 200, mimetype='application/json')
-
-        # #return Response({"result": result.data}, 200)
+        prototype = model_prototype(repository.data[category]).create(repository.data[category], filter_obj)
 
         report = factory.create_default()
         report.create(prototype.data)
 
         return report.result
-
 
     except Exception as ex:
         return Response(
