@@ -9,8 +9,11 @@ from src.core.custom_exception import argument_exception
 
 
 class abstract_reference(ABC):
-    __unique_code: str = uuid.uuid4()
+    __unique_code: str = ""
     __name: str = ""
+
+    def __init__(self):
+        self.__unique_code: str = str(uuid.uuid4())
 
     """
     Уникальный код
@@ -44,8 +47,10 @@ class abstract_reference(ABC):
 
         return self.__unique_code == other_object.unique_code
 
-    def __eq__(self, value: object) -> bool:
-        return self.set_compare_mode(value)
+    def __eq__(self, other_model) -> bool:
+        if not isinstance(other_model, self.__class__):
+            return False
+        return self.__dict__ == other_model.__dict__
 
     def __str__(self) -> str:
         return str(self.unique_code)

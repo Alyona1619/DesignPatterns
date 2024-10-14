@@ -67,6 +67,7 @@ class start_service(abstract_logic):
 
     def __create_recipe(self):
         """Cоздание рецепта"""
+        recipe_list = []
         recipe = recipe_model()
 
         ings = [
@@ -94,11 +95,10 @@ class start_service(abstract_logic):
         меньше и их получится больше. 9. Пеките вафли несколько минут до золотистого цвета. Осторожно откройте 
         вафельницу, она очень горячая! Снимите вафлю лопаткой. Горячая она очень мягкая, как блинчик. '''
 
-        self.__repository.data[data_repository.recipe_key()] = recipe
-        # if data_repository.recipe_key() not in self.__repository.data:
-        #     self.__repository.data[data_repository.recipe_key()] = []
-        #
-        # self.__repository.data[data_repository.recipe_key()].append(recipe)
+        #self.__repository.data[data_repository.recipe_key()] = recipe
+
+        recipe_list.append(recipe)
+        self.__repository.data[data_repository.recipe_key()] = recipe_list
 
     def create(self) -> bool:
         """Первый старт"""

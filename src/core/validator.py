@@ -1,27 +1,15 @@
-"""
-Исключение при проверки аргумента
-"""
-
-
 class argument_exception(Exception):
+    """Исключение при проверки аргумента"""
     pass
-
-
-"""
-Исключение при выполнении бизнес операции
-"""
 
 
 class operation_exception(Exception):
+    """Исключение при выполнении бизнес операции"""
     pass
 
 
-"""
-Набор проверок данных
-"""
-
-
 class validator:
+    """Набор проверок данных"""
 
     @staticmethod
     def validate(value, type_, len_=None):
