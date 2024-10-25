@@ -1,11 +1,8 @@
 from src.core.abstract_logic import abstract_logic
 
-"""
-Репозиторий данных
-"""
-
 
 class data_repository(abstract_logic):
+    """Репозиторий данных"""
     __data = {}
 
     def __new__(cls):
@@ -13,49 +10,41 @@ class data_repository(abstract_logic):
             cls.instance = super(data_repository, cls).__new__(cls)
         return cls.instance
 
-    """
-    Набор данных
-    """
-
     @property
     def data(self):
+        """Набор данных"""
         return self.__data
-
-    """
-    Ключ для хранения групп номенклатуры
-    """
 
     @staticmethod
     def group_key() -> str:
+        """Ключ для хранения групп номенклатуры"""
         return "group"
-
-    """
-    Ключ для хранения номенклатуры
-    """
 
     @staticmethod
     def nomenclature_key() -> str:
+        """Ключ для хранения номенклатуры"""
         return "nomenclature"
-
-    """
-    Ключ для хранения единиц измерения
-    """
 
     @staticmethod
     def range_key() -> str:
+        """Ключ для хранения единиц измерения"""
         return "range"
-
-    """
-    Ключ для хранения рецептов
-    """
 
     @staticmethod
     def recipe_key() -> str:
+        """Ключ для хранения рецептов"""
         return "recipes"
 
-    """
-    Перегрузка абстрактного метода
-    """
+    @staticmethod
+    def warehouse_key() -> str:
+        """Ключ для хранения складов"""
+        return "warehouses"
+
+    @staticmethod
+    def transaction_key() -> str:
+        """Ключ для хранения транзакций"""
+        return "transactions"
 
     def set_exception(self, ex: Exception):
+        """Перегрузка абстрактного метода"""
         self._inner_set_exception(ex)

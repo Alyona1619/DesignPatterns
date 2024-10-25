@@ -76,6 +76,17 @@ def filter_data(category):
         return Response(
             f"Ошибка на сервере: {str(ex)}", 500)
 
+@app.route("/api/warehouses/transactions", methods=["GET"])
+def get_warehouse_transactions():
+    try:
+        transactions = repository.get_warehouse_transactions()
+
+        response_data = [{"id": txn.id, "date": txn.date, "amount": txn.amount} for txn in transactions]
+
+        return Response({"transactions": response_data}, 200)
+
+    except Exception as ex:
+        return Response(f"Ошибка на сервере: {str(ex)}", 500)
 
 if __name__ == '__main__':
     app.add_api("swagger.yaml")
