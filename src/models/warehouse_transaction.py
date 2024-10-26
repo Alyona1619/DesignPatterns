@@ -11,7 +11,7 @@ class warehouse_transaction_model(abstract_reference):
     __warehouse: warehouse_model
     __nomenclature: nomenclature_model
     __quantity: float = 0.0
-    __type_transaction: transaction_type
+    __transaction_type: transaction_type
     __range: range_model
     __period: datetime
 
@@ -61,13 +61,13 @@ class warehouse_transaction_model(abstract_reference):
         self.__period = value
 
     @property
-    def type_transaction(self) -> transaction_type:
-        return self.__type_transaction
+    def transaction_type(self) -> transaction_type:
+        return self.__transaction_type
 
-    @type_transaction.setter
-    def type_transaction(self, value: transaction_type):
+    @transaction_type.setter
+    def transaction_type(self, value: transaction_type):
         validator.validate(value, transaction_type)
-        self.__type_transaction = value
+        self.__transaction_type = value
 
     @staticmethod
     def create(warehouse: warehouse_model, nomenclature: nomenclature_model, quantity: float,

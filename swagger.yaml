@@ -95,3 +95,79 @@ paths:
           description: Ошибка ввода данных
         500:
           description: Ошибка на сервере
+  /warehouse/transactions:
+    get:
+      summary: Получить список транзакций склада
+      operationId: main.get_warehouse_transactions
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Успешный ответ с данными транзакций
+          schema:
+            type: object
+            properties:
+              transactions:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    unique_code:
+                      type: string
+                      description: Уникальный код транзакции
+                    warehouse:
+                      type: string
+                      description: Код склада
+                    nomenclature:
+                      type: string
+                      description: Код номенклатуры
+                    range:
+                      type: string
+                      description: Код диапазона
+                    quantity:
+                      type: number
+                      description: Количество
+                    period:
+                      type: string
+                      format: date-time
+                      description: Дата и время транзакции
+                    type_transaction:
+                      type: string
+                      description: Тип транзакции (поступление или списание)
+        400:
+          description: Ошибка ввода данных
+        500:
+          description: Ошибка на сервере
+  /warehouse/turnover:
+    get:
+      summary: Получить обороты по складам
+      operationId: main.get_warehouse_turnover
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Обороты успешно получены
+          schema:
+            type: object
+            properties:
+              turnover:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    warehouse:
+                      type: string
+                      description: Код склада
+                    nomenclature:
+                      type: string
+                      description: Код номенклатуры
+                    range:
+                      type: string
+                      description: Код диапазона
+                    turnover:
+                      type: number
+                      description: Оборот
+        400:
+          description: Ошибка ввода данных
+        500:
+          description: Ошибка на сервере

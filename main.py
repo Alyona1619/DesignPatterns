@@ -3,6 +3,7 @@ from flask import Response
 from src.core.format_reporting import format_reporting
 from src.data_repository import data_repository
 from src.logics.model_prototype import model_prototype
+from src.processes.wh_turnover_process import warehouse_turnover_process
 from src.settings_manager import settings_manager
 from src.start_service import start_service
 from src.reports.report_factory import report_factory
@@ -17,6 +18,7 @@ repository = data_repository()
 service = start_service(repository, manager)
 service.create()
 factory = report_factory(manager)
+turnover_process = warehouse_turnover_process()
 
 
 @app.route("/api/reports/formats", methods=["GET"])
@@ -76,17 +78,38 @@ def filter_data(category):
         return Response(
             f"Ошибка на сервере: {str(ex)}", 500)
 
-@app.route("/api/warehouses/transactions", methods=["GET"])
+
+@app.route("/api/warehouse/transactions", methods=["GET"])
 def get_warehouse_transactions():
     try:
-        transactions = repository.get_warehouse_transactions()
+        data = repository.data[repository.transaction_key()]
+        if not data:
+            return Response(f"Data отсутствует!", 400)
 
-        response_data = [{"id": txn.id, "date": txn.date, "amount": txn.amount} for txn in transactions]
-
-        return Response({"transactions": response_data}, 200)
+        return Response({"transactions": data}, 200)
 
     except Exception as ex:
         return Response(f"Ошибка на сервере: {str(ex)}", 500)
+
+
+@app.route("/api/warehouse/turnover", methods=["GET"])
+def get_warehouse_turnover():
+    try:
+        transactions = repository.data[repository.transaction_key()]
+        if not transactions:
+            return Response("Нет транзакций для расчета оборота!", 400)
+
+        turnovers = turnover_process.process(transactions)
+        turnover_results = [{"warehouse": turnover.warehouse.unique_code,
+                             "nomenclature": turnover.nomenclature.unique_code,
+                             "range": turnover.range.unique_code,
+                             "turnover": turnover.turnover} for turnover in turnovers]
+
+        return Response({"turnover": turnover_results}, 200)
+
+    except Exception as ex:
+        return Response(f"Ошибка на сервере: {str(ex)}", 500)
+
 
 if __name__ == '__main__':
     app.add_api("swagger.yaml")
