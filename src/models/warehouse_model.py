@@ -35,6 +35,7 @@ class warehouse_model(abstract_reference):
         pass
 
     def from_json(self, data):
+        validator.validate(data, dict)
         self.name = data.get('name', "")
         self.address = data.get('address', "")
         return self

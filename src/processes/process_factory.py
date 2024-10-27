@@ -3,7 +3,7 @@ from src.core.validator import argument_exception, validator
 from src.processes.wh_turnover_process import warehouse_turnover_process
 
 
-class ProcessFactory:
+class process_factory:
     _process_registry = {}
 
     @classmethod
@@ -14,7 +14,7 @@ class ProcessFactory:
         cls._process_registry[process_class.__name__] = process_class
 
     @classmethod
-    def create_process(cls, process_name: str) -> abstract_process:
+    def get_process(cls, process_name: str) -> abstract_process:
         validator.validate(process_name, str)
         process_class = cls._process_registry.get(process_name)
 

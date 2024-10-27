@@ -49,16 +49,16 @@ paths:
         default:
           description: Неизвестная ошибка
     parameters:
-    - name: category
-      in: path
-      description: Наименование категории данных (nomenclature, group_nomenclature, range, recipe)
-      required: true
-      type: string
-    - name: format
-      in: path
-      description: Наименование формата отчёта (CSV, MARKDOWN, JSON, XML, RTF)
-      required: true
-      type: string
+      - name: category
+        in: path
+        description: Наименование категории данных (nomenclature, group_nomenclature, range, recipe)
+        required: true
+        type: string
+      - name: format
+        in: path
+        description: Наименование формата отчёта (CSV, MARKDOWN, JSON, XML, RTF)
+        required: true
+        type: string
   /filter/{category}:
     post:
       summary: Фильтрация данных по заданной категории
@@ -84,9 +84,7 @@ paths:
                 type: string
               id:
                 type: string
-              name_filter_option:
-                type: string
-              id_filter_option:
+              filter_option:
                 type: string
       responses:
         200:
@@ -96,78 +94,101 @@ paths:
         500:
           description: Ошибка на сервере
   /warehouse/transactions:
-    get:
-      summary: Получить список транзакций склада
+    post:
+      summary: Получить список транзакций по фильтру
       operationId: main.get_warehouse_transactions
+      consumes:
+        - application/json
       produces:
         - application/json
-      responses:
-        200:
-          description: Успешный ответ с данными транзакций
+      parameters:
+        - name: body
+          in: body
+          description: Фильтр для транзакций
+          required: true
           schema:
             type: object
             properties:
-              transactions:
-                type: array
-                items:
+              warehouse:
+                type: object
+                properties:
+                  name:
+                    type: string
+                  unique_code:
+                    type: string
+                  filter_option:
+                    type: string
+                nomenclature:
                   type: object
                   properties:
+                    name:
+                      type: string
                     unique_code:
                       type: string
-                      description: Уникальный код транзакции
-                    warehouse:
+                    filter_option:
                       type: string
-                      description: Код склада
-                    nomenclature:
-                      type: string
-                      description: Код номенклатуры
-                    range:
-                      type: string
-                      description: Код диапазона
-                    quantity:
-                      type: number
-                      description: Количество
-                    period:
-                      type: string
-                      format: date-time
-                      description: Дата и время транзакции
-                    type_transaction:
-                      type: string
-                      description: Тип транзакции (поступление или списание)
-        400:
-          description: Ошибка ввода данных
-        500:
-          description: Ошибка на сервере
-  /warehouse/turnover:
-    get:
-      summary: Получить обороты по складам
-      operationId: main.get_warehouse_turnover
-      produces:
-        - application/json
       responses:
         200:
-          description: Обороты успешно получены
+          description: Список транзакций по указанному фильтру
+        400:
+          description: Данные отсутствуют или ошибка ввода данных
+        500:
+          description: Ошибка на сервере
+
+  /warehouse/turnover:
+    post:
+      summary: Получить оборот на складе по фильтру
+      operationId: main.get_warehouse_turnover
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: body
+          in: body
+          description: Фильтр для расчета оборота склада
+          required: true
           schema:
             type: object
             properties:
-              turnover:
-                type: array
-                items:
+              warehouse:
+                type: object
+                description: Фильтры для склада
+                properties:
+                  name:
+                    type: string
+                    description: Имя склада
+                  unique_code:
+                    type: string
+                    description: Код склада
+                  filter_option:
+                    type: string
+                    description: Тип фильтрации
+                nomenclature:
                   type: object
+                  description: Фильтры для номенклатуры
                   properties:
-                    warehouse:
+                    name:
                       type: string
-                      description: Код склада
-                    nomenclature:
+                      description: Имя номенклатуры
+                    unique_code:
                       type: string
                       description: Код номенклатуры
-                    range:
+                    filter_option:
                       type: string
-                      description: Код диапазона
-                    turnover:
-                      type: number
-                      description: Оборот
+                      description: Тип фильтрации
+                start_period:
+                  type: string
+                  format: date
+                  description: Старт периода (YYYY-MM-DD)
+                end_period:
+                  type: string
+                  format: date
+                  description: Конец периода (YYYY-MM-DD)
+      responses:
+        200:
+          description: Оборот на складе
         400:
-          description: Ошибка ввода данных
+          description: Данные отсутствуют или ошибка ввода данных
         500:
           description: Ошибка на сервере

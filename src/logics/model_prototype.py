@@ -22,7 +22,7 @@ class model_prototype(abstract_prototype):
 
         result = []
         for item in source:
-            filter_option_instance = filter_by_option(filter_dto.name_filter_option)
+            filter_option_instance = filter_by_option(filter_dto.filter_option)
             if hasattr(item, 'full_name') and item.full_name and filter_option_instance.filtration(filter_dto.name,
                                                                                                    item.full_name):
                 result.append(item)
@@ -38,7 +38,7 @@ class model_prototype(abstract_prototype):
 
         result = []
         for item in source:
-            filter_option_instance = filter_by_option(filter_dto.id_filter_option)
+            filter_option_instance = filter_by_option(filter_dto.filter_option)
             if filter_option_instance.filtration(filter_dto.id, str(item.unique_code)):
                 result.append(item)
 
