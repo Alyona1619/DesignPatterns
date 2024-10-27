@@ -1,12 +1,9 @@
 from abc import ABC, abstractmethod
 from src.core.validator import validator
 
-"""
-Абстрактный класс для обработки логики
-"""
-
 
 class abstract_logic(ABC):
+    """Абстрактный класс для обработки логики"""
     __error_text: str = ""
 
     @property
@@ -25,10 +22,7 @@ class abstract_logic(ABC):
     def _inner_set_exception(self, ex: Exception):
         self.__error_text = f"Ошибка! Исключение {ex}"
 
-    """
-    Абстрактный метод для загрузки и обработки исключений
-    """
-
     @abstractmethod
     def set_exception(self, ex: Exception):  # pragma: no cover
+        """Абстрактный метод для загрузки и обработки исключений"""
         pass

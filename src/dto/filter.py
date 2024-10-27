@@ -48,4 +48,3 @@ class filter(abstract_reference):
 
     def set_compare_mode(self, other_object) -> bool:
         pass
-

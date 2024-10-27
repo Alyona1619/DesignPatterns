@@ -22,5 +22,3 @@ class process_factory:
             raise argument_exception(f"Процесс с именем '{process_name}' не зарегистрирован в фабрике.")
 
         return process_class()
-
-

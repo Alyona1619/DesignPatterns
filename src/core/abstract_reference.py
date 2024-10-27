@@ -3,31 +3,23 @@ import uuid
 
 from src.core.custom_exception import argument_exception
 
-"""
-Абстрактный класс для наследования моделей данных
-"""
-
 
 class abstract_reference(ABC):
+    """Абстрактный класс для наследования моделей данных"""
     __unique_code: str = ""
     __name: str = ""
 
     def __init__(self):
         self.__unique_code: str = str(uuid.uuid4())
 
-    """
-    Уникальный код
-    """
     @property
     def unique_code(self) -> str:
+        """Уникальный код"""
         return self.__unique_code
-
-    """
-    Наименование (с ограничением в 50 символов)
-    """
 
     @property
     def name(self) -> str:
+        """Наименование (с ограничением в 50 символов)"""
         return self.__name
 
     @name.setter
@@ -36,12 +28,9 @@ class abstract_reference(ABC):
             argument_exception.raise_value_error("name", 50)
         self.__name = value
 
-    """
-    Вариант сравнения (по коду)
-    """
-
     @abstractmethod
     def set_compare_mode(self, other_object) -> bool:
+        """Вариант сравнения (по коду)"""
         if other_object is None: return False
         if not isinstance(other_object, abstract_reference): return False
 

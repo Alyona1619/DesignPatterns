@@ -28,5 +28,3 @@ class warehouse_turnover_process(abstract_process):
 
         turnover_list = list(turnover_data.values())
         return turnover_list
-
-
