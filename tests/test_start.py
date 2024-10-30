@@ -1,87 +1,72 @@
+from src.core.transaction_type import transaction_type
 from src.settings_manager import settings_manager
 from src.start_service import start_service
 from src.data_repository import data_repository
 import unittest
 
-"""
-Набор тестов для проверки работы старта приложения
-"""
-
 
 class TestStart(unittest.TestCase):
-    """
-    Проверить создание инстанса start_service
-    """
+    """Набор тестов для проверки работы старта приложения"""
+
+    def setUp(self):
+        """Подготовка тестовой среды перед каждым тестом"""
+        self.manager = settings_manager()
+        self.manager.open("../settings.json")
+        self.repository = data_repository()
+        self.start = start_service(self.repository, self.manager)
+        self.start.create()
 
     def test_start_service(self):
-        # Подготовка
-        manager = settings_manager()
-        manager.open("../settings1.json")
-        reposity = data_repository()
-
-        # Действие
-        start = start_service(reposity, manager)
-
-        # Проверки
-        assert start is not None
+        assert self.start is not None
 
     def test_start_service_create(self):
-        manager = settings_manager()
-        manager.open("../settings1.json")
-        repository = data_repository()
-
-        start = start_service(repository, manager)
-        start.create()
-
-        assert repository.nomenclature_key() in repository.data
-        assert repository.group_key() in repository.data
-        assert repository.range_key() in repository.data
-        assert repository.recipe_key() in repository.data
+        assert self.repository.nomenclature_key() in self.repository.data
+        assert self.repository.group_key() in self.repository.data
+        assert self.repository.range_key() in self.repository.data
+        assert self.repository.recipe_key() in self.repository.data
+        assert self.repository.warehouse_key() in self.repository.data
+        assert self.repository.transaction_key() in self.repository.data
 
     def test_create_nomenclature_groups(self):
-        manager = settings_manager()
-        repository = data_repository()
-        start = start_service(repository, manager)
-
-        start.create()
-
-        groups = repository.data[repository.group_key()]
+        groups = self.repository.data[self.repository.group_key()]
         assert len(groups) > 0
         assert groups[0].name == 'Заморозка'
 
     def test_create_nomenclature(self):
-        manager = settings_manager()
-        repository = data_repository()
-        start = start_service(repository, manager)
-
-        start.create()
-
-        nomenclature_list = repository.data[repository.nomenclature_key()]
+        nomenclature_list = self.repository.data[self.repository.nomenclature_key()]
         assert len(nomenclature_list) > 0
         assert nomenclature_list[0].full_name == "Мука пшеничная"
         assert nomenclature_list[1].full_name == "Сахар"
 
     def test_create_range(self):
-        manager = settings_manager()
-        repository = data_repository()
-        start = start_service(repository, manager)
-
-        start.create()
-
-        ranges = repository.data[repository.range_key()]
+        ranges = self.repository.data[self.repository.range_key()]
         assert len(ranges) > 0
         assert ranges[0].name == "грамм"
 
     def test_create_recipe(self):
-        manager = settings_manager()
-        repository = data_repository()
-        start = start_service(repository, manager)
+        recipe = self.repository.data[self.repository.recipe_key()]
+        assert recipe[0].name == 'ВАФЛИ ХРУСТЯЩИЕ В ВАФЕЛЬНИЦЕ'
+        assert len(recipe[0].ingredients) == 5
+        assert recipe[0].ingredients[0].nomenclature.full_name == "Пшеничная мука"
+        assert recipe[0].step.startswith('1. Как испечь вафли хрустящие')
 
-        start.create()
+    def test_create_warehouse(self):
+        warehouses = self.repository.data[self.repository.warehouse_key()]
+        assert len(warehouses) > 0, "Склады не были созданы"
 
-        recipe = repository.data[repository.recipe_key()]
-        assert recipe.name == 'ВАФЛИ ХРУСТЯЩИЕ В ВАФЕЛЬНИЦЕ'
-        assert len(recipe.ingredients) == 5
-        assert recipe.ingredients[0].nomenclature.full_name == "Пшеничная мука"
-        assert recipe.step.startswith('1. Как испечь вафли хрустящие')
+        assert warehouses[0].name == "WH1"
+        assert warehouses[0].address == "Россия"
+        assert warehouses[1].name == "WH2"
+        assert warehouses[1].address == "США"
 
+    def test_create_transaction(self):
+        transactions = self.repository.data[self.repository.transaction_key()]
+        assert len(transactions) == 100, "Транзакции не были созданы или их количество неверное"
+
+        transaction = transactions[0]
+        assert transaction.warehouse is not None, "Склад транзакции не установлен"
+        assert transaction.nomenclature is not None, "Номенклатура транзакции не установлена"
+        assert transaction.quantity > 0, "Количество транзакции должно быть больше 0"
+        assert transaction.transaction_type in list(transaction_type), "Неверный тип транзакции"
+        assert transaction.range is not None, "Единица измерения транзакции не установлена"
+        assert transaction.period is not None, "Период транзакции не установлен"

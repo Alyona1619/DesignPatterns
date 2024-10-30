@@ -1,4 +1,8 @@
+from datetime import datetime
+from random import choice, uniform
+
 from src.core.abstract_logic import abstract_logic
+from src.core.transaction_type import transaction_type
 from src.data_repository import data_repository
 from src.core.validator import validator
 from src.models.group_nomenclature_model import group_nomenclature_model
@@ -6,6 +10,8 @@ from src.models.nomenclature_model import nomenclature_model
 from src.models.range_model import range_model
 from src.models.recipe_model import recipe_model
 from src.models.ingredient import ingredient
+from src.models.warehouse_model import warehouse_model
+from src.models.warehouse_transaction import warehouse_transaction_model
 from src.settings_manager import settings_manager
 from src.models.settings_model import settings
 
@@ -29,9 +35,7 @@ class start_service(abstract_logic):
 
     def __create_nomenclature_groups(self):
         """Сформировать группы номенклатуры"""
-        nglist = []
-        nglist.append(group_nomenclature_model.default_group_cold())
-        nglist.append(group_nomenclature_model.default_group_source())
+        nglist = [group_nomenclature_model.default_group_cold(), group_nomenclature_model.default_group_source()]
         self.__repository.data[data_repository.group_key()] = nglist
 
     def __create_nomenclature(self):
@@ -50,8 +54,8 @@ class start_service(abstract_logic):
     def __create_ingredients(self, ingredients_config):
         """Создать список ингредиентов"""
         nomenclature_group = group_nomenclature_model.default_group_source()
-        return [self.__create_ingredient(ing, nomenclature_group, ing["range"]) for ing in ingredients_config] # брать еще range из ngredient config
-
+        return [self.__create_ingredient(ing, nomenclature_group, ing["range"]) for ing in
+                ingredients_config]  # брать еще range из ngredient config
 
     def __create_ingredient(self, ing, nomenclature_group, range):
         """Cоздание одного ингредиента"""
@@ -95,10 +99,35 @@ class start_service(abstract_logic):
         меньше и их получится больше. 9. Пеките вафли несколько минут до золотистого цвета. Осторожно откройте 
         вафельницу, она очень горячая! Снимите вафлю лопаткой. Горячая она очень мягкая, как блинчик. '''
 
-        #self.__repository.data[data_repository.recipe_key()] = recipe
+        # self.__repository.data[data_repository.recipe_key()] = recipe
 
         recipe_list.append(recipe)
         self.__repository.data[data_repository.recipe_key()] = recipe_list
+
+    def __create_warehouses(self):
+        warehouses_list = [warehouse_model.create("WH1", "Россия"), warehouse_model.create("WH2", "США")]
+        self.__repository.data[data_repository.warehouse_key()] = warehouses_list
+
+    def __create_transactions(self):
+        warehouses = self.__repository.data.get(data_repository.warehouse_key(), [])
+        nomenclature_list = self.__repository.data.get(data_repository.nomenclature_key(), [])
+        ranges = self.__repository.data.get(data_repository.range_key(), [])
+        current_period = datetime.now()
+
+        transactions = []
+
+        for _ in range(100):
+            transaction = warehouse_transaction_model()
+            transaction.warehouse = choice(warehouses)
+            transaction.nomenclature = choice(nomenclature_list)
+            transaction.quantity = round(uniform(1.0, 100.0), 2)
+            transaction.transaction_type = choice(list(transaction_type))
+            transaction.range = choice(ranges)
+            transaction.period = current_period
+
+            transactions.append(transaction)
+
+        self.__repository.data[data_repository.transaction_key()] = transactions
 
     def create(self) -> bool:
         """Первый старт"""
@@ -107,6 +136,8 @@ class start_service(abstract_logic):
             self.__create_range()
             self.__create_nomenclature()
             self.__create_recipe()
+            self.__create_warehouses()
+            self.__create_transactions()
             return True
         except Exception as ex:
             self.set_exception(ex)

@@ -17,17 +17,3 @@ class JsonDeserializer:
             raise ValueError("json_data должен быть списком или объектом")
         return instance
 
-
-
-
-
-# class JsonDeserializer:
-#     @staticmethod
-#     def deserialize(json_data, data_type):
-#         factory = DeserializeFactory.get_deserializer(data_type)
-#         if isinstance(json_data, list):
-#             print("factory.from_json(json_data)", [factory.from_json(item) for item in json_data])
-#             return [factory.from_json(item) for item in json_data]
-#         else:
-#             print("factory.from_json(json_data)", factory.from_json(json_data))
-#             return factory.from_json(json_data)
