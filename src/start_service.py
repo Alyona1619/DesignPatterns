@@ -1,5 +1,5 @@
-from datetime import datetime
-from random import choice, uniform
+from datetime import datetime, timedelta
+from random import choice, uniform, randint
 
 from src.core.abstract_logic import abstract_logic
 from src.core.transaction_type import transaction_type
@@ -112,18 +112,19 @@ class start_service(abstract_logic):
         warehouses = self.__repository.data.get(data_repository.warehouse_key(), [])
         nomenclature_list = self.__repository.data.get(data_repository.nomenclature_key(), [])
         ranges = self.__repository.data.get(data_repository.range_key(), [])
-        current_period = datetime.now()
 
         transactions = []
 
-        for _ in range(100):
+        for _ in range(50000):
             transaction = warehouse_transaction_model()
             transaction.warehouse = choice(warehouses)
             transaction.nomenclature = choice(nomenclature_list)
             transaction.quantity = round(uniform(1.0, 100.0), 2)
             transaction.transaction_type = choice(list(transaction_type))
             transaction.range = choice(ranges)
-            transaction.period = current_period
+            # Генерация случайной даты в пределах последнего года
+            random_days = randint(0, 365)
+            transaction.period = datetime.now() - timedelta(days=random_days)
 
             transactions.append(transaction)
 
