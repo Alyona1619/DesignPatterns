@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from src.core.custom_exception import argument_exception
 from src.models.settings_model import settings
 from src.core.abstract_logic import abstract_logic
@@ -8,7 +10,6 @@ import os
 
 class settings_manager(abstract_logic):
     __file_name = "../settings.json"
-    # __settings: settings = settings()
     __settings: settings = None
 
     def __new__(cls):
@@ -54,6 +55,11 @@ class settings_manager(abstract_logic):
         data = settings()
         data.inn = "380000000038"
         data.organization_name = "Рога и копыта (default)"
+        data.account_number = "12345678901"
+        data.correspondent_account = "12345678901"
+        data.bik = "123456789"
+        data.ownership_type = "ООООО"
+        data.block_period = datetime.now().date().isoformat()
 
         return data
 

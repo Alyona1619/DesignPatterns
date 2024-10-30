@@ -128,6 +128,13 @@ def get_warehouse_turnover():
         return Response(f"Ошибка на сервере: {str(ex)}", 500)
 
 
+@app.route('/settings/block_period', methods=['GET'])
+def get_block_period():
+    settings = manager.current_settings
+    block_period = settings.block_period.strftime("%Y-%m-%d") if settings.block_period else None
+    return Response(f"block_period: {block_period}")
+
+
 if __name__ == '__main__':
     app.add_api("swagger.yaml")
     app.run(port=8080)
