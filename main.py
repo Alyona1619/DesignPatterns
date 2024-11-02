@@ -1,18 +1,17 @@
-from datetime import datetime
-
 import connexion
 from flask import Response
+from flask import request
+
 from src.core.format_reporting import format_reporting
 from src.data_repository import data_repository
+from src.deserializers.json_deserializer import JsonDeserializer
 from src.logics.model_prototype import model_prototype
 from src.logics.transaction_prototype import transaction_prototype
+from src.processes.process_factory import process_factory
 from src.processes.wh_turnover_process import warehouse_turnover_process
+from src.reports.report_factory import report_factory
 from src.settings_manager import settings_manager
 from src.start_service import start_service
-from src.reports.report_factory import report_factory
-from flask import request
-from src.deserializers.json_deserializer import JsonDeserializer
-from src.processes.process_factory import process_factory
 
 app = connexion.FlaskApp(__name__)
 
@@ -132,6 +131,12 @@ def get_warehouse_turnover():
 
 @app.route('/settings/block_period', methods=['GET'])
 def get_block_period():
+    # try:
+    #     settings = manager.current_settings
+    #     block_period = settings.block_period.strftime("%Y-%m-%d") if settings.block_period else None
+    #     return Response(f"block_period: {block_period}")
+    # except Exception as ex:
+    #     return Response(f"Ошибка на сервере: {str(ex)}", 500)
     settings = manager.current_settings
     block_period = settings.block_period.strftime("%Y-%m-%d") if settings.block_period else None
     return Response(f"block_period: {block_period}")

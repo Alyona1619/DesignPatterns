@@ -1,13 +1,13 @@
-import unittest
 import json
 import os
 import tempfile
+import unittest
 from unittest.mock import patch, mock_open
 
-from src.core.custom_exception import argument_exception
-from src.settings_manager import settings_manager
 from src.core.abstract_logic import abstract_logic
+from src.core.custom_exception import argument_exception
 from src.models.settings_model import settings
+from src.settings_manager import settings_manager
 
 
 class TestSettingsManager(unittest.TestCase):
@@ -251,6 +251,50 @@ class TestSettingsManager(unittest.TestCase):
         valid_value = "12345"
         settings_instance.ownership_type = valid_value
         self.assertEqual(settings_instance.ownership_type, valid_value)
+
+
+class TestSavingSettingsManager(unittest.TestCase):
+
+    def setUp(self):
+        # Подготовка к тесту
+        self.manager = settings_manager()
+        self.file_path = os.path.join(os.curdir, "../settings.json")
+
+    def test_save_settings(self):
+        self.manager.current_settings.organization_name = "Тестовая организация"
+        self.manager.current_settings.inn = "123456789012"
+        self.manager.current_settings.account_number = "12345678901"
+        self.manager.current_settings.correspondent_account = "10987654321"
+        self.manager.current_settings.bik = "987654321"
+        self.manager.current_settings.ownership_type = "ОООТЕ"
+        self.manager.current_settings.report_settings = {"CSV": "csv_report",
+                                                         "MARKDOWN": "markdown_report",
+                                                         "JSON": "json_report",
+                                                         "XML": "xml_report",
+                                                         "RTF": "rtf_report"}
+        self.manager.current_settings.default_format = 3
+        self.manager.current_settings.block_period = "2024-10-01"
+
+        # Сохраняем настройки
+        self.manager.save_settings()
+
+        self.assertTrue(os.path.exists(self.file_path), "Файл настроек не был создан.")
+
+        with open(self.file_path, 'r', encoding='utf-8') as file:
+            data = json.load(file)
+            self.assertEqual(data["organization_name"], "Тестовая организация")
+            self.assertEqual(data["inn"], "123456789012")
+            self.assertEqual(data["account_number"], "12345678901")
+            self.assertEqual(data["correspondent_account"], "10987654321")
+            self.assertEqual(data["bik"], "987654321")
+            self.assertEqual(data["ownership_type"], "ОООТЕ")
+            self.assertEqual(data["report_settings"], {"CSV": "csv_report",
+                                                       "MARKDOWN": "markdown_report",
+                                                       "JSON": "json_report",
+                                                       "XML": "xml_report",
+                                                       "RTF": "rtf_report"})
+            self.assertEqual(data["default_format"], 3)
+            self.assertEqual(data["block_period"], "2024-10-01")
 
 
 if __name__ == '__main__':

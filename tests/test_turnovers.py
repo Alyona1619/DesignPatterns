@@ -1,14 +1,14 @@
+import time
 import unittest
+from datetime import datetime
 
 from src.core.transaction_type import transaction_type
 from src.data_repository import data_repository
 from src.models.warehouse_transaction import warehouse_transaction_model
+from src.processes.wh_blocked_turnover_process import warehouse_blocked_turnover_process
 from src.processes.wh_turnover_process import warehouse_turnover_process
 from src.settings_manager import settings_manager
 from src.start_service import start_service
-
-import unittest
-from datetime import datetime
 
 
 class TestWarehouseTurnover(unittest.TestCase):
@@ -84,6 +84,62 @@ class TestWarehouseTurnover(unittest.TestCase):
         actual_turnover = turnover_results[0].turnover
 
         self.assertEqual(actual_turnover, expected_turnover, "Оборот для склада 2 рассчитан неверно.")
+
+    def test_block_period_change_does_not_affect_turnover_calculation(self):
+        # Изменим дату блокировки
+        settings = self.manager.current_settings
+        original_block_period = settings.block_period.strftime("%Y-%m-%d")
+        new_block_period = "2024-03-15"
+
+        self.manager.current_settings.block_period = new_block_period
+
+        # Рассчитаем оборот с новой датой блокировки
+        turnover_results_with_new_block = self.turnover_process.process(self.transactions)
+
+        # Восстановим оригинальную дату блокировки
+        self.manager.current_settings.block_period = original_block_period
+
+        # Рассчитаем оборот с оригинальной датой блокировки
+        turnover_results_with_original_block = self.turnover_process.process(self.transactions)
+
+        self.assertEqual(turnover_results_with_new_block, turnover_results_with_original_block,
+                         "Изменение даты блокировки повлияло на расчет оборота.")
+
+
+class LoadTestTurnoversBlockPeriod(unittest.TestCase):
+
+    def setUp(self):
+        self.reposity = data_repository()
+        self.manager = settings_manager()
+        self.service = start_service(self.reposity, self.manager)
+        self.service.create()
+
+        self.warehouse = self.reposity.data[data_repository.warehouse_key()][0]
+        self.nomenclature = self.reposity.data[data_repository.nomenclature_key()][0]
+        self.range = self.reposity.data[data_repository.range_key()][0]
+        self.transactions = self.reposity.data[data_repository.transaction_key()]
+
+    def test_load_turnover_with_diff_block_dates(self):
+        block_dates = [
+            "2024-01-01",
+            "2024-03-01",
+            "2024-06-01",
+            "2024-09-01",
+            "2024-12-01"
+        ]
+        print("\n")
+        for block_date in block_dates:
+            self.manager.current_settings.block_period = block_date
+            blocked_turnover_process = warehouse_blocked_turnover_process(self.manager)
+
+            start_time = time.time()
+            result = blocked_turnover_process.process(self.transactions)
+            end_time = time.time()
+
+            elapsed_time = end_time - start_time
+
+            print(f"Дата блокировки: {block_date}, Время выполнения: {elapsed_time:.4f} секунд")
+            self.assertIsNotNone(result, "Результат расчета не должен быть None")
 
 
 if __name__ == '__main__':

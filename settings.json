@@ -1,10 +1,10 @@
 {
-  "organization_name": "TestNameOrg1",
-  "inn": "123111123111",
+  "organization_name": "Тестовая организация",
+  "inn": "123456789012",
   "account_number": "12345678901",
-  "correspondent_account": "12345678901",
-  "bik": "123456789",
-  "ownership_type": "ООООО",
+  "correspondent_account": "10987654321",
+  "bik": "987654321",
+  "ownership_type": "ОООТЕ",
   "report_settings": {
     "CSV": "csv_report",
     "MARKDOWN": "markdown_report",

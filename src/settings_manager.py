@@ -1,11 +1,10 @@
-from datetime import datetime
-
-from src.core.custom_exception import argument_exception
-from src.models.settings_model import settings
-from src.core.abstract_logic import abstract_logic
-
 import json
 import os
+from datetime import datetime
+
+from src.core.abstract_logic import abstract_logic
+from src.core.custom_exception import argument_exception
+from src.models.settings_model import settings
 
 
 class settings_manager(abstract_logic):
@@ -63,9 +62,6 @@ class settings_manager(abstract_logic):
 
         return data
 
-    def get_block_period(self):
-        return self.__settings.block_period
-
     def save_settings(self):
         file_path = os.path.join(os.curdir, self.__file_name)
 
@@ -78,7 +74,7 @@ class settings_manager(abstract_logic):
             "ownership_type": self.__settings.ownership_type,
             "report_settings": self.__settings.report_settings,
             "default_format": self.__settings.default_format.value,
-            "block_period": self.__settings.block_period
+            "block_period": self.__settings.block_period.strftime("%Y-%m-%d")
         }
 
         try:
