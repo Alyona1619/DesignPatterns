@@ -122,7 +122,7 @@ class settings:
 
     @property
     def block_period(self):
-        return self.__block_period
+        return self.__block_period.isoformat()
 
     @block_period.setter
     def block_period(self, value: str):

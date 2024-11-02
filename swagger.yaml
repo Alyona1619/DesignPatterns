@@ -214,3 +214,40 @@ paths:
           description: Ошибка на сервере
         default:
           description: Неизвестная ошибка
+  /settings/new_block_period:
+    post:
+      summary: Обновить дату блокировки в настройках
+      description: Устанавливает новую дату блокировки в настройках системы
+      operationId: main.set_block_period
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: body
+          in: body
+          description: Дата для новой блокировки
+          required: true
+          schema:
+            type: object
+            properties:
+              block_period:
+                type: string
+                format: date
+                description: Новая дата блокировки в формате YYYY-MM-DD
+      responses:
+        200:
+          description: Дата блокировки успешно обновлена
+          schema:
+            type: object
+            properties:
+              new_block_period:
+                type: string
+                format: date
+                example: "2024-11-01"
+        400:
+          description: Дата блокировки не указана или формат даты неверен
+        500:
+          description: Ошибка на сервере
+
+

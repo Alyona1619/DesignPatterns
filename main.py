@@ -1,3 +1,5 @@
+from datetime import datetime
+
 import connexion
 from flask import Response
 from src.core.format_reporting import format_reporting
@@ -133,6 +135,24 @@ def get_block_period():
     settings = manager.current_settings
     block_period = settings.block_period.strftime("%Y-%m-%d") if settings.block_period else None
     return Response(f"block_period: {block_period}")
+
+
+@app.route('/settings/new_block_period', methods=['POST'])
+def set_block_period():
+    try:
+        data = request.get_json()
+        new_block_period = data.get("block_period")
+
+        if not new_block_period:
+            return Response("Дата блокировки не указана!", status=400)
+
+        manager.current_settings.block_period = new_block_period
+        manager.save_settings()
+
+        return Response(f"Дата блокировки успешно обновлена. new_block_period: {new_block_period}")
+
+    except Exception as ex:
+        return Response(f"Ошибка на сервере: {str(ex)}", status=500)
 
 
 if __name__ == '__main__':

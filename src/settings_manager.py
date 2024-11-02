@@ -63,6 +63,31 @@ class settings_manager(abstract_logic):
 
         return data
 
+    def get_block_period(self):
+        return self.__settings.block_period
+
+    def save_settings(self):
+        file_path = os.path.join(os.curdir, self.__file_name)
+
+        settings_data = {
+            "organization_name": self.__settings.organization_name,
+            "inn": self.__settings.inn,
+            "account_number": self.__settings.account_number,
+            "correspondent_account": self.__settings.correspondent_account,
+            "bik": self.__settings.bik,
+            "ownership_type": self.__settings.ownership_type,
+            "report_settings": self.__settings.report_settings,
+            "default_format": self.__settings.default_format.value,
+            "block_period": self.__settings.block_period
+        }
+
+        try:
+            with open(file_path, 'w', encoding='utf-8') as stream:
+                json.dump(settings_data, stream, ensure_ascii=False, indent=4)
+        except Exception as ex:
+            self.set_exception(ex)
+            raise
+
     def set_exception(self, ex: Exception):
         self._inner_set_exception(ex)
 
