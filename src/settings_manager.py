@@ -62,6 +62,18 @@ class settings_manager(abstract_logic):
 
         return data
 
+    def get_block_period_str(self):
+        """Возвращает block_period в формате 'YYYY-MM-DD'."""
+        if self.__settings.block_period:
+            return self.__settings.block_period.strftime("%Y-%m-%d")
+        return None
+
+    def get_block_period_date(self):
+        """Возвращает block_period в формате datetime."""
+        if self.__settings.block_period:
+            return self.__settings.block_period
+        return None
+
     def save_settings(self):
         file_path = os.path.join(os.curdir, self.__file_name)
 

@@ -126,5 +126,10 @@ class settings:
 
     @block_period.setter
     def block_period(self, value: str):
+        if isinstance(value, datetime):
+            value = value.strftime("%Y-%m-%d")
+        elif not isinstance(value, str):
+            argument_exception.raise_type_error("block_period", "str or datetime")
+
         validator.validate(value, str, 12)
         self.__block_period = datetime.strptime(value, "%Y-%m-%d")

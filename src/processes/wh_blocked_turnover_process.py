@@ -8,7 +8,7 @@ class warehouse_blocked_turnover_process(abstract_process):
 
     def __init__(self, sttngmngr: settings_manager) -> None:
         self.sttngmngr = sttngmngr
-        self.block_period = self.sttngmngr.current_settings.block_period
+        self.block_period = self.sttngmngr.get_block_period_date()
 
     def process(self, transactions: list):
         turnovers_data = {}

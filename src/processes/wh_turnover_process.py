@@ -10,7 +10,7 @@ from src.settings_manager import settings_manager
 class warehouse_turnover_process(abstract_process):
 
     def __init__(self, sttngmngr: settings_manager = None, blocked_turnovers: dict = {}):
-        self.block_period = sttngmngr.current_settings.block_period if sttngmngr else datetime.now()
+        self.block_period = sttngmngr.get_block_period_date() if sttngmngr else datetime.now()
         self.blocked_turnovers = blocked_turnovers
 
     def process(self, transactions: list[warehouse_transaction_model]) -> list[warehouse_turnover_model]:

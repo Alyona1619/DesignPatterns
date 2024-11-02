@@ -131,14 +131,9 @@ def get_warehouse_turnover():
 
 @app.route('/settings/block_period', methods=['GET'])
 def get_block_period():
-    # try:
-    #     settings = manager.current_settings
-    #     block_period = settings.block_period.strftime("%Y-%m-%d") if settings.block_period else None
-    #     return Response(f"block_period: {block_period}")
-    # except Exception as ex:
-    #     return Response(f"Ошибка на сервере: {str(ex)}", 500)
-    settings = manager.current_settings
-    block_period = settings.block_period.strftime("%Y-%m-%d") if settings.block_period else None
+    # settings = manager.current_settings
+    # block_period = settings.block_period.strftime("%Y-%m-%d") if settings.block_period else None
+    block_period = manager.get_block_period_str()
     return Response(f"block_period: {block_period}")
 
 

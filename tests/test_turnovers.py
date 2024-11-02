@@ -86,9 +86,7 @@ class TestWarehouseTurnover(unittest.TestCase):
         self.assertEqual(actual_turnover, expected_turnover, "Оборот для склада 2 рассчитан неверно.")
 
     def test_block_period_change_does_not_affect_turnover_calculation(self):
-        # Изменим дату блокировки
-        settings = self.manager.current_settings
-        original_block_period = settings.block_period.strftime("%Y-%m-%d")
+        original_block_period = self.manager.get_block_period_str()
         new_block_period = "2024-03-15"
 
         self.manager.current_settings.block_period = new_block_period
@@ -121,7 +119,8 @@ class LoadTestTurnoversBlockPeriod(unittest.TestCase):
 
     def test_load_turnover_with_diff_block_dates(self):
         block_dates = [
-            "2024-01-01",
+            #"2024-01-01",
+            datetime(2024, 1, 1),
             "2024-03-01",
             "2024-06-01",
             "2024-09-01",
