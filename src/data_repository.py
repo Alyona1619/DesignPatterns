@@ -45,6 +45,11 @@ class data_repository(abstract_logic):
         """Ключ для хранения транзакций"""
         return "transactions"
 
+    @staticmethod
+    def blocked_turnover_key() -> str:
+        """Ключ для хранения заблокированных оборотов"""
+        return "blocked_turnover"
+
     def set_exception(self, ex: Exception):
         """Перегрузка абстрактного метода"""
         self._inner_set_exception(ex)

@@ -8,6 +8,7 @@ from src.deserializers.json_deserializer import JsonDeserializer
 from src.logics.model_prototype import model_prototype
 from src.logics.transaction_prototype import transaction_prototype
 from src.processes.process_factory import process_factory
+from src.processes.wh_blocked_turnover_process import warehouse_blocked_turnover_process
 from src.processes.wh_turnover_process import warehouse_turnover_process
 from src.reports.report_factory import report_factory
 from src.settings_manager import settings_manager
@@ -131,8 +132,6 @@ def get_warehouse_turnover():
 
 @app.route('/settings/block_period', methods=['GET'])
 def get_block_period():
-    # settings = manager.current_settings
-    # block_period = settings.block_period.strftime("%Y-%m-%d") if settings.block_period else None
     block_period = manager.get_block_period_str()
     return Response(f"block_period: {block_period}")
 
@@ -149,7 +148,17 @@ def set_block_period():
         manager.current_settings.block_period = new_block_period
         manager.save_settings()
 
-        return Response(f"Дата блокировки успешно обновлена. new_block_period: {new_block_period}")
+        blocked_turnover_process = warehouse_blocked_turnover_process(manager)
+        transactions = repository.data[data_repository.transaction_key()]
+        if not transactions:
+            return Response("Нет транзакций для пересчета.", status=400)
+        blocked_turnovers = blocked_turnover_process.process(transactions)
+
+        repository.data[data_repository.blocked_turnover_key()] = blocked_turnovers
+
+        return Response(f"Дата блокировки успешно обновлена. new_block_period: {new_block_period}."
+                        f"Заблокированные обороты пересчитаны помещены в репозиторий данных: {len(blocked_turnovers)}",
+                        status=200)
 
     except Exception as ex:
         return Response(f"Ошибка на сервере: {str(ex)}", status=500)

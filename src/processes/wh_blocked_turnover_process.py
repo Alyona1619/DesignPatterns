@@ -1,5 +1,6 @@
 from src.core.abstract_process import abstract_process
 from src.core.transaction_type import transaction_type
+from src.data_repository import data_repository
 from src.models.warehouse_turnover import warehouse_turnover_model
 from src.settings_manager import settings_manager
 
@@ -11,7 +12,10 @@ class warehouse_blocked_turnover_process(abstract_process):
         self.block_period = self.sttngmngr.get_block_period_date()
 
     def process(self, transactions: list):
-        turnovers_data = {}
+
+        storage = data_repository()
+        existing_turnovers = storage.data[data_repository.blocked_turnover_key()]
+        turnovers_data = existing_turnovers.copy()
 
         for transaction in transactions:
             if transaction.period > self.block_period:
@@ -31,5 +35,8 @@ class warehouse_blocked_turnover_process(abstract_process):
                 turnovers_data[key].turnover += transaction.quantity
             elif transaction.transaction_type == transaction_type.EXPENDITURE:
                 turnovers_data[key].turnover -= transaction.quantity
+
+        storage = data_repository()
+        storage.data[data_repository.blocked_turnover_key()] = turnovers_data
 
         return turnovers_data
