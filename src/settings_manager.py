@@ -1,14 +1,14 @@
-from src.core.custom_exception import argument_exception
-from src.models.settings_model import settings
-from src.core.abstract_logic import abstract_logic
-
 import json
 import os
+from datetime import datetime
+
+from src.core.abstract_logic import abstract_logic
+from src.core.custom_exception import argument_exception
+from src.models.settings_model import settings
 
 
 class settings_manager(abstract_logic):
     __file_name = "../settings.json"
-    # __settings: settings = settings()
     __settings: settings = None
 
     def __new__(cls):
@@ -54,8 +54,47 @@ class settings_manager(abstract_logic):
         data = settings()
         data.inn = "380000000038"
         data.organization_name = "Рога и копыта (default)"
+        data.account_number = "12345678901"
+        data.correspondent_account = "12345678901"
+        data.bik = "123456789"
+        data.ownership_type = "ООООО"
+        data.block_period = datetime.now().date().isoformat()
 
         return data
+
+    def get_block_period_str(self):
+        """Возвращает block_period в формате 'YYYY-MM-DD'."""
+        if self.__settings.block_period:
+            return self.__settings.block_period.strftime("%Y-%m-%d")
+        return None
+
+    def get_block_period_date(self):
+        """Возвращает block_period в формате datetime."""
+        if self.__settings.block_period:
+            return self.__settings.block_period
+        return None
+
+    def save_settings(self):
+        file_path = os.path.join(os.curdir, self.__file_name)
+
+        settings_data = {
+            "organization_name": self.__settings.organization_name,
+            "inn": self.__settings.inn,
+            "account_number": self.__settings.account_number,
+            "correspondent_account": self.__settings.correspondent_account,
+            "bik": self.__settings.bik,
+            "ownership_type": self.__settings.ownership_type,
+            "report_settings": self.__settings.report_settings,
+            "default_format": self.__settings.default_format.value,
+            "block_period": self.__settings.block_period.strftime("%Y-%m-%d")
+        }
+
+        try:
+            with open(file_path, 'w', encoding='utf-8') as stream:
+                json.dump(settings_data, stream, ensure_ascii=False, indent=4)
+        except Exception as ex:
+            self.set_exception(ex)
+            raise
 
     def set_exception(self, ex: Exception):
         self._inner_set_exception(ex)

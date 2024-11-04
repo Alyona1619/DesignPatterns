@@ -1,6 +1,5 @@
 from src.core.abstract_process import abstract_process
 from src.core.validator import argument_exception, validator
-from src.processes.wh_turnover_process import warehouse_turnover_process
 
 
 class process_factory:

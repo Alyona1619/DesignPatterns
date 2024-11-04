@@ -1,4 +1,5 @@
 import unittest
+from datetime import datetime
 
 from src.core.transaction_type import transaction_type
 from src.data_repository import data_repository
@@ -6,9 +7,6 @@ from src.models.warehouse_transaction import warehouse_transaction_model
 from src.processes.wh_turnover_process import warehouse_turnover_process
 from src.settings_manager import settings_manager
 from src.start_service import start_service
-
-import unittest
-from datetime import datetime
 
 
 class TestWarehouseTurnover(unittest.TestCase):
@@ -84,6 +82,24 @@ class TestWarehouseTurnover(unittest.TestCase):
         actual_turnover = turnover_results[0].turnover
 
         self.assertEqual(actual_turnover, expected_turnover, "Оборот для склада 2 рассчитан неверно.")
+
+    def test_block_period_change_does_not_affect_turnover_calculation(self):
+        original_block_period = self.manager.get_block_period_str()
+        new_block_period = "2024-03-15"
+
+        self.manager.current_settings.block_period = new_block_period
+
+        # Рассчитаем оборот с новой датой блокировки
+        turnover_results_with_new_block = self.turnover_process.process(self.transactions)
+
+        # Восстановим оригинальную дату блокировки
+        self.manager.current_settings.block_period = original_block_period
+
+        # Рассчитаем оборот с оригинальной датой блокировки
+        turnover_results_with_original_block = self.turnover_process.process(self.transactions)
+
+        self.assertEqual(turnover_results_with_new_block, turnover_results_with_original_block,
+                         "Изменение даты блокировки повлияло на расчет оборота.")
 
 
 if __name__ == '__main__':

@@ -118,15 +118,15 @@ paths:
                     type: string
                   filter_option:
                     type: string
-                nomenclature:
-                  type: object
-                  properties:
-                    name:
-                      type: string
-                    unique_code:
-                      type: string
-                    filter_option:
-                      type: string
+              nomenclature:
+                type: object
+                properties:
+                  name:
+                    type: string
+                  unique_code:
+                    type: string
+                  filter_option:
+                    type: string
       responses:
         200:
           description: Список транзакций по указанному фильтру
@@ -164,27 +164,27 @@ paths:
                   filter_option:
                     type: string
                     description: Тип фильтрации
-                nomenclature:
-                  type: object
-                  description: Фильтры для номенклатуры
-                  properties:
-                    name:
-                      type: string
-                      description: Имя номенклатуры
-                    unique_code:
-                      type: string
-                      description: Код номенклатуры
-                    filter_option:
-                      type: string
-                      description: Тип фильтрации
-                start_period:
-                  type: string
-                  format: date
-                  description: Старт периода (YYYY-MM-DD)
-                end_period:
-                  type: string
-                  format: date
-                  description: Конец периода (YYYY-MM-DD)
+              nomenclature:
+                type: object
+                description: Фильтры для номенклатуры
+                properties:
+                  name:
+                    type: string
+                    description: Имя номенклатуры
+                  unique_code:
+                    type: string
+                    description: Код номенклатуры
+                  filter_option:
+                    type: string
+                    description: Тип фильтрации
+              start_period:
+                type: string
+                format: date
+                description: Старт периода (YYYY-MM-DD)
+              end_period:
+                type: string
+                format: date
+                description: Конец периода (YYYY-MM-DD)
       responses:
         200:
           description: Оборот на складе
@@ -192,3 +192,62 @@ paths:
           description: Данные отсутствуют или ошибка ввода данных
         500:
           description: Ошибка на сервере
+
+  /settings/block_period:
+    get:
+      summary: Получить текущий block_period
+      description: Возвращает текущий block_period, установленный в настройках системы
+      operationId: main.get_block_period
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Успешный ответ с текущим block_period
+          schema:
+            type: object
+            properties:
+              block_period:
+                type: string
+                format: date
+                example: "YYYY-MM-DD"
+        500:
+          description: Ошибка на сервере
+        default:
+          description: Неизвестная ошибка
+  /settings/new_block_period:
+    post:
+      summary: Обновить дату блокировки в настройках
+      description: Устанавливает новую дату блокировки в настройках системы
+      operationId: main.set_block_period
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: body
+          in: body
+          description: Дата для новой блокировки
+          required: true
+          schema:
+            type: object
+            properties:
+              block_period:
+                type: string
+                format: date
+                description: Новая дата блокировки в формате YYYY-MM-DD
+      responses:
+        200:
+          description: Дата блокировки успешно обновлена
+          schema:
+            type: object
+            properties:
+              new_block_period:
+                type: string
+                format: date
+                example: "2024-11-01"
+        400:
+          description: Дата блокировки не указана или формат даты неверен
+        500:
+          description: Ошибка на сервере
+
+
