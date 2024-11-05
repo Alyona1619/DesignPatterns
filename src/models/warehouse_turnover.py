@@ -1,8 +1,9 @@
 from src.core.abstract_reference import abstract_reference
 from src.core.validator import validator
-from src.models.warehouse_model import warehouse_model
 from src.models.nomenclature_model import nomenclature_model
 from src.models.range_model import range_model
+from src.models.warehouse_model import warehouse_model
+
 
 class warehouse_turnover_model(abstract_reference):
     __warehouse: warehouse_model
@@ -60,4 +61,3 @@ class warehouse_turnover_model(abstract_reference):
 
     def from_json(self, data):
         pass
-

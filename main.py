@@ -19,6 +19,7 @@ app = connexion.FlaskApp(__name__)
 manager = settings_manager()
 manager.open("settings.json")
 repository = data_repository()
+repository.data[data_repository.blocked_turnover_key()] = {}
 service = start_service(repository, manager)
 service.create()
 rep_factory = report_factory(manager)
@@ -117,7 +118,7 @@ def get_warehouse_turnover():
         prototype = transaction_prototype(t_data).create(t_data, filter_obj)
 
         proc_factory.register_process(warehouse_turnover_process)
-        process_class = proc_factory.get_process('warehouse_turnover_process')
+        process_class = proc_factory.get_process('warehouse_turnover_process', manager)
 
         turnovers = process_class.process(prototype.data)
 
@@ -130,13 +131,13 @@ def get_warehouse_turnover():
         return Response(f"Ошибка на сервере: {str(ex)}", 500)
 
 
-@app.route('/settings/block_period', methods=['GET'])
+@app.route('/api/settings/block_period', methods=['GET'])
 def get_block_period():
     block_period = manager.get_block_period_str()
     return Response(f"block_period: {block_period}")
 
 
-@app.route('/settings/new_block_period', methods=['POST'])
+@app.route('/api/settings/new_block_period', methods=['POST'])
 def set_block_period():
     try:
         data = request.get_json()
@@ -146,14 +147,15 @@ def set_block_period():
             return Response("Дата блокировки не указана!", status=400)
 
         manager.current_settings.block_period = new_block_period
-        manager.save_settings()
 
-        blocked_turnover_process = warehouse_blocked_turnover_process(manager)
         transactions = repository.data[data_repository.transaction_key()]
         if not transactions:
             return Response("Нет транзакций для пересчета.", status=400)
-        blocked_turnovers = blocked_turnover_process.process(transactions)
 
+        proc_factory.register_process(warehouse_blocked_turnover_process)
+        process_class = proc_factory.get_process('warehouse_blocked_turnover_process', manager)
+
+        blocked_turnovers = process_class.process(transactions)
         repository.data[data_repository.blocked_turnover_key()] = blocked_turnovers
 
         return Response(f"Дата блокировки успешно обновлена. new_block_period: {new_block_period}."
@@ -162,6 +164,26 @@ def set_block_period():
 
     except Exception as ex:
         return Response(f"Ошибка на сервере: {str(ex)}", status=500)
+
+
+@app.route('/api/nomenclature/', methods=['GET'])
+def get_nomenclature(elem):
+    pass
+
+
+@app.route('/api/nomenclature/', methods=['PUT'])
+def add_nomenclature():
+    pass
+
+
+@app.route('/api/nomenclature/', methods=['PATCH'])
+def change_nomenclature():
+    pass
+
+
+@app.route('/api/nomenclature/', methods=['DELETE'])
+def del_nomenclature():
+    pass
 
 
 if __name__ == '__main__':

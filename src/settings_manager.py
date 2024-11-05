@@ -4,6 +4,8 @@ from datetime import datetime
 
 from src.core.abstract_logic import abstract_logic
 from src.core.custom_exception import argument_exception
+from src.core.event_type import event_type
+from src.logics.observe_service import observe_service
 from src.models.settings_model import settings
 
 
@@ -19,6 +21,8 @@ class settings_manager(abstract_logic):
     def __init__(self) -> None:
         if self.__settings is None:
             self.__settings = self.__default_settings()
+
+            observe_service.append(self)
 
     def open(self, file_path: str = ""):
         if not isinstance(file_path, str):
@@ -99,11 +103,8 @@ class settings_manager(abstract_logic):
     def set_exception(self, ex: Exception):
         self._inner_set_exception(ex)
 
-# Пример использования
-# manager1 = settings_manager()
-# manager1.open("../settings.json")
-# print(f"settings1 {manager1.settings.inn}")
-#
-# manager2 = settings_manager()
-# # manager2.open("settings1.json")
-# print(f"settings2 {manager2.settings.inn}")
+    def handle_event(self, type: event_type, params):
+        super().handle_event(type, params)
+
+        if type == event_type.CHANGE_BLOCK_PERIOD:
+            self.save_settings()

@@ -1,4 +1,5 @@
 from src.core.abstract_logic import abstract_logic
+from src.core.event_type import event_type
 
 
 class data_repository(abstract_logic):
@@ -53,3 +54,6 @@ class data_repository(abstract_logic):
     def set_exception(self, ex: Exception):
         """Перегрузка абстрактного метода"""
         self._inner_set_exception(ex)
+
+    def handle_event(self, type: event_type, params):
+        super().handle_event(type, params)
