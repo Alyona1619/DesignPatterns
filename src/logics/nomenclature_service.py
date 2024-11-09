@@ -1,14 +1,14 @@
+from src.core.abstract_logic import abstract_logic
+from src.core.event_type import event_type
+from src.core.validator import validator, argument_exception, operation_exception
+from src.data_repository import data_repository
 from src.deserializers.json_deserializer import JsonDeserializer
+from src.dto.filter import filter
 from src.logics.model_prototype import model_prototype
 from src.models.nomenclature_model import nomenclature_model
-from src.models.group_nomenclature_model import group_nomenclature_model
-from src.models.range_model import range_model
-from src.dto.filter import filter
-from src.data_repository import data_repository
-from src.core.validator import validator, argument_exception, operation_exception
 
 
-class nomenclature_service:
+class nomenclature_service(abstract_logic):
 
     def __init__(self, repository: data_repository):
         self.repository = repository
@@ -49,13 +49,10 @@ class nomenclature_service:
                 "filter_option": "equal"
             }
             filter_obj = JsonDeserializer.deserialize(filter_data, 'filter')
-            print(filter_obj.name)
-            print(filter_obj.id)
-            print(filter_obj.filter_option)
 
             existing_nomenclature = model_prototype(self.repository.data[data_repository.nomenclature_key()]).create(
                 self.repository.data[data_repository.nomenclature_key()], filter_obj)
-            print(existing_nomenclature.data)
+
             if existing_nomenclature.data:
                 raise operation_exception("Номенклатура уже существует и не может быть добавлена повторно")
 
@@ -74,56 +71,89 @@ class nomenclature_service:
     def update_nomenclature(self, data):
         """Метод для изменения данных существующей номенклатуры"""
         try:
-            filter_data = data.get("filter")
-            updated_data = data.get("updated_data")
+            unique_code = data.get('unique_code')
+            if not unique_code:
+                raise operation_exception("Не указан уникальный код номенклатуры.")
 
+            filter_data = {
+                "name": "",
+                "id": unique_code,
+                "filter_option": "equal"
+            }
             filter_obj = JsonDeserializer.deserialize(filter_data, 'filter')
-            des_updated_data = JsonDeserializer.deserialize(updated_data, 'nomenclature_model')
-
-            validator.validate(des_updated_data, nomenclature_model)
             validator.validate(filter_obj, filter)
 
-            filtered_data = model_prototype(self.repository.data[data_repository.nomenclature_key()]).create(
-                self.repository.data[data_repository.nomenclature_key()], filter_obj).data
+            nomenclature_data = model_prototype(self.repository.data[data_repository.nomenclature_key()]).create(
+                self.repository.data[data_repository.nomenclature_key()], filter_obj)
 
-            if not filtered_data:
-                raise operation_exception("Номенклатура не найдена для изменения")
+            if not nomenclature_data:
+                raise operation_exception(f"Номенклатура с уникальным кодом {unique_code} не найдена.")
 
-            nomenclature_to_update = filtered_data[0]
+            nomenclature = nomenclature_data[0]
 
-            if des_updated_data.full_name:
-                validator.validate(des_updated_data.full_name, str, 255)
-                nomenclature_to_update.full_name = des_updated_data.full_name
-            if des_updated_data.group:
-                validator.validate(des_updated_data.group, group_nomenclature_model)
-                nomenclature_to_update.group = des_updated_data.group
-            if des_updated_data.unit:
-                validator.validate(des_updated_data.unit, range_model)
-                nomenclature_to_update.unit = des_updated_data.unit
+            if 'full_name' in data:
+                nomenclature.full_name = data['full_name']
 
-            return nomenclature_to_update
+            if 'group_id' in data:
+                group_id = data['group_id']
+                group_filter = {
+                    "id": group_id,
+                    "filter_option": "equal"
+                }
+                group_filter_obj = JsonDeserializer.deserialize(group_filter, 'filter')
+                validator.validate(group_filter_obj, filter)
 
-        except argument_exception as e:
-            raise argument_exception(f"Ошибка обновления номенклатуры: {str(e)}")
+                group_data = model_prototype(self.repository.data[data_repository.group_key()]).create(
+                    self.repository.data[data_repository.group_key()], group_filter_obj)
+
+                if group_data:
+                    nomenclature.group = group_data[0]
+
+            if 'unit_id' in data:
+                unit_id = data['unit_id']
+                unit_filter = {
+                    "id": unit_id,
+                    "filter_option": "equal"
+                }
+                unit_filter_obj = JsonDeserializer.deserialize(unit_filter, 'filter')
+                validator.validate(unit_filter_obj, filter)
+
+                unit_data = model_prototype(self.repository.data[data_repository.range_key()]).create(
+                    self.repository.data[data_repository.range_key()], unit_filter_obj)
+
+                if unit_data:
+                    nomenclature.unit = unit_data[0]
+
+            # return nomenclature
+
         except operation_exception as e:
-            raise operation_exception(f"Ошибка операции обновления: {str(e)}")
+            raise operation_exception(f"Ошибка обновления номенклатуры: {str(e)}")
         except Exception as e:
             raise operation_exception(f"Ошибка выполнения операции обновления номенклатуры: {str(e)}")
 
-    def delete_nomenclature(self, filter_obj: filter):
+    def delete_nomenclature(self, data):
         """Метод для удаления номенклатуры"""
         try:
+            id = data.get("unique_code")
+            if not id:
+                raise operation_exception("Не указан уникальный код  для удаления")
+            filter_data = {
+                "id": id,
+                "filter_option": "equal"
+            }
+            filter_obj = JsonDeserializer.deserialize(filter_data, 'filter')
             validator.validate(filter_obj, filter)
 
             prototype = model_prototype(self.repository.data[data_repository.nomenclature_key()])
-            filtered_data = prototype.create(self.repository.data[data_repository.nomenclature_key()], filter_obj).data
+            filtered_data = prototype.create(self.repository.data[data_repository.nomenclature_key()], filter_obj)
 
             if not filtered_data:
                 raise operation_exception("Номенклатура не найдена для удаления")
 
             nomenclature_to_delete = filtered_data[0]
             self.repository.data[data_repository.nomenclature_key()].remove(nomenclature_to_delete)
-            return nomenclature_to_delete
+
+            # return nomenclature_to_delete
 
         except argument_exception as e:
             raise argument_exception(f"Ошибка удаления номенклатуры: {str(e)}")
@@ -131,3 +161,14 @@ class nomenclature_service:
             raise operation_exception(f"Ошибка операции удаления номенклатуры: {str(e)}")
         except Exception as e:
             raise operation_exception(f"Ошибка выполнения операции удаления номенклатуры: {str(e)}")
+
+    def set_exception(self, ex: Exception):
+        super().set_exception(ex)
+
+    def handle_event(self, type: event_type, params):
+        super().handle_event(type, params)
+
+        if type == event_type.CHANGE_NOMENCLATURE:
+            self.update_nomenclature(params)
+        elif type == event_type.DELETE_NOMENCLATURE:
+            self.delete_nomenclature(params)

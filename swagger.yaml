@@ -310,31 +310,21 @@ paths:
       produces:
         - application/json
       parameters:
-        - name: data
+        - name: body
           in: body
           description: Данные для обновления номенклатуры
           required: true
           schema:
             type: object
             properties:
-              filter:
-                type: object
-                description: Фильтр для поиска номенклатуры
-                properties:
-                  name:
-                    type: string
-                  unique_code:
-                    type: string
-              updated_data:
-                type: object
-                description: Обновленные данные для номенклатуры
-                properties:
-                  full_name:
-                    type: string
-                  group:
-                    type: string
-                  unit:
-                    type: string
+              unique_code:
+                type: string
+              full_name:
+                type: string
+              group_id:
+                type: string
+              unit_id:
+                type: string
       responses:
         200:
           description: Номенклатура успешно обновлена
@@ -351,22 +341,16 @@ paths:
       produces:
         - application/json
       parameters:
-        - name: filter
+        - name: body
           in: body
           description: Фильтр для удаления номенклатуры
           required: true
           schema:
             type: object
             properties:
-              name:
-                type: string
-                description: Имя номенклатуры
               unique_code:
                 type: string
                 description: Код номенклатуры
-              group:
-                type: string
-                description: Группа номенклатуры
       responses:
         200:
           description: Номенклатура успешно удалена

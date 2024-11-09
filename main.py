@@ -2,11 +2,13 @@ import connexion
 from flask import Response
 from flask import request
 
-from src.core.filter_options import filter_option
+from src.core.event_type import event_type
 from src.core.format_reporting import format_reporting
 from src.data_repository import data_repository
 from src.deserializers.json_deserializer import JsonDeserializer
 from src.logics.model_prototype import model_prototype
+from src.logics.nomenclature_service import nomenclature_service
+from src.logics.observe_service import observe_service
 from src.logics.transaction_prototype import transaction_prototype
 from src.processes.process_factory import process_factory
 from src.processes.wh_blocked_turnover_process import warehouse_blocked_turnover_process
@@ -14,8 +16,6 @@ from src.processes.wh_turnover_process import warehouse_turnover_process
 from src.reports.report_factory import report_factory
 from src.settings_manager import settings_manager
 from src.start_service import start_service
-from src.logics.nomenclature_service import nomenclature_service
-from src.dto.filter import filter
 
 app = connexion.FlaskApp(__name__)
 
@@ -152,6 +152,7 @@ def set_block_period():
             return Response("Дата блокировки не указана!", status=400)
 
         manager.current_settings.block_period = new_block_period
+        observe_service.raise_event(event_type.CHANGE_BLOCK_PERIOD, None)
 
         transactions = repository.data[data_repository.transaction_key()]
         if not transactions:
@@ -203,9 +204,9 @@ def update_nomenclature():
     try:
         data = request.get_json()
 
-        updated_nomenclature = nomenclature_serv.update_nomenclature(data)
+        observe_service.raise_event(event_type.CHANGE_NOMENCLATURE, data)
 
-        return Response(f"Номенклатура успешно обновлена: {updated_nomenclature}", status=200)
+        return Response(f"Номенклатура успешно обновлена", status=200)
 
     except Exception as ex:
         return Response(f"Ошибка на сервере: {str(ex)}", status=500)
@@ -216,17 +217,12 @@ def delete_nomenclature():
     try:
         data = request.get_json()
 
-        filter_data = data.get("filter")
+        observe_service.raise_event(event_type.DELETE_NOMENCLATURE, data)
 
-        filter_obj = JsonDeserializer.deserialize(filter_data, 'filter')
-
-        deleted_nomenclature = nomenclature_serv.delete_nomenclature(filter_obj)
-
-        return Response(f"Номенклатура успешно удалена: {deleted_nomenclature}", status=200)
+        return Response(f"Номенклатура успешно удалена", status=200)
 
     except Exception as ex:
         return Response(f"Ошибка на сервере: {str(ex)}", status=500)
-
 
 
 if __name__ == '__main__':
