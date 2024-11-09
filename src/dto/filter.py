@@ -24,7 +24,8 @@ class filter(abstract_reference):
 
     @id.setter
     def id(self, value: str):
-        validator.validate(value, str, 37)
+        if value:
+            validator.validate(value, str, 37)
         self.__id = value
 
     @property

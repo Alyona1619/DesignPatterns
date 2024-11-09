@@ -272,7 +272,7 @@ paths:
           description: Ошибка на сервере
         default:
           description: Неизвестная ошибка
-
+  /nomenclature:
     put:
       summary: Добавить новую номенклатуру
       operationId: main.add_nomenclature
@@ -291,21 +291,12 @@ paths:
               full_name:
                 type: string
               group:
-                type: string
+                type: object
               unit:
-                type: string
+                type: object
       responses:
         200:
           description: Номенклатура успешно добавлена
-          schema:
-            type: object
-            properties:
-              full_name:
-                type: string
-              group:
-                type: string
-              unit:
-                type: string
         400:
           description: Ошибка ввода данных
         500:
@@ -347,15 +338,6 @@ paths:
       responses:
         200:
           description: Номенклатура успешно обновлена
-          schema:
-            type: object
-            properties:
-              full_name:
-                type: string
-              group:
-                type: string
-              unit:
-                type: string
         400:
           description: Ошибка ввода данных
         500:
@@ -388,15 +370,6 @@ paths:
       responses:
         200:
           description: Номенклатура успешно удалена
-          schema:
-            type: object
-            properties:
-              full_name:
-                type: string
-              group:
-                type: string
-              unit:
-                type: string
         400:
           description: Ошибка ввода данных
         500:

@@ -190,9 +190,7 @@ def add_nomenclature():
     try:
         data = request.get_json()
 
-        des_nomenclature = JsonDeserializer.deserialize(data, 'nomenclature_model')
-
-        new_nomenclature = nomenclature_serv.add_nomenclature(des_nomenclature)
+        new_nomenclature = nomenclature_serv.add_nomenclature(data)
 
         return Response(f"Номенклатура успешно добавлена: {new_nomenclature}", status=200)
 
@@ -205,13 +203,7 @@ def update_nomenclature():
     try:
         data = request.get_json()
 
-        filter_data = data.get("filter")
-        updated_data = data.get("updated_data")
-
-        filter_obj = JsonDeserializer.deserialize(filter_data, 'filter')
-        des_updated_data = JsonDeserializer.deserialize(updated_data, 'nomenclature_model')
-
-        updated_nomenclature = nomenclature_serv.update_nomenclature(filter_obj, des_updated_data)
+        updated_nomenclature = nomenclature_serv.update_nomenclature(data)
 
         return Response(f"Номенклатура успешно обновлена: {updated_nomenclature}", status=200)
 

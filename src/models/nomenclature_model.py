@@ -60,9 +60,7 @@ class nomenclature_model(abstract_reference):
     #     return nomenclature_instance
 
     def from_json(self, data):
-        print("Данные для десериализации:", data)
         self.full_name = data.get('full_name', '')
-        print("Вытащили fullname:", self.full_name)
         self.group = group_nomenclature_model().from_json(data['group'])
         self.unit = range_model().from_json(data['unit'])
         return self
