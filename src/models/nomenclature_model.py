@@ -3,11 +3,9 @@ from src.core.custom_exception import argument_exception
 from src.models.group_nomenclature_model import group_nomenclature_model
 from src.models.range_model import range_model
 
-"""
-Модель номенклатуры
-"""
 
 class nomenclature_model(abstract_reference):
+    """Модель номенклатуры"""
     __full_name: str = ''
     __group: group_nomenclature_model = None
     __unit: range_model = None

@@ -16,4 +16,3 @@ class JsonDeserializer:
         else:
             raise ValueError("json_data должен быть списком или объектом")
         return instance
-

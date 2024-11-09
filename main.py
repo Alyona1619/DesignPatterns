@@ -2,6 +2,7 @@ import connexion
 from flask import Response
 from flask import request
 
+from src.core.filter_options import filter_option
 from src.core.format_reporting import format_reporting
 from src.data_repository import data_repository
 from src.deserializers.json_deserializer import JsonDeserializer
@@ -13,6 +14,8 @@ from src.processes.wh_turnover_process import warehouse_turnover_process
 from src.reports.report_factory import report_factory
 from src.settings_manager import settings_manager
 from src.start_service import start_service
+from src.logics.nomenclature_service import nomenclature_service
+from src.dto.filter import filter
 
 app = connexion.FlaskApp(__name__)
 
@@ -24,6 +27,8 @@ service = start_service(repository, manager)
 service.create()
 rep_factory = report_factory(manager)
 proc_factory = process_factory()
+
+nomenclature_serv = nomenclature_service(repository)
 
 
 @app.route("/api/reports/formats", methods=["GET"])
@@ -166,24 +171,70 @@ def set_block_period():
         return Response(f"Ошибка на сервере: {str(ex)}", status=500)
 
 
-@app.route('/api/nomenclature/', methods=['GET'])
-def get_nomenclature(elem):
-    pass
+@app.route("/api/nomenclature/<id>", methods=["GET"])
+def get_nomenclature(id):
+    try:
+        nomen = nomenclature_serv.get_nomenclature(id)
+
+        report = rep_factory.create_default()
+        report.create(nomen.data)
+
+        return report.result
+
+    except Exception as ex:
+        return Response(f"Ошибка на сервере: {str(ex)}", status=500)
 
 
-@app.route('/api/nomenclature/', methods=['PUT'])
+@app.route("/api/nomenclature", methods=["PUT"])
 def add_nomenclature():
-    pass
+    try:
+        data = request.get_json()
+
+        des_nomenclature = JsonDeserializer.deserialize(data, 'nomenclature_model')
+
+        new_nomenclature = nomenclature_serv.add_nomenclature(des_nomenclature)
+
+        return Response(f"Номенклатура успешно добавлена: {new_nomenclature}", status=200)
+
+    except Exception as ex:
+        return Response(f"Ошибка на сервере: {str(ex)}", status=500)
 
 
-@app.route('/api/nomenclature/', methods=['PATCH'])
-def change_nomenclature():
-    pass
+@app.route("/api/nomenclature", methods=["PATCH"])
+def update_nomenclature():
+    try:
+        data = request.get_json()
+
+        filter_data = data.get("filter")
+        updated_data = data.get("updated_data")
+
+        filter_obj = JsonDeserializer.deserialize(filter_data, 'filter')
+        des_updated_data = JsonDeserializer.deserialize(updated_data, 'nomenclature_model')
+
+        updated_nomenclature = nomenclature_serv.update_nomenclature(filter_obj, des_updated_data)
+
+        return Response(f"Номенклатура успешно обновлена: {updated_nomenclature}", status=200)
+
+    except Exception as ex:
+        return Response(f"Ошибка на сервере: {str(ex)}", status=500)
 
 
-@app.route('/api/nomenclature/', methods=['DELETE'])
-def del_nomenclature():
-    pass
+@app.route("/api/nomenclature", methods=["DELETE"])
+def delete_nomenclature():
+    try:
+        data = request.get_json()
+
+        filter_data = data.get("filter")
+
+        filter_obj = JsonDeserializer.deserialize(filter_data, 'filter')
+
+        deleted_nomenclature = nomenclature_serv.delete_nomenclature(filter_obj)
+
+        return Response(f"Номенклатура успешно удалена: {deleted_nomenclature}", status=200)
+
+    except Exception as ex:
+        return Response(f"Ошибка на сервере: {str(ex)}", status=500)
+
 
 
 if __name__ == '__main__':

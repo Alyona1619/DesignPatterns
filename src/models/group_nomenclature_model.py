@@ -1,11 +1,8 @@
 from src.core.base_models import base_model_name
 
-"""
-Модель группы номенклатуры
-"""
-
 
 class group_nomenclature_model(base_model_name):
+    """Модель группы номенклатуры"""
 
     def __init__(self):
         super().__init__()
@@ -42,5 +39,3 @@ class group_nomenclature_model(base_model_name):
     def from_json(self, data):
         self.name = data.get('name', '')
         return self
-
-

@@ -249,5 +249,155 @@ paths:
           description: Дата блокировки не указана или формат даты неверен
         500:
           description: Ошибка на сервере
+  /nomenclature/{id}:
+    get:
+      summary: Получить номенклатуру
+      operationId: main.get_nomenclature
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: id
+          in: path
+          description: Уникальный идентификатор номенклатуры
+          required: true
+          type: string
+      responses:
+        200:
+          description: Данные успешно отфильтрованы
+        400:
+          description: Ошибка ввода данных
+        500:
+          description: Ошибка на сервере
+        default:
+          description: Неизвестная ошибка
 
+    put:
+      summary: Добавить новую номенклатуру
+      operationId: main.add_nomenclature
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: nomenclature
+          in: body
+          description: Данные для добавления новой номенклатуры
+          required: true
+          schema:
+            type: object
+            properties:
+              full_name:
+                type: string
+              group:
+                type: string
+              unit:
+                type: string
+      responses:
+        200:
+          description: Номенклатура успешно добавлена
+          schema:
+            type: object
+            properties:
+              full_name:
+                type: string
+              group:
+                type: string
+              unit:
+                type: string
+        400:
+          description: Ошибка ввода данных
+        500:
+          description: Ошибка на сервере
 
+    patch:
+      summary: Обновить существующую номенклатуру
+      operationId: main.update_nomenclature
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: data
+          in: body
+          description: Данные для обновления номенклатуры
+          required: true
+          schema:
+            type: object
+            properties:
+              filter:
+                type: object
+                description: Фильтр для поиска номенклатуры
+                properties:
+                  name:
+                    type: string
+                  unique_code:
+                    type: string
+              updated_data:
+                type: object
+                description: Обновленные данные для номенклатуры
+                properties:
+                  full_name:
+                    type: string
+                  group:
+                    type: string
+                  unit:
+                    type: string
+      responses:
+        200:
+          description: Номенклатура успешно обновлена
+          schema:
+            type: object
+            properties:
+              full_name:
+                type: string
+              group:
+                type: string
+              unit:
+                type: string
+        400:
+          description: Ошибка ввода данных
+        500:
+          description: Ошибка на сервере
+
+    delete:
+      summary: Удалить номенклатуру
+      operationId: main.delete_nomenclature
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: filter
+          in: body
+          description: Фильтр для удаления номенклатуры
+          required: true
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+                description: Имя номенклатуры
+              unique_code:
+                type: string
+                description: Код номенклатуры
+              group:
+                type: string
+                description: Группа номенклатуры
+      responses:
+        200:
+          description: Номенклатура успешно удалена
+          schema:
+            type: object
+            properties:
+              full_name:
+                type: string
+              group:
+                type: string
+              unit:
+                type: string
+        400:
+          description: Ошибка ввода данных
+        500:
+          description: Ошибка на сервере
