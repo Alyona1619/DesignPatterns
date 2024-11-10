@@ -5,6 +5,7 @@ from src.data_repository import data_repository
 from src.deserializers.json_deserializer import JsonDeserializer
 from src.dto.filter import filter
 from src.logics.model_prototype import model_prototype
+from src.logics.observe_service import observe_service
 from src.models.nomenclature_model import nomenclature_model
 
 
@@ -12,6 +13,7 @@ class nomenclature_service(abstract_logic):
 
     def __init__(self, repository: data_repository):
         self.repository = repository
+        observe_service.append(self)
 
     def get_nomenclature(self, id):
         """Метод для получения номенклатуры"""
@@ -26,8 +28,8 @@ class nomenclature_service(abstract_logic):
 
             filtered_data = model_prototype(self.repository.data[data_repository.nomenclature_key()]).create(
                 self.repository.data[data_repository.nomenclature_key()], filter_obj)
-
-            if not filtered_data:
+            print(filtered_data.data)
+            if len(filtered_data.data) == 0:
                 raise operation_exception("Номенклатура не найдена")
 
             return filtered_data
@@ -89,7 +91,7 @@ class nomenclature_service(abstract_logic):
             if not nomenclature_data:
                 raise operation_exception(f"Номенклатура с уникальным кодом {unique_code} не найдена.")
 
-            nomenclature = nomenclature_data[0]
+            nomenclature = nomenclature_data.data[0]
 
             if 'full_name' in data:
                 nomenclature.full_name = data['full_name']
@@ -124,12 +126,71 @@ class nomenclature_service(abstract_logic):
                 if unit_data:
                     nomenclature.unit = unit_data[0]
 
-            # return nomenclature
+            observe_service.raise_event(event_type.CHANGE_NOMENCLATURE_IN_RECIPE, data)
+            observe_service.raise_event(event_type.CHANGE_NOMENCLATURE_IN_TURNOVER, data)
+
+            return nomenclature
 
         except operation_exception as e:
             raise operation_exception(f"Ошибка обновления номенклатуры: {str(e)}")
         except Exception as e:
             raise operation_exception(f"Ошибка выполнения операции обновления номенклатуры: {str(e)}")
+
+    def update_applied_nomenclature(self, obj, data):
+        unique_code = data.get('unique_code')
+        if hasattr(obj, 'unique_code') and obj.unique_code == unique_code:
+            if 'name' in data:
+                obj.name = data['name']
+            if 'full_name' in data:
+                obj.full_name = data['full_name']
+
+            if 'group_id' in data:
+                group_id = data['group_id']
+                group_filter = {
+                    "id": group_id,
+                    "filter_option": "equal"
+                }
+                group_filter_obj = JsonDeserializer.deserialize(group_filter, 'filter')
+                validator.validate(group_filter_obj, filter)
+
+                group_data = model_prototype(self.repository.data[data_repository.group_key()]).create(
+                    self.repository.data[data_repository.group_key()], group_filter_obj)
+
+                if group_data:
+                    obj.group = group_data[0]
+
+            if 'range_id' in data:
+                unit_id = data['unit_id']
+                unit_filter = {
+                    "id": unit_id,
+                    "filter_option": "equal"
+                }
+                unit_filter_obj = JsonDeserializer.deserialize(unit_filter, 'filter')
+                validator.validate(unit_filter_obj, filter)
+
+                unit_data = model_prototype(self.repository.data[data_repository.range_key()]).create(
+                    self.repository.data[data_repository.range_key()], unit_filter_obj)
+
+                if unit_data:
+                    obj.unit = unit_data[0]
+
+            return True
+
+        if isinstance(obj, dict):
+            for key, value in obj.items():
+                if self.update_applied_nomenclature(value, data):
+                    return True
+        elif isinstance(obj, (list, tuple)):
+            for item in obj:
+                if self.update_applied_nomenclature(item, data):
+                    return True
+        elif hasattr(obj, '__dict__'):
+            for attr_name in vars(obj):
+                attr_value = getattr(obj, attr_name)
+                if self.update_applied_nomenclature(attr_value, data):
+                    return True
+
+        return False
 
     def delete_nomenclature(self, data):
         """Метод для удаления номенклатуры"""
@@ -150,10 +211,17 @@ class nomenclature_service(abstract_logic):
             if not filtered_data:
                 raise operation_exception("Номенклатура не найдена для удаления")
 
-            nomenclature_to_delete = filtered_data[0]
-            self.repository.data[data_repository.nomenclature_key()].remove(nomenclature_to_delete)
+            nomenclature_to_delete = filtered_data.data[0]
 
-            # return nomenclature_to_delete
+            if self.is_nomenclature_in_recipes(nomenclature_to_delete):
+                raise operation_exception(
+                    f"Номенклатура '{id}' не может быть удалена. Она используется в рецептах")
+
+            if self.is_nomenclature_in_turnovers(nomenclature_to_delete):
+                raise operation_exception(
+                    f"Номенклатура '{id}' не может быть удалена. Она используется в сохраненных оборотах")
+
+            self.repository.data[data_repository.nomenclature_key()].remove(nomenclature_to_delete)
 
         except argument_exception as e:
             raise argument_exception(f"Ошибка удаления номенклатуры: {str(e)}")
@@ -161,6 +229,31 @@ class nomenclature_service(abstract_logic):
             raise operation_exception(f"Ошибка операции удаления номенклатуры: {str(e)}")
         except Exception as e:
             raise operation_exception(f"Ошибка выполнения операции удаления номенклатуры: {str(e)}")
+
+    def is_nomenclature_in_recipes(self, nomenclature: nomenclature_model) -> bool:
+        print(type(nomenclature.unique_code))
+        filter_data = {
+            "id": nomenclature.unique_code,
+            "filter_option": "equal"
+        }
+        filter_obj = JsonDeserializer.deserialize(filter_data, 'filter')
+
+        filtered_recipes = model_prototype(self.repository.data[data_repository.recipe_key()]).create(
+            self.repository.data[data_repository.recipe_key()], filter_obj)
+
+        return len(filtered_recipes.data) != 0
+
+    def is_nomenclature_in_turnovers(self, nomenclature: nomenclature_model) -> bool:
+        filter_data = {
+            "id": nomenclature.unique_code,
+            "filter_option": "equal"
+        }
+        filter_obj = JsonDeserializer.deserialize(filter_data, 'filter')
+
+        filtered_recipes = model_prototype(self.repository.data[data_repository.blocked_turnover_key()]).create(
+            self.repository.data[data_repository.blocked_turnover_key()], filter_obj)
+
+        return len(filtered_recipes.data) != 0
 
     def set_exception(self, ex: Exception):
         super().set_exception(ex)
