@@ -10,6 +10,7 @@ from src.logics.model_prototype import model_prototype
 from src.logics.nomenclature_service import nomenclature_service
 from src.logics.observe_service import observe_service
 from src.logics.transaction_prototype import transaction_prototype
+from src.logics.turnover_service import turnover_service
 from src.processes.process_factory import process_factory
 from src.processes.wh_blocked_turnover_process import warehouse_blocked_turnover_process
 from src.processes.wh_turnover_process import warehouse_turnover_process
@@ -27,8 +28,9 @@ service = start_service(repository, manager)
 service.create()
 rep_factory = report_factory(manager)
 proc_factory = process_factory()
-
 nomenclature_serv = nomenclature_service(repository)
+
+turnover_serv = turnover_service(repository)
 
 
 @app.route("/api/reports/formats", methods=["GET"])
@@ -220,6 +222,25 @@ def delete_nomenclature():
         observe_service.raise_event(event_type.DELETE_NOMENCLATURE, data)
 
         return Response(f"Номенклатура успешно удалена", status=200)
+
+    except Exception as ex:
+        return Response(f"Ошибка на сервере: {str(ex)}", status=500)
+
+
+@app.route("/api/osv/<start_date>/<end_date>/<warehouse>", methods=["GET"])
+def get_osv_report(start_date, end_date, warehouse):
+    try:
+        if not start_date or not end_date or not warehouse:
+            return Response("Необходимо указать 'Дата начала', 'Дата окончания' и 'Склад'.", status=400)
+
+        turnover_data = turnover_serv.get_osv(start_date, end_date, warehouse)
+        print(turnover_data)
+        report = rep_factory.create_default()
+        print(report)
+
+        report.create(turnover_data)
+        print(report)
+        return report.result
 
     except Exception as ex:
         return Response(f"Ошибка на сервере: {str(ex)}", status=500)

@@ -39,16 +39,6 @@ class filter(abstract_reference):
 
     def from_json(self, data):
         """Метод для десериализации объекта filter из JSON."""
-        # try:
-        #     if 'name' in data:
-        #         self.name = data['name']
-        #     if 'id' in data:
-        #         self.id = data['id']
-        #     if 'filter_option' in data:
-        #         self.filter_option = filter_option[data.get('filter_option', 'LIKE').upper()]
-        #     return self
-        # except Exception as e:
-        #     raise f"{e}"
         validator.validate(data, dict)
         try:
             self.name = data.get('name', "")

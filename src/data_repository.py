@@ -18,9 +18,9 @@ class data_repository(abstract_logic):
         return self.__data
 
     @staticmethod
-    def group_key() -> str:
+    def group_nomenclature_key() -> str:
         """Ключ для хранения групп номенклатуры"""
-        return "group"
+        return "group_nomenclature"
 
     @staticmethod
     def nomenclature_key() -> str:
@@ -35,17 +35,17 @@ class data_repository(abstract_logic):
     @staticmethod
     def recipe_key() -> str:
         """Ключ для хранения рецептов"""
-        return "recipes"
+        return "recipe"
 
     @staticmethod
     def warehouse_key() -> str:
         """Ключ для хранения складов"""
-        return "warehouses"
+        return "warehouse"
 
     @staticmethod
     def transaction_key() -> str:
         """Ключ для хранения транзакций"""
-        return "transactions"
+        return "transaction"
 
     @staticmethod
     def blocked_turnover_key() -> str:

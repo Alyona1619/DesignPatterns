@@ -79,7 +79,7 @@ class TestNomenclatureService(unittest.TestCase):
         nomen = {
             "full_name": "Мук",
             "group": {
-                "unique_code": self.repository.data[data_repository.group_key()][1].unique_code,
+                "unique_code": self.repository.data[data_repository.group_nomenclature_key()][1].unique_code,
                 "name": "Сырье"
             },
             "unique_code": self.repository.data[data_repository.nomenclature_key()][0].unique_code,

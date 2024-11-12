@@ -37,7 +37,7 @@ class start_service(abstract_logic):
     def __create_nomenclature_groups(self):
         """Сформировать группы номенклатуры"""
         nglist = [group_nomenclature_model.default_group_cold(), group_nomenclature_model.default_group_source()]
-        self.__repository.data[data_repository.group_key()] = nglist
+        self.__repository.data[data_repository.group_nomenclature_key()] = nglist
 
     def __create_nomenclature(self):
         """Сформировать номенклатуру"""

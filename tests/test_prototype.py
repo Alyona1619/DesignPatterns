@@ -54,10 +54,10 @@ class test_prototype(unittest.TestCase):
         assert result.data[0] == item
 
     def test_prototype_group_eq(self):
-        if len(self.repository.data[data_repository.group_key()]) == 0:
+        if len(self.repository.data[data_repository.group_nomenclature_key()]) == 0:
             raise Exception("Нет данных!")
         # Подготовка
-        data = self.repository.data[data_repository.group_key()]
+        data = self.repository.data[data_repository.group_nomenclature_key()]
         item = data[0]
         item_filter = filter()
         item_filter.name = item.name
@@ -106,10 +106,10 @@ class test_prototype(unittest.TestCase):
         assert len(prototype.data) > 1
 
     def test_prototype_group_like(self):
-        if len(self.repository.data[data_repository.group_key()]) == 0:
+        if len(self.repository.data[data_repository.group_nomenclature_key()]) == 0:
             raise Exception("Нет данных!")
         # Подготовка
-        data = self.repository.data[data_repository.group_key()]
+        data = self.repository.data[data_repository.group_nomenclature_key()]
         item_filter = filter()
         item_filter.name = "ь"
         item_filter.name_filter_option = filter_option.LIKE

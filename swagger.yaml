@@ -43,7 +43,6 @@ paths:
             type: object
         500:
           description: Ошибка на сервере
-
         400:
           description: Ошибка ввода данных
         default:
@@ -70,7 +69,7 @@ paths:
       parameters:
         - name: category
           in: path
-          description: Наименование категории данных (nomenclature, group_nomenclature, range, recipe)
+          description: Наименование категории данных (nomenclature, group_nomenclature, range, recipe, warehouse)
           required: true
           type: string
         - name: body
@@ -343,7 +342,7 @@ paths:
       parameters:
         - name: body
           in: body
-          description: Фильтр для удаления номенклатуры
+          description: Удаление номенклатуры
           required: true
           schema:
             type: object
@@ -358,3 +357,35 @@ paths:
           description: Ошибка ввода данных
         500:
           description: Ошибка на сервере
+  /osv/{start_date}/{end_date}/{warehouse}:
+    get:
+      summary: Получить отчет по обороту за указанный период и склад
+      operationId: main.get_osv_report
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: start_date
+          in: path
+          description: Дата начала в формате 'YYYY-MM-DD'
+          required: true
+          type: string
+        - name: end_date
+          in: path
+          description: Дата конца в формате 'YYYY-MM-DD'
+          required: true
+          type: string
+        - name: warehouse
+          in: path
+          description: Идентификатор склада
+          required: true
+          type: string
+
+      responses:
+        200:
+          description: Успешное получение отчета по обороту
+        400:
+          description: Ошибка запроса. Необходимо указать дату начала, дату окончания и склад.
+        500:
+          description: Ошибка на сервере.
