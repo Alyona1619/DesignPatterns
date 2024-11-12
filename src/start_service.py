@@ -116,7 +116,7 @@ class start_service(abstract_logic):
 
         transactions = []
 
-        for _ in range(50000):
+        for _ in range(10):
             transaction = warehouse_transaction_model()
             transaction.warehouse = choice(warehouses)
             transaction.nomenclature = choice(nomenclature_list)
@@ -151,3 +151,4 @@ class start_service(abstract_logic):
 
     def handle_event(self, type: event_type, params):
         super().handle_event(type, params)
+

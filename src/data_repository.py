@@ -1,3 +1,5 @@
+import json
+
 from src.core.abstract_logic import abstract_logic
 from src.core.event_type import event_type
 
@@ -5,7 +7,8 @@ from src.core.event_type import event_type
 class data_repository(abstract_logic):
     """Репозиторий данных"""
     __data = {}
-    #instance: 'data_repository' = None
+
+    # instance: 'data_repository' = None
 
     def __new__(cls):
         if not hasattr(cls, 'instance'):
@@ -56,5 +59,22 @@ class data_repository(abstract_logic):
         """Перегрузка абстрактного метода"""
         self._inner_set_exception(ex)
 
-    def handle_event(self, type: event_type, params):
-        super().handle_event(type, params)
+    def handle_event(self, type: event_type, rep_factory):
+        super().handle_event(type, rep_factory)
+
+        if type == event_type.SAVE_DATA:
+            try:
+                all_reports = {}
+                for key, value in self.__data.items():
+                    if isinstance(value, list):
+                        report = rep_factory.create_default()
+                        report.create(value)
+                        all_reports[key] = report.result
+
+                with open("repository_data.json", "w", encoding="utf-8") as file:
+                    json.dump(all_reports, file, ensure_ascii=False, indent=2)
+            except Exception as ex:
+                print(f"Ошибка при сохранении данных: {str(ex)}")
+
+        if type == event_type.LOAD_DATA:
+            pass

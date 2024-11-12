@@ -17,6 +17,7 @@ class settings:
     __report_settings: dict = None
     __default_format: format_reporting = format_reporting.JSON
     __block_period: datetime
+    __first_start: bool = True
 
     @property
     def organization_name(self):
@@ -133,3 +134,12 @@ class settings:
 
         validator.validate(value, str, 12)
         self.__block_period = datetime.strptime(value, "%Y-%m-%d")
+
+    @property
+    def first_start(self):
+        return self.__first_start
+
+    @first_start.setter
+    def first_start(self, value: bool):
+        validator.validate(value, bool)
+        self.__first_start = value

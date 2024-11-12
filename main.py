@@ -23,7 +23,7 @@ app = connexion.FlaskApp(__name__)
 manager = settings_manager()
 manager.open("settings.json")
 repository = data_repository()
-repository.data[data_repository.blocked_turnover_key()] = {}
+repository.data[data_repository.blocked_turnover_key()] = []
 service = start_service(repository, manager)
 service.create()
 rep_factory = report_factory(manager)
@@ -81,6 +81,7 @@ def filter_data(category):
 
         prototype = model_prototype(repository.data[category]).create(repository.data[category], filter_obj)
         report = rep_factory.create_default()
+        print(prototype.data)
         report.create(prototype.data)
 
         return report.result
@@ -234,16 +235,36 @@ def get_osv_report(start_date, end_date, warehouse):
             return Response("Необходимо указать 'Дата начала', 'Дата окончания' и 'Склад'.", status=400)
 
         turnover_data = turnover_serv.get_osv(start_date, end_date, warehouse)
-        print(turnover_data)
         report = rep_factory.create_default()
-        print(report)
 
         report.create(turnover_data)
-        print(report)
         return report.result
 
     except Exception as ex:
         return Response(f"Ошибка на сервере: {str(ex)}", status=500)
+
+
+@app.route("/api/save_data", methods=["POST"])
+def save_data():
+    try:
+
+        observe_service.raise_event(event_type.SAVE_DATA, rep_factory)
+
+        return Response("Данные успешно сохранены в файл.", status=200)
+
+    except Exception as ex:
+        return Response(f"Ошибка при сохранении данных: {str(ex)}", status=500)
+
+
+@app.route("/api/load_data", methods=["POST"])
+def load_data():
+    try:
+        observe_service.raise_event(event_type.LOAD_DATA, None)
+
+        return Response("Данные успешно восстановлены из файла.", status=200)
+
+    except Exception as ex:
+        return Response(f"Ошибка при восстановлении данных: {str(ex)}", status=500)
 
 
 if __name__ == '__main__':

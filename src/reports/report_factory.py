@@ -47,3 +47,8 @@ class report_factory(abstract_logic):
 
     def handle_event(self, type: event_type, params):
         super().handle_event(type, params)
+
+        if type == event_type.SAVE_DATA:
+            pass
+        if type == event_type.LOAD_DATA:
+            pass

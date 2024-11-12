@@ -63,6 +63,7 @@ class settings_manager(abstract_logic):
         data.bik = "123456789"
         data.ownership_type = "ООООО"
         data.block_period = datetime.now().date().isoformat()
+        data.first_start = True
 
         return data
 
@@ -90,7 +91,8 @@ class settings_manager(abstract_logic):
             "ownership_type": self.__settings.ownership_type,
             "report_settings": self.__settings.report_settings,
             "default_format": self.__settings.default_format.value,
-            "block_period": self.__settings.block_period.strftime("%Y-%m-%d")
+            "block_period": self.__settings.block_period.strftime("%Y-%m-%d"),
+            "first_start": self.__settings.first_start
         }
 
         try:
@@ -107,4 +109,8 @@ class settings_manager(abstract_logic):
         super().handle_event(type, params)
 
         if type == event_type.CHANGE_BLOCK_PERIOD:
+            self.save_settings()
+
+        if type == event_type.SAVE_DATA:
+            self.current_settings.first_start = False
             self.save_settings()

@@ -388,4 +388,55 @@ paths:
         400:
           description: Ошибка запроса. Необходимо указать дату начала, дату окончания и склад.
         500:
-          description: Ошибка на сервере.
+          description: Ошибка на сервере
+  /save_data:
+    post:
+      summary: Сохранить данные в файл
+      operationId: main.save_data
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Данные успешно сохранены в файл
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: "Данные успешно сохранены в файл."
+        500:
+          description: Ошибка при сохранении данных
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: "Ошибка при сохранении данных: <описание ошибки>"
+
+  /load_data:
+    post:
+      summary: Загрузить данные из файла
+      operationId: main.load_data
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Данные успешно восстановлены из файла
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: "Данные успешно восстановлены из файла."
+        500:
+          description: Ошибка при восстановлении данных
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: "Ошибка при восстановлении данных: <описание ошибки>"
