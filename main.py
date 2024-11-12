@@ -2,10 +2,13 @@ import connexion
 from flask import Response
 from flask import request
 
+from src.core.event_type import event_type
 from src.core.format_reporting import format_reporting
 from src.data_repository import data_repository
 from src.deserializers.json_deserializer import JsonDeserializer
 from src.logics.model_prototype import model_prototype
+from src.logics.nomenclature_service import nomenclature_service
+from src.logics.observe_service import observe_service
 from src.logics.transaction_prototype import transaction_prototype
 from src.processes.process_factory import process_factory
 from src.processes.wh_blocked_turnover_process import warehouse_blocked_turnover_process
@@ -19,10 +22,13 @@ app = connexion.FlaskApp(__name__)
 manager = settings_manager()
 manager.open("settings.json")
 repository = data_repository()
+repository.data[data_repository.blocked_turnover_key()] = {}
 service = start_service(repository, manager)
 service.create()
 rep_factory = report_factory(manager)
 proc_factory = process_factory()
+
+nomenclature_serv = nomenclature_service(repository)
 
 
 @app.route("/api/reports/formats", methods=["GET"])
@@ -117,7 +123,7 @@ def get_warehouse_turnover():
         prototype = transaction_prototype(t_data).create(t_data, filter_obj)
 
         proc_factory.register_process(warehouse_turnover_process)
-        process_class = proc_factory.get_process('warehouse_turnover_process')
+        process_class = proc_factory.get_process('warehouse_turnover_process', manager)
 
         turnovers = process_class.process(prototype.data)
 
@@ -130,13 +136,13 @@ def get_warehouse_turnover():
         return Response(f"Ошибка на сервере: {str(ex)}", 500)
 
 
-@app.route('/settings/block_period', methods=['GET'])
+@app.route('/api/settings/block_period', methods=['GET'])
 def get_block_period():
     block_period = manager.get_block_period_str()
     return Response(f"block_period: {block_period}")
 
 
-@app.route('/settings/new_block_period', methods=['POST'])
+@app.route('/api/settings/new_block_period', methods=['POST'])
 def set_block_period():
     try:
         data = request.get_json()
@@ -146,19 +152,74 @@ def set_block_period():
             return Response("Дата блокировки не указана!", status=400)
 
         manager.current_settings.block_period = new_block_period
-        manager.save_settings()
+        observe_service.raise_event(event_type.CHANGE_BLOCK_PERIOD, None)
 
-        blocked_turnover_process = warehouse_blocked_turnover_process(manager)
         transactions = repository.data[data_repository.transaction_key()]
         if not transactions:
             return Response("Нет транзакций для пересчета.", status=400)
-        blocked_turnovers = blocked_turnover_process.process(transactions)
 
+        proc_factory.register_process(warehouse_blocked_turnover_process)
+        process_class = proc_factory.get_process('warehouse_blocked_turnover_process', manager)
+
+        blocked_turnovers = process_class.process(transactions)
         repository.data[data_repository.blocked_turnover_key()] = blocked_turnovers
 
         return Response(f"Дата блокировки успешно обновлена. new_block_period: {new_block_period}."
                         f"Заблокированные обороты пересчитаны помещены в репозиторий данных: {len(blocked_turnovers)}",
                         status=200)
+
+    except Exception as ex:
+        return Response(f"Ошибка на сервере: {str(ex)}", status=500)
+
+
+@app.route("/api/nomenclature/<id>", methods=["GET"])
+def get_nomenclature(id):
+    try:
+        nomen = nomenclature_serv.get_nomenclature(id)
+
+        report = rep_factory.create_default()
+        report.create(nomen.data)
+
+        return report.result
+
+    except Exception as ex:
+        return Response(f"Ошибка на сервере: {str(ex)}", status=500)
+
+
+@app.route("/api/nomenclature", methods=["PUT"])
+def add_nomenclature():
+    try:
+        data = request.get_json()
+
+        new_nomenclature = nomenclature_serv.add_nomenclature(data)
+
+        return Response(f"Номенклатура успешно добавлена: {new_nomenclature}", status=200)
+
+    except Exception as ex:
+        return Response(f"Ошибка на сервере: {str(ex)}", status=500)
+
+
+@app.route("/api/nomenclature", methods=["PATCH"])
+def update_nomenclature():
+    try:
+        data = request.get_json()
+
+        observe_service.raise_event(event_type.CHANGE_NOMENCLATURE, data)
+
+        return Response(f"Номенклатура успешно обновлена", status=200)
+
+    except Exception as ex:
+        return Response(f"Ошибка на сервере: {str(ex)}", status=500)
+
+
+@app.route("/api/nomenclature", methods=["DELETE"])
+def delete_nomenclature():
+    try:
+        data = request.get_json()
+
+        observe_service.raise_event(event_type.DELETE_NOMENCLATURE, data)
+
+        return Response(f"Номенклатура успешно удалена", status=200)
 
     except Exception as ex:
         return Response(f"Ошибка на сервере: {str(ex)}", status=500)

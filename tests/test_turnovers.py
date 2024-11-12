@@ -13,6 +13,7 @@ class TestWarehouseTurnover(unittest.TestCase):
 
     def setUp(self):
         self.reposity = data_repository()
+        self.reposity.data[data_repository.blocked_turnover_key()] = {}
         self.manager = settings_manager()
         self.service = start_service(self.reposity, self.manager)
         self.service.create()

@@ -1,5 +1,5 @@
 from src.core.validator import validator
-from src.dto.filter_options import filter_option
+from src.core.filter_options import filter_option
 
 
 class filter_by_option:

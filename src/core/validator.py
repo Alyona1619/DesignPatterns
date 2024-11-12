@@ -28,15 +28,20 @@ class validator:
         """
 
         if value is None:
-            raise argument_exception("Пустой аргумент")
+            raise argument_exception(f"Пустой аргумент {type(value)}")
 
         # Проверка типа
-        if not isinstance(value, type_):
-            raise argument_exception("Некорректный тип")
+        # if not isinstance(value, type_):
+        #     raise argument_exception("Некорректный тип")
+        if isinstance(type_, type):
+            if not isinstance(value, type_):
+                raise argument_exception(f"Некорректный тип. Ожидался {type_}, получен {type(value)}.")
+        else:
+            raise argument_exception("Передан некорректный тип для проверки.")
 
         # Проверка аргумента
         if len(str(value).strip()) == 0:
-            raise argument_exception("Пустой аргумент")
+            raise argument_exception(f"Пустой аргумент {type(value)}")
 
         if len_ is not None and len(str(value).strip()) >= len_:
             raise argument_exception("Некорректная длина аргумента")

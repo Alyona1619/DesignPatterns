@@ -1,6 +1,6 @@
 import unittest
 
-from src.dto.filter_options import filter_option
+from src.core.filter_options import filter_option
 from src.logics.model_prototype import model_prototype
 from src.dto.filter import filter
 from src.data_repository import data_repository
@@ -161,7 +161,7 @@ class test_prototype(unittest.TestCase):
         data = self.repository.data[data_repository.nomenclature_key()]
         item = data[0]
         item_filter = filter()
-        item_filter.id = str(item.unique_code)
+        item_filter.id = item.unique_code
         prototype = model_prototype(data)
 
         # Действие

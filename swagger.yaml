@@ -249,5 +249,112 @@ paths:
           description: Дата блокировки не указана или формат даты неверен
         500:
           description: Ошибка на сервере
+  /nomenclature/{id}:
+    get:
+      summary: Получить номенклатуру
+      operationId: main.get_nomenclature
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: id
+          in: path
+          description: Уникальный идентификатор номенклатуры
+          required: true
+          type: string
+      responses:
+        200:
+          description: Данные успешно отфильтрованы
+        400:
+          description: Ошибка ввода данных
+        500:
+          description: Ошибка на сервере
+        default:
+          description: Неизвестная ошибка
+  /nomenclature:
+    put:
+      summary: Добавить новую номенклатуру
+      operationId: main.add_nomenclature
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: nomenclature
+          in: body
+          description: Данные для добавления новой номенклатуры
+          required: true
+          schema:
+            type: object
+            properties:
+              full_name:
+                type: string
+              group:
+                type: object
+              unit:
+                type: object
+      responses:
+        200:
+          description: Номенклатура успешно добавлена
+        400:
+          description: Ошибка ввода данных
+        500:
+          description: Ошибка на сервере
 
+    patch:
+      summary: Обновить существующую номенклатуру
+      operationId: main.update_nomenclature
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: body
+          in: body
+          description: Данные для обновления номенклатуры
+          required: true
+          schema:
+            type: object
+            properties:
+              unique_code:
+                type: string
+              full_name:
+                type: string
+              group_id:
+                type: string
+              unit_id:
+                type: string
+      responses:
+        200:
+          description: Номенклатура успешно обновлена
+        400:
+          description: Ошибка ввода данных
+        500:
+          description: Ошибка на сервере
 
+    delete:
+      summary: Удалить номенклатуру
+      operationId: main.delete_nomenclature
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: body
+          in: body
+          description: Фильтр для удаления номенклатуры
+          required: true
+          schema:
+            type: object
+            properties:
+              unique_code:
+                type: string
+                description: Код номенклатуры
+      responses:
+        200:
+          description: Номенклатура успешно удалена
+        400:
+          description: Ошибка ввода данных
+        500:
+          description: Ошибка на сервере

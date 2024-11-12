@@ -1,4 +1,6 @@
 from abc import ABC, abstractmethod
+
+from src.core.event_type import event_type
 from src.core.validator import validator
 
 
@@ -26,3 +28,8 @@ class abstract_logic(ABC):
     def set_exception(self, ex: Exception):  # pragma: no cover
         """Абстрактный метод для загрузки и обработки исключений"""
         pass
+
+    @abstractmethod
+    def handle_event(self, type: event_type, params):
+        """Обработка"""
+        validator.validate(type, event_type)

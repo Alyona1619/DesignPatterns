@@ -14,10 +14,11 @@ class warehouse_turnover_process(abstract_process):
         self.block_period = sttngmngr.get_block_period_date() if sttngmngr else datetime.now()
 
     def process(self, transactions: list[warehouse_transaction_model]) -> list[warehouse_turnover_model]:
-        turnovers_data = {}
 
-        storage = data_repository()
-        blocked_turnovers = storage.data[data_repository.blocked_turnover_key()]
+        turnovers_data = {}
+        repository = data_repository()
+
+        blocked_turnovers = repository.data[data_repository.blocked_turnover_key()]
 
         for transaction in transactions:
             if transaction.period >= self.block_period:

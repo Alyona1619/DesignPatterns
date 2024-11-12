@@ -13,8 +13,9 @@ class warehouse_blocked_turnover_process(abstract_process):
 
     def process(self, transactions: list):
 
-        storage = data_repository()
-        existing_turnovers = storage.data[data_repository.blocked_turnover_key()]
+        repository = data_repository()
+
+        existing_turnovers = repository.data[data_repository.blocked_turnover_key()]
         turnovers_data = existing_turnovers.copy()
 
         for transaction in transactions:
@@ -36,7 +37,6 @@ class warehouse_blocked_turnover_process(abstract_process):
             elif transaction.transaction_type == transaction_type.EXPENDITURE:
                 turnovers_data[key].turnover -= transaction.quantity
 
-        storage = data_repository()
-        storage.data[data_repository.blocked_turnover_key()] = turnovers_data
+        repository.data[data_repository.blocked_turnover_key()] = turnovers_data
 
         return turnovers_data

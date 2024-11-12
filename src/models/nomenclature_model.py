@@ -3,11 +3,9 @@ from src.core.custom_exception import argument_exception
 from src.models.group_nomenclature_model import group_nomenclature_model
 from src.models.range_model import range_model
 
-"""
-Модель номенклатуры
-"""
 
 class nomenclature_model(abstract_reference):
+    """Модель номенклатуры"""
     __full_name: str = ''
     __group: group_nomenclature_model = None
     __unit: range_model = None
@@ -62,9 +60,7 @@ class nomenclature_model(abstract_reference):
     #     return nomenclature_instance
 
     def from_json(self, data):
-        print("Данные для десериализации:", data)
         self.full_name = data.get('full_name', '')
-        print("Вытащили fullname:", self.full_name)
         self.group = group_nomenclature_model().from_json(data['group'])
         self.unit = range_model().from_json(data['unit'])
         return self

@@ -1,7 +1,6 @@
-from src.core.abstract_logic import abstract_logic
 from src.core.abstract_reference import abstract_reference
 from src.core.validator import validator
-from src.dto.filter_options import filter_option
+from src.core.filter_options import filter_option
 
 
 class filter(abstract_reference):
@@ -15,7 +14,8 @@ class filter(abstract_reference):
 
     @name.setter
     def name(self, value: str):
-        validator.validate(value, str, 255)
+        if value:
+            validator.validate(value, str, 255)
         self.__name = value
 
     @property
@@ -24,12 +24,13 @@ class filter(abstract_reference):
 
     @id.setter
     def id(self, value: str):
-        validator.validate(value, str, 36)
+        if value:
+            validator.validate(value, str, 37)
         self.__id = value
 
     @property
     def filter_option(self) -> filter_option:
-        return self.filter_option
+        return self.__filter_option
 
     @filter_option.setter
     def filter_option(self, value: filter_option):
@@ -38,10 +39,21 @@ class filter(abstract_reference):
 
     def from_json(self, data):
         """Метод для десериализации объекта filter из JSON."""
+        # try:
+        #     if 'name' in data:
+        #         self.name = data['name']
+        #     if 'id' in data:
+        #         self.id = data['id']
+        #     if 'filter_option' in data:
+        #         self.filter_option = filter_option[data.get('filter_option', 'LIKE').upper()]
+        #     return self
+        # except Exception as e:
+        #     raise f"{e}"
+        validator.validate(data, dict)
         try:
             self.name = data.get('name', "")
             self.id = data.get('id', "")
-            self.filter_option = filter_option[data.get('filter_option', '').upper()]
+            self.filter_option = filter_option[data.get('filter_option', 'LIKE').upper()]
             return self
         except Exception as e:
             raise e
