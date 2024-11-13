@@ -86,4 +86,12 @@ class warehouse_transaction_model(abstract_reference):
         super().set_compare_mode(other_object)
 
     def from_json(self, data):
-        pass
+        self.warehouse = warehouse_model().from_json(data['warehouse'])
+        self.nomenclature = nomenclature_model().from_json(data['nomenclature'])
+        self.quantity = data.get('quantity', 0.0)
+        self.range = range_model().from_json(data['range'])
+        self.period = datetime.strptime(data['period'],
+                                        '%Y-%m-%dT%H:%M:%S') if 'period' in data else None
+        self.transaction_type = transaction_type[
+            data['transaction_type']] if 'transaction_type' in data else None
+        return self
