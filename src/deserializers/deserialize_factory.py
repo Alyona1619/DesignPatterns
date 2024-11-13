@@ -1,11 +1,12 @@
 from src.core.abstract_reference import abstract_reference
+from src.core.base_models import base_model_name
 from src.core.validator import argument_exception
 
 
 class DeserializeFactory:
     @staticmethod
     def get_deserializer(data_type):
-        subclasses = abstract_reference.__subclasses__()
+        subclasses = abstract_reference.__subclasses__() + base_model_name.__subclasses__()
         deserializer_map = {
             cls.__name__.lower(): cls for cls in subclasses
         }
@@ -14,6 +15,3 @@ class DeserializeFactory:
             return deserializer_map[data_type]
         else:
             raise argument_exception(f"Неизвестный тип данных для десериализации: {data_type}")
-
-
-

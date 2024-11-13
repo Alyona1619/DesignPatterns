@@ -1,4 +1,3 @@
-import enum
 import json
 from datetime import datetime, timedelta
 from random import choice, uniform, randint
@@ -9,6 +8,7 @@ from src.core.format_reporting import format_reporting
 from src.core.transaction_type import transaction_type
 from src.core.validator import validator
 from src.data_repository import data_repository
+from src.deserializers.json_deserializer import JsonDeserializer
 from src.logics.observe_service import observe_service
 from src.models.group_nomenclature_model import group_nomenclature_model
 from src.models.ingredient import ingredient
@@ -108,8 +108,6 @@ class start_service(abstract_logic):
         меньше и их получится больше. 9. Пеките вафли несколько минут до золотистого цвета. Осторожно откройте 
         вафельницу, она очень горячая! Снимите вафлю лопаткой. Горячая она очень мягкая, как блинчик. '''
 
-        # self.__repository.data[data_repository.recipe_key()] = recipe
-
         recipe_list.append(recipe)
         self.__repository.data[data_repository.recipe_key()] = recipe_list
 
@@ -186,5 +184,48 @@ class start_service(abstract_logic):
             print(f"Ошибка при сохранении данных (strt_srv): {str(ex)}")
 
     def __load_data(self):
-        pass
+        """Загрузить данные из data_repository.json в репозиторий данных."""
+        try:
+            with open(self.__data_file, "r", encoding="utf-8") as file:
+                data = json.load(file)
 
+                # Инициализируем данные в репозитории
+                self.__repository.data[data_repository.blocked_turnover_key()] = [
+                    JsonDeserializer.deserialize(item, 'blocked_turnover_model') for item in
+                    data.get("blocked_turnover", [])
+                ]
+
+                self.__repository.data[data_repository.group_nomenclature_key()] = [
+                    JsonDeserializer.deserialize(item, 'group_nomenclature_model') for item in
+                    data.get("group_nomenclature", [])
+                ]
+
+                self.__repository.data[data_repository.range_key()] = [
+                    JsonDeserializer.deserialize(item, 'range_model') for item in data.get("range", [])
+                ]
+
+                self.__repository.data[data_repository.nomenclature_key()] = [
+                    JsonDeserializer.deserialize(item, 'nomenclature_model') for item in data.get("nomenclature", [])
+                ]
+
+                self.__repository.data[data_repository.recipe_key()] = [
+                    JsonDeserializer.deserialize(item, 'recipe_model') for item in data.get("recipe", [])
+                ]
+
+                self.__repository.data[data_repository.warehouse_key()] = [
+                    JsonDeserializer.deserialize(item, 'warehouse_model') for item in data.get("warehouse", [])
+                ]
+
+                self.__repository.data[data_repository.transaction_key()] = [
+                    JsonDeserializer.deserialize(item, 'warehouse_transaction_model') for item in
+                    data.get("transaction", [])
+                ]
+
+            print("Данные успешно загружены в репозиторий.")
+
+        except FileNotFoundError:
+            print(f"Файл {self.__data_file} не найден.")
+        except json.JSONDecodeError:
+            print("Ошибка декодирования JSON.")
+        except Exception as ex:
+            print(f"Ошибка при загрузке данных: {ex}")
