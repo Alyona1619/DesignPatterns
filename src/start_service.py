@@ -170,28 +170,16 @@ class start_service(abstract_logic):
 
     def __save_data(self):
         rep_factory = report_factory(self.__settings_manager)
-        print("rep_factory ", rep_factory)
         report = rep_factory.create(format_reporting.JSON)
-        print("report ", report)
         try:
             all_reports = {}
-            print("all_reports ", all_reports)
-            print("self.__repository.data.items() ", self.__repository.data.items())
             for key, value in self.__repository.data.items():
-                print("key ", key)
-                print("value ", value)
                 if isinstance(value, list):
                     if not value:
-                        all_reports[key] = []  # Если нужно сохранить ключ с пустым значением
+                        all_reports[key] = []
                         continue
-
-                    # if all(isinstance(item, warehouse_transaction_model) for item in value):
-                    #     continue
-
                     report.create(value)
-                    print("report.create(value)")
                     all_reports[key] = json.loads(report.result)
-                    print("report.result ", report.result)
             with open(self.__data_file, "w", encoding="utf-8") as file:
                 json.dump(all_reports, file, ensure_ascii=False, indent=2)
         except Exception as ex:
