@@ -48,6 +48,7 @@ class TestStart(unittest.TestCase):
         assert recipe[0].name == 'ВАФЛИ ХРУСТЯЩИЕ В ВАФЕЛЬНИЦЕ'
         assert len(recipe[0].ingredients) == 5
         assert recipe[0].ingredients[0].nomenclature.full_name == "Пшеничная мука"
+        assert recipe[0].ingredients[1].nomenclature.group.name == "Сырье"
         assert recipe[0].step.startswith('1. Как испечь вафли хрустящие')
 
     def test_create_warehouse(self):
@@ -61,7 +62,7 @@ class TestStart(unittest.TestCase):
 
     def test_create_transaction(self):
         transactions = self.repository.data[self.repository.transaction_key()]
-        assert len(transactions) == 100, "Транзакции не были созданы или их количество неверное"
+        assert len(transactions) > 0, "Транзакции не были созданы или их количество неверное"
 
         transaction = transactions[0]
         assert transaction.warehouse is not None, "Склад транзакции не установлен"

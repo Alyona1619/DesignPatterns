@@ -3,11 +3,11 @@
   "group_nomenclature": [
     {
       "name": "Заморозка",
-      "unique_code": "703782e5-1d1e-4d89-8157-0a0402dee44e"
+      "unique_code": "e6a4d178-fd79-483b-9c83-1f4d9a7b079f"
     },
     {
       "name": "Сырье",
-      "unique_code": "0436c039-0b3a-42ad-a955-6b2bc12cedca"
+      "unique_code": "4ac179d1-ec37-41b0-ae96-0bbedd00eb5c"
     }
   ],
   "range": [
@@ -15,13 +15,13 @@
       "base": null,
       "coef": 1,
       "name": "грамм",
-      "unique_code": "3e34fa98-f885-4ce1-9b56-6e5049b7ff1d"
+      "unique_code": "b26c5080-9a57-4976-a7d8-3edb3b9dc467"
     },
     {
       "base": null,
       "coef": 1,
       "name": "штука",
-      "unique_code": "beb5b4ed-84aa-4a90-9091-0669b7a03c8e"
+      "unique_code": "4086ccc0-0996-4b2b-890d-2e31a35ca728"
     }
   ],
   "nomenclature": [
@@ -29,30 +29,30 @@
       "full_name": "Мука пшеничная",
       "group": {
         "name": "Сырье",
-        "unique_code": "dc3c4f51-9743-4cfb-80f8-b608e280e737"
+        "unique_code": "7b1608d2-9118-4254-82a0-f75087047c17"
       },
       "name": "",
-      "unique_code": "e2de2138-116c-45ff-8810-fc449bf631a1",
+      "unique_code": "5aed5b15-1c3e-47b0-b981-c51cf6afb0c4",
       "unit": {
         "base": null,
         "coef": 1,
         "name": "грамм",
-        "unique_code": "3cd76571-bac0-4759-a953-6c3f43246001"
+        "unique_code": "3f6295c6-9e93-4457-8624-ecf8c9535e37"
       }
     },
     {
       "full_name": "Сахар",
       "group": {
         "name": "Сырье",
-        "unique_code": "dc3c4f51-9743-4cfb-80f8-b608e280e737"
+        "unique_code": "7b1608d2-9118-4254-82a0-f75087047c17"
       },
       "name": "",
-      "unique_code": "4feda256-77fe-45d7-bceb-307bca6c6b78",
+      "unique_code": "4af9e58d-f372-492a-af42-71e85ffa527c",
       "unit": {
         "base": null,
         "coef": 1,
         "name": "грамм",
-        "unique_code": "3cd76571-bac0-4759-a953-6c3f43246001"
+        "unique_code": "3f6295c6-9e93-4457-8624-ecf8c9535e37"
       }
     }
   ],
@@ -65,138 +65,150 @@
             "full_name": "Пшеничная мука",
             "group": {
               "name": "Сырье",
-              "unique_code": "c5b3bf9a-a288-47b6-9b6b-edc207062e80"
+              "unique_code": "ac90bf2e-e554-498c-8593-c45604db6dd7"
             },
             "name": "",
-            "unique_code": "2d607d4b-fcb5-4a8b-8045-27d9f265cc41",
+            "unique_code": "5f84b7db-bdc1-460a-a3bb-51335330fd73",
             "unit": {
               "base": null,
               "coef": 1,
               "name": "грамм",
-              "unique_code": "63fb6987-02dc-43c2-b2ce-11928896271e"
+              "unique_code": "f2887f7e-81f7-4762-9124-15dc76d9cd12"
             }
           },
-          "unique_code": "fc520f59-5de7-4d06-936a-52778c71bf0e",
+          "unique_code": "1fc5f072-79bc-4750-a168-f39e92b2f0ea",
           "value": 100
         },
         {
           "name": "",
           "nomenclature": {
             "full_name": "Сахар",
-            "group": {},
+            "group": {
+              "name": "Сырье",
+              "unique_code": "ac90bf2e-e554-498c-8593-c45604db6dd7"
+            },
             "name": "",
-            "unique_code": "1bf1e4bb-3bc5-4c86-983f-68e43dc19da0",
+            "unique_code": "b0052a2c-b091-4ff0-9520-0719c9f95954",
             "unit": {
               "base": null,
               "coef": 1,
               "name": "грамм",
-              "unique_code": "8e5a03ba-1126-4b3c-97ed-ac3c5a4905d1"
+              "unique_code": "896cd688-1d1c-4ad0-8d9b-ed96836bad2c"
             }
           },
-          "unique_code": "a162b20f-4d71-4348-af0c-867ec5853d34",
+          "unique_code": "1dff1ef9-49b2-413c-bd09-9b354fbe93f6",
           "value": 80
         },
         {
           "name": "",
           "nomenclature": {
             "full_name": "Сливочное масло",
-            "group": {},
+            "group": {
+              "name": "Сырье",
+              "unique_code": "ac90bf2e-e554-498c-8593-c45604db6dd7"
+            },
             "name": "",
-            "unique_code": "1def74c8-942d-49f7-8068-1733b79d61ca",
+            "unique_code": "71360552-3991-493f-97f9-de9102f6a3c7",
             "unit": {
               "base": null,
               "coef": 1,
               "name": "грамм",
-              "unique_code": "25b30215-a678-4194-a5c5-4b3e6c5aac63"
+              "unique_code": "996319e8-ed8a-44fd-a330-b6d26e3f90c4"
             }
           },
-          "unique_code": "6a97b622-de7c-4e52-a9af-d3fcee99b1c3",
+          "unique_code": "100310dc-1994-4648-96f9-c373d7382f64",
           "value": 70
         },
         {
           "name": "",
           "nomenclature": {
             "full_name": "Яйца",
-            "group": {},
+            "group": {
+              "name": "Сырье",
+              "unique_code": "ac90bf2e-e554-498c-8593-c45604db6dd7"
+            },
             "name": "",
-            "unique_code": "f6fb63d1-6f72-4285-ac4a-191f8d3363dc",
+            "unique_code": "c726c2ea-e4c3-48ab-bff1-e41adc7418fb",
             "unit": {
               "base": null,
               "coef": 1,
               "name": "штука",
-              "unique_code": "68e99364-2891-44eb-b0f9-3c7329e6f47b"
+              "unique_code": "b5fd03c2-4713-4470-9e48-1e8191c12717"
             }
           },
-          "unique_code": "ca842d35-3217-461e-8cf4-92d51f382c7e",
+          "unique_code": "7b7b74a7-4e8a-4c1b-901a-3cc7135349e8",
           "value": 1
         },
         {
           "name": "",
           "nomenclature": {
             "full_name": "Ванилин",
-            "group": {},
+            "group": {
+              "name": "Сырье",
+              "unique_code": "ac90bf2e-e554-498c-8593-c45604db6dd7"
+            },
             "name": "",
-            "unique_code": "ad287f02-8703-4e79-a5fc-8afe36f14e60",
+            "unique_code": "47b71b2e-0854-4d40-93ad-ec3206d54e01",
             "unit": {
               "base": null,
               "coef": 1,
               "name": "грамм",
-              "unique_code": "ee1660ca-eda4-405f-bf88-360c4ad63608"
+              "unique_code": "8da181c3-0719-4825-88d5-7c0c64af6c75"
             }
           },
-          "unique_code": "a93f18e5-5827-4eee-b878-32ac64e95221",
+          "unique_code": "f6fd3436-c1fe-46f2-bf76-24a7498f3263",
           "value": 5
         }
       ],
       "name": "ВАФЛИ ХРУСТЯЩИЕ В ВАФЕЛЬНИЦЕ",
       "step": "1. Как испечь вафли хрустящие в вафельнице? Подготовьте необходимые продукты. Из данного \n        количества у меня получилось 8 штук диаметром около 10 см. 2. Масло положите в сотейник с толстым дном. \n        Растопите его на маленьком огне на плите, на водяной бане либо в микроволновке. 3. Добавьте в теплое масло \n        сахар. Перемешайте венчиком до полного растворения сахара. От тепла сахар довольно быстро растает. 4. \n        Добавьте в масло яйцо. Предварительно все-таки проверьте масло, не горячее ли оно, иначе яйцо может \n        свариться. Перемешайте яйцо с маслом до однородности. 5. Всыпьте муку, добавьте ванилин. 6. Перемешайте массу \n        венчиком до состояния гладкого однородного теста. 7. Разогрейте вафельницу по инструкции к ней. У меня очень \n        старая, еще советских времен электровафельница. Она может и не очень красивая, но печет замечательно! Я не \n        смазываю вафельницу маслом, в тесте достаточно жира, да и к ней уже давно ничего не прилипает. Но вы смотрите \n        по своей модели. Выкладывайте тесто по столовой ложке. Можно класть немного меньше теста, тогда вафли будут \n        меньше и их получится больше. 9. Пеките вафли несколько минут до золотистого цвета. Осторожно откройте \n        вафельницу, она очень горячая! Снимите вафлю лопаткой. Горячая она очень мягкая, как блинчик. ",
-      "unique_code": "30df06a0-a0a1-4a6c-abce-83da92027ff3"
+      "unique_code": "6c266e4f-d6e8-474f-a5c9-93e109ae04ca"
     }
   ],
   "warehouse": [
     {
       "address": "Россия",
       "name": "WH1",
-      "unique_code": "dc607f80-4e77-4a26-8fa4-b1d739bbcb89"
+      "unique_code": "81975803-b083-4b22-a279-7fc68ed5fac6"
     },
     {
       "address": "США",
       "name": "WH2",
-      "unique_code": "29ed6ab7-066a-42bc-9a52-5b7315fd45b0"
+      "unique_code": "7c463445-c16e-4afc-a4fa-7c35548e6e39"
     }
   ],
   "transaction": [
     {
       "name": "",
       "nomenclature": {
-        "full_name": "Сахар",
+        "full_name": "Мука пшеничная",
         "group": {
           "name": "Сырье",
-          "unique_code": "dc3c4f51-9743-4cfb-80f8-b608e280e737"
+          "unique_code": "7b1608d2-9118-4254-82a0-f75087047c17"
         },
         "name": "",
-        "unique_code": "4feda256-77fe-45d7-bceb-307bca6c6b78",
+        "unique_code": "5aed5b15-1c3e-47b0-b981-c51cf6afb0c4",
         "unit": {
           "base": null,
           "coef": 1,
           "name": "грамм",
-          "unique_code": "3cd76571-bac0-4759-a953-6c3f43246001"
+          "unique_code": "3f6295c6-9e93-4457-8624-ecf8c9535e37"
         }
       },
-      "period": "2024-11-05",
-      "quantity": 64.19,
+      "period": "2023-12-24",
+      "quantity": 4.16,
       "range": {
         "base": null,
         "coef": 1,
-        "name": "грамм",
-        "unique_code": "3e34fa98-f885-4ce1-9b56-6e5049b7ff1d"
+        "name": "штука",
+        "unique_code": "4086ccc0-0996-4b2b-890d-2e31a35ca728"
       },
-      "transaction_type": "RECEIPT",
-      "unique_code": "0e54ab88-dad0-48ea-8830-8ef8b5999682",
+      "transaction_type": "EXPENDITURE",
+      "unique_code": "712fde6a-6fbc-4f10-be5a-fb82fcf51bd7",
       "warehouse": {
         "address": "Россия",
         "name": "WH1",
-        "unique_code": "dc607f80-4e77-4a26-8fa4-b1d739bbcb89"
+        "unique_code": "81975803-b083-4b22-a279-7fc68ed5fac6"
       }
     },
     {
@@ -205,31 +217,31 @@
         "full_name": "Сахар",
         "group": {
           "name": "Сырье",
-          "unique_code": "dc3c4f51-9743-4cfb-80f8-b608e280e737"
+          "unique_code": "7b1608d2-9118-4254-82a0-f75087047c17"
         },
         "name": "",
-        "unique_code": "4feda256-77fe-45d7-bceb-307bca6c6b78",
+        "unique_code": "4af9e58d-f372-492a-af42-71e85ffa527c",
         "unit": {
           "base": null,
           "coef": 1,
           "name": "грамм",
-          "unique_code": "3cd76571-bac0-4759-a953-6c3f43246001"
+          "unique_code": "3f6295c6-9e93-4457-8624-ecf8c9535e37"
         }
       },
-      "period": "2024-08-22",
-      "quantity": 16.94,
+      "period": "2024-07-08",
+      "quantity": 57.4,
       "range": {
         "base": null,
         "coef": 1,
         "name": "грамм",
-        "unique_code": "3e34fa98-f885-4ce1-9b56-6e5049b7ff1d"
+        "unique_code": "b26c5080-9a57-4976-a7d8-3edb3b9dc467"
       },
       "transaction_type": "EXPENDITURE",
-      "unique_code": "c63141da-6b2d-45da-aa4a-c596397998a4",
+      "unique_code": "ff4b7e94-e65b-44cc-9c9d-b54fbda28c8f",
       "warehouse": {
         "address": "Россия",
         "name": "WH1",
-        "unique_code": "dc607f80-4e77-4a26-8fa4-b1d739bbcb89"
+        "unique_code": "81975803-b083-4b22-a279-7fc68ed5fac6"
       }
     },
     {
@@ -238,31 +250,31 @@
         "full_name": "Мука пшеничная",
         "group": {
           "name": "Сырье",
-          "unique_code": "dc3c4f51-9743-4cfb-80f8-b608e280e737"
+          "unique_code": "7b1608d2-9118-4254-82a0-f75087047c17"
         },
         "name": "",
-        "unique_code": "e2de2138-116c-45ff-8810-fc449bf631a1",
+        "unique_code": "5aed5b15-1c3e-47b0-b981-c51cf6afb0c4",
         "unit": {
           "base": null,
           "coef": 1,
           "name": "грамм",
-          "unique_code": "3cd76571-bac0-4759-a953-6c3f43246001"
+          "unique_code": "3f6295c6-9e93-4457-8624-ecf8c9535e37"
         }
       },
-      "period": "2023-11-18",
-      "quantity": 95.05,
+      "period": "2024-07-23",
+      "quantity": 24.66,
       "range": {
         "base": null,
         "coef": 1,
-        "name": "штука",
-        "unique_code": "beb5b4ed-84aa-4a90-9091-0669b7a03c8e"
+        "name": "грамм",
+        "unique_code": "b26c5080-9a57-4976-a7d8-3edb3b9dc467"
       },
-      "transaction_type": "EXPENDITURE",
-      "unique_code": "2a1a78a0-43c4-4d4c-bb50-151b22b626d1",
+      "transaction_type": "RECEIPT",
+      "unique_code": "08245a2c-9e92-4ccd-9ea6-5a9af75fb32e",
       "warehouse": {
-        "address": "Россия",
-        "name": "WH1",
-        "unique_code": "dc607f80-4e77-4a26-8fa4-b1d739bbcb89"
+        "address": "США",
+        "name": "WH2",
+        "unique_code": "7c463445-c16e-4afc-a4fa-7c35548e6e39"
       }
     },
     {
@@ -271,31 +283,196 @@
         "full_name": "Сахар",
         "group": {
           "name": "Сырье",
-          "unique_code": "dc3c4f51-9743-4cfb-80f8-b608e280e737"
+          "unique_code": "7b1608d2-9118-4254-82a0-f75087047c17"
         },
         "name": "",
-        "unique_code": "4feda256-77fe-45d7-bceb-307bca6c6b78",
+        "unique_code": "4af9e58d-f372-492a-af42-71e85ffa527c",
         "unit": {
           "base": null,
           "coef": 1,
           "name": "грамм",
-          "unique_code": "3cd76571-bac0-4759-a953-6c3f43246001"
+          "unique_code": "3f6295c6-9e93-4457-8624-ecf8c9535e37"
+        }
+      },
+      "period": "2024-05-31",
+      "quantity": 92.48,
+      "range": {
+        "base": null,
+        "coef": 1,
+        "name": "штука",
+        "unique_code": "4086ccc0-0996-4b2b-890d-2e31a35ca728"
+      },
+      "transaction_type": "RECEIPT",
+      "unique_code": "6e17f290-a4f5-4bb8-ae69-2e77ca66d59e",
+      "warehouse": {
+        "address": "Россия",
+        "name": "WH1",
+        "unique_code": "81975803-b083-4b22-a279-7fc68ed5fac6"
+      }
+    },
+    {
+      "name": "",
+      "nomenclature": {
+        "full_name": "Мука пшеничная",
+        "group": {
+          "name": "Сырье",
+          "unique_code": "7b1608d2-9118-4254-82a0-f75087047c17"
+        },
+        "name": "",
+        "unique_code": "5aed5b15-1c3e-47b0-b981-c51cf6afb0c4",
+        "unit": {
+          "base": null,
+          "coef": 1,
+          "name": "грамм",
+          "unique_code": "3f6295c6-9e93-4457-8624-ecf8c9535e37"
+        }
+      },
+      "period": "2024-07-14",
+      "quantity": 91.07,
+      "range": {
+        "base": null,
+        "coef": 1,
+        "name": "штука",
+        "unique_code": "4086ccc0-0996-4b2b-890d-2e31a35ca728"
+      },
+      "transaction_type": "EXPENDITURE",
+      "unique_code": "35eee199-01a1-44fb-b8bd-896f1cd4513c",
+      "warehouse": {
+        "address": "Россия",
+        "name": "WH1",
+        "unique_code": "81975803-b083-4b22-a279-7fc68ed5fac6"
+      }
+    },
+    {
+      "name": "",
+      "nomenclature": {
+        "full_name": "Мука пшеничная",
+        "group": {
+          "name": "Сырье",
+          "unique_code": "7b1608d2-9118-4254-82a0-f75087047c17"
+        },
+        "name": "",
+        "unique_code": "5aed5b15-1c3e-47b0-b981-c51cf6afb0c4",
+        "unit": {
+          "base": null,
+          "coef": 1,
+          "name": "грамм",
+          "unique_code": "3f6295c6-9e93-4457-8624-ecf8c9535e37"
+        }
+      },
+      "period": "2024-07-12",
+      "quantity": 12.81,
+      "range": {
+        "base": null,
+        "coef": 1,
+        "name": "грамм",
+        "unique_code": "b26c5080-9a57-4976-a7d8-3edb3b9dc467"
+      },
+      "transaction_type": "EXPENDITURE",
+      "unique_code": "14fc2a2a-2b69-4c76-9488-b87c39bc8178",
+      "warehouse": {
+        "address": "Россия",
+        "name": "WH1",
+        "unique_code": "81975803-b083-4b22-a279-7fc68ed5fac6"
+      }
+    },
+    {
+      "name": "",
+      "nomenclature": {
+        "full_name": "Мука пшеничная",
+        "group": {
+          "name": "Сырье",
+          "unique_code": "7b1608d2-9118-4254-82a0-f75087047c17"
+        },
+        "name": "",
+        "unique_code": "5aed5b15-1c3e-47b0-b981-c51cf6afb0c4",
+        "unit": {
+          "base": null,
+          "coef": 1,
+          "name": "грамм",
+          "unique_code": "3f6295c6-9e93-4457-8624-ecf8c9535e37"
+        }
+      },
+      "period": "2024-01-17",
+      "quantity": 84.26,
+      "range": {
+        "base": null,
+        "coef": 1,
+        "name": "грамм",
+        "unique_code": "b26c5080-9a57-4976-a7d8-3edb3b9dc467"
+      },
+      "transaction_type": "RECEIPT",
+      "unique_code": "2905008c-dd8c-4a49-800b-0589a107ff80",
+      "warehouse": {
+        "address": "Россия",
+        "name": "WH1",
+        "unique_code": "81975803-b083-4b22-a279-7fc68ed5fac6"
+      }
+    },
+    {
+      "name": "",
+      "nomenclature": {
+        "full_name": "Мука пшеничная",
+        "group": {
+          "name": "Сырье",
+          "unique_code": "7b1608d2-9118-4254-82a0-f75087047c17"
+        },
+        "name": "",
+        "unique_code": "5aed5b15-1c3e-47b0-b981-c51cf6afb0c4",
+        "unit": {
+          "base": null,
+          "coef": 1,
+          "name": "грамм",
+          "unique_code": "3f6295c6-9e93-4457-8624-ecf8c9535e37"
+        }
+      },
+      "period": "2024-03-03",
+      "quantity": 25.94,
+      "range": {
+        "base": null,
+        "coef": 1,
+        "name": "штука",
+        "unique_code": "4086ccc0-0996-4b2b-890d-2e31a35ca728"
+      },
+      "transaction_type": "RECEIPT",
+      "unique_code": "5417d893-a5fa-4295-9f3f-b997743650b3",
+      "warehouse": {
+        "address": "США",
+        "name": "WH2",
+        "unique_code": "7c463445-c16e-4afc-a4fa-7c35548e6e39"
+      }
+    },
+    {
+      "name": "",
+      "nomenclature": {
+        "full_name": "Сахар",
+        "group": {
+          "name": "Сырье",
+          "unique_code": "7b1608d2-9118-4254-82a0-f75087047c17"
+        },
+        "name": "",
+        "unique_code": "4af9e58d-f372-492a-af42-71e85ffa527c",
+        "unit": {
+          "base": null,
+          "coef": 1,
+          "name": "грамм",
+          "unique_code": "3f6295c6-9e93-4457-8624-ecf8c9535e37"
         }
       },
       "period": "2023-12-28",
-      "quantity": 85.71,
+      "quantity": 96.58,
       "range": {
         "base": null,
         "coef": 1,
-        "name": "штука",
-        "unique_code": "beb5b4ed-84aa-4a90-9091-0669b7a03c8e"
+        "name": "грамм",
+        "unique_code": "b26c5080-9a57-4976-a7d8-3edb3b9dc467"
       },
       "transaction_type": "EXPENDITURE",
-      "unique_code": "bf7dd282-eef2-474e-bc81-20ef9861cefa",
+      "unique_code": "df4e1cc7-fb6f-4890-a938-7fd1ce21d752",
       "warehouse": {
         "address": "США",
         "name": "WH2",
-        "unique_code": "29ed6ab7-066a-42bc-9a52-5b7315fd45b0"
+        "unique_code": "7c463445-c16e-4afc-a4fa-7c35548e6e39"
       }
     },
     {
@@ -304,196 +481,31 @@
         "full_name": "Сахар",
         "group": {
           "name": "Сырье",
-          "unique_code": "dc3c4f51-9743-4cfb-80f8-b608e280e737"
+          "unique_code": "7b1608d2-9118-4254-82a0-f75087047c17"
         },
         "name": "",
-        "unique_code": "4feda256-77fe-45d7-bceb-307bca6c6b78",
+        "unique_code": "4af9e58d-f372-492a-af42-71e85ffa527c",
         "unit": {
           "base": null,
           "coef": 1,
           "name": "грамм",
-          "unique_code": "3cd76571-bac0-4759-a953-6c3f43246001"
+          "unique_code": "3f6295c6-9e93-4457-8624-ecf8c9535e37"
         }
       },
-      "period": "2024-04-17",
-      "quantity": 38.99,
+      "period": "2024-04-07",
+      "quantity": 76.67,
       "range": {
         "base": null,
         "coef": 1,
         "name": "грамм",
-        "unique_code": "3e34fa98-f885-4ce1-9b56-6e5049b7ff1d"
+        "unique_code": "b26c5080-9a57-4976-a7d8-3edb3b9dc467"
       },
       "transaction_type": "RECEIPT",
-      "unique_code": "3b8c712a-be4a-4435-9bb5-188b4c04b224",
+      "unique_code": "7bdcf7fa-00ff-4e99-afa2-5d153cdeeec4",
       "warehouse": {
         "address": "Россия",
         "name": "WH1",
-        "unique_code": "dc607f80-4e77-4a26-8fa4-b1d739bbcb89"
-      }
-    },
-    {
-      "name": "",
-      "nomenclature": {
-        "full_name": "Сахар",
-        "group": {
-          "name": "Сырье",
-          "unique_code": "dc3c4f51-9743-4cfb-80f8-b608e280e737"
-        },
-        "name": "",
-        "unique_code": "4feda256-77fe-45d7-bceb-307bca6c6b78",
-        "unit": {
-          "base": null,
-          "coef": 1,
-          "name": "грамм",
-          "unique_code": "3cd76571-bac0-4759-a953-6c3f43246001"
-        }
-      },
-      "period": "2024-01-01",
-      "quantity": 73.47,
-      "range": {
-        "base": null,
-        "coef": 1,
-        "name": "грамм",
-        "unique_code": "3e34fa98-f885-4ce1-9b56-6e5049b7ff1d"
-      },
-      "transaction_type": "EXPENDITURE",
-      "unique_code": "11df7d29-cd9e-4ef0-9730-bb58914ff35e",
-      "warehouse": {
-        "address": "США",
-        "name": "WH2",
-        "unique_code": "29ed6ab7-066a-42bc-9a52-5b7315fd45b0"
-      }
-    },
-    {
-      "name": "",
-      "nomenclature": {
-        "full_name": "Мука пшеничная",
-        "group": {
-          "name": "Сырье",
-          "unique_code": "dc3c4f51-9743-4cfb-80f8-b608e280e737"
-        },
-        "name": "",
-        "unique_code": "e2de2138-116c-45ff-8810-fc449bf631a1",
-        "unit": {
-          "base": null,
-          "coef": 1,
-          "name": "грамм",
-          "unique_code": "3cd76571-bac0-4759-a953-6c3f43246001"
-        }
-      },
-      "period": "2024-04-05",
-      "quantity": 61.68,
-      "range": {
-        "base": null,
-        "coef": 1,
-        "name": "грамм",
-        "unique_code": "3e34fa98-f885-4ce1-9b56-6e5049b7ff1d"
-      },
-      "transaction_type": "EXPENDITURE",
-      "unique_code": "46bb88e6-ffad-4f96-ae1c-c96a03df51a9",
-      "warehouse": {
-        "address": "Россия",
-        "name": "WH1",
-        "unique_code": "dc607f80-4e77-4a26-8fa4-b1d739bbcb89"
-      }
-    },
-    {
-      "name": "",
-      "nomenclature": {
-        "full_name": "Мука пшеничная",
-        "group": {
-          "name": "Сырье",
-          "unique_code": "dc3c4f51-9743-4cfb-80f8-b608e280e737"
-        },
-        "name": "",
-        "unique_code": "e2de2138-116c-45ff-8810-fc449bf631a1",
-        "unit": {
-          "base": null,
-          "coef": 1,
-          "name": "грамм",
-          "unique_code": "3cd76571-bac0-4759-a953-6c3f43246001"
-        }
-      },
-      "period": "2023-11-30",
-      "quantity": 80.12,
-      "range": {
-        "base": null,
-        "coef": 1,
-        "name": "грамм",
-        "unique_code": "3e34fa98-f885-4ce1-9b56-6e5049b7ff1d"
-      },
-      "transaction_type": "EXPENDITURE",
-      "unique_code": "a02de48e-fb91-4ca2-a3d7-be4df5b9832d",
-      "warehouse": {
-        "address": "Россия",
-        "name": "WH1",
-        "unique_code": "dc607f80-4e77-4a26-8fa4-b1d739bbcb89"
-      }
-    },
-    {
-      "name": "",
-      "nomenclature": {
-        "full_name": "Мука пшеничная",
-        "group": {
-          "name": "Сырье",
-          "unique_code": "dc3c4f51-9743-4cfb-80f8-b608e280e737"
-        },
-        "name": "",
-        "unique_code": "e2de2138-116c-45ff-8810-fc449bf631a1",
-        "unit": {
-          "base": null,
-          "coef": 1,
-          "name": "грамм",
-          "unique_code": "3cd76571-bac0-4759-a953-6c3f43246001"
-        }
-      },
-      "period": "2024-04-01",
-      "quantity": 95.31,
-      "range": {
-        "base": null,
-        "coef": 1,
-        "name": "штука",
-        "unique_code": "beb5b4ed-84aa-4a90-9091-0669b7a03c8e"
-      },
-      "transaction_type": "EXPENDITURE",
-      "unique_code": "fdee8892-53d7-4394-84fc-9afb314c71a4",
-      "warehouse": {
-        "address": "Россия",
-        "name": "WH1",
-        "unique_code": "dc607f80-4e77-4a26-8fa4-b1d739bbcb89"
-      }
-    },
-    {
-      "name": "",
-      "nomenclature": {
-        "full_name": "Сахар",
-        "group": {
-          "name": "Сырье",
-          "unique_code": "dc3c4f51-9743-4cfb-80f8-b608e280e737"
-        },
-        "name": "",
-        "unique_code": "4feda256-77fe-45d7-bceb-307bca6c6b78",
-        "unit": {
-          "base": null,
-          "coef": 1,
-          "name": "грамм",
-          "unique_code": "3cd76571-bac0-4759-a953-6c3f43246001"
-        }
-      },
-      "period": "2023-12-10",
-      "quantity": 55.01,
-      "range": {
-        "base": null,
-        "coef": 1,
-        "name": "грамм",
-        "unique_code": "3e34fa98-f885-4ce1-9b56-6e5049b7ff1d"
-      },
-      "transaction_type": "RECEIPT",
-      "unique_code": "0e1f7bee-d5b4-4562-bf6f-3657410cd5d0",
-      "warehouse": {
-        "address": "США",
-        "name": "WH2",
-        "unique_code": "29ed6ab7-066a-42bc-9a52-5b7315fd45b0"
+        "unique_code": "81975803-b083-4b22-a279-7fc68ed5fac6"
       }
     }
   ]
