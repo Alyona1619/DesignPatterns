@@ -1,3 +1,6 @@
+import json
+from datetime import datetime
+
 import connexion
 from flask import Response
 from flask import request
@@ -23,7 +26,7 @@ app = connexion.FlaskApp(__name__)
 manager = settings_manager()
 manager.open("settings.json")
 repository = data_repository()
-repository.data[data_repository.blocked_turnover_key()] = []
+repository.data[data_repository.blocked_turnover_key()] = {}
 service = start_service(repository, manager)
 service.create()
 rep_factory = report_factory(manager)
@@ -234,11 +237,65 @@ def get_osv_report(start_date, end_date, warehouse):
         if not start_date or not end_date or not warehouse:
             return Response("Необходимо указать 'Дата начала', 'Дата окончания' и 'Склад'.", status=400)
 
-        turnover_data = turnover_serv.get_osv(start_date, end_date, warehouse)
-        report = rep_factory.create_default()
+        transactions = repository.data[data_repository.transaction_key()]
+        if not transactions:
+            return Response("Нет данных", 400)
 
-        report.create(turnover_data)
-        return report.result
+        proc_factory.register_process(warehouse_turnover_process)
+        turnover_process_class = proc_factory.get_process('warehouse_turnover_process', manager)
+        # до
+        filter_data_before = {
+            "warehouse": {
+                "name": warehouse,
+                "unique_code": "",
+                "filter_option": "like"},
+            "nomenclature": {
+                "name": "",
+                "unique_code": "",
+                "filter_option": "like"},
+            "start_period": "1900-01-01",
+            "end_period": start_date
+        }
+        filter_obj_before = JsonDeserializer.deserialize(filter_data_before, 'filter_transaction')
+
+        transaction_data_before = transaction_prototype(transactions).create(transactions, filter_obj_before)
+
+        turnover_process_class1 = proc_factory.get_process('warehouse_turnover_process', manager)
+        turnover_data_before = turnover_process_class1.process(transaction_data_before.data)
+
+        # от до
+        filter_data_between = {
+                "warehouse": {
+                    "name": warehouse,
+                    "unique_code": "",
+                    "filter_option": "like"},
+                "nomenclature": {
+                    "name": "",
+                    "unique_code": "",
+                    "filter_option": "like"},
+                "start_period": start_date,
+                "end_period": end_date
+            }
+        filter_obj_between = JsonDeserializer.deserialize(filter_data_between, 'filter_transaction')
+
+        transaction_data_between = transaction_prototype(transactions).create(transactions, filter_obj_between)
+
+        turnover_process_class2 = proc_factory.get_process('warehouse_turnover_process', manager)
+        turnover_data_between = turnover_process_class2.process(transaction_data_between.data)
+
+        osv_report = []
+
+        start_balance = turnover_data_before[0].turnover  # Начальное сальдо
+        turnover_for_period = turnover_data_between[0].turnover  # Обороты за период
+        end_balance = start_balance + turnover_for_period  # Конечное сальдо
+        osv_report.append({
+            "warehouse": warehouse,
+            "start_balance": start_balance,
+            "turnover_for_period": turnover_for_period,
+            "end_balance": end_balance
+        })
+
+        return Response(json.dumps(osv_report), status=200, mimetype='application/json')
 
     except Exception as ex:
         return Response(f"Ошибка на сервере: {str(ex)}", status=500)
@@ -270,3 +327,5 @@ def load_data():
 if __name__ == '__main__':
     app.add_api("swagger.yaml")
     app.run(port=8080)
+
+

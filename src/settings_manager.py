@@ -62,7 +62,7 @@ class settings_manager(abstract_logic):
         data.correspondent_account = "12345678901"
         data.bik = "123456789"
         data.ownership_type = "ООООО"
-        data.block_period = datetime.now().date().isoformat()
+        data.block_period = "1900-01-01"
         data.first_start = True
 
         return data

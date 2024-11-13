@@ -66,7 +66,7 @@ class TestWarehouseTurnover(unittest.TestCase):
                                                transaction_type=transaction_type.EXPENDITURE),
         ]
 
-        self.turnover_process = warehouse_turnover_process()
+        self.turnover_process = warehouse_turnover_process(self.manager)
 
     def test_turnover_calculation_warehouse_1(self):
         turnover_results = self.turnover_process.process(self.transactions[:3])
@@ -89,18 +89,21 @@ class TestWarehouseTurnover(unittest.TestCase):
         new_block_period = "2024-03-15"
 
         self.manager.current_settings.block_period = new_block_period
-
+        self.turnover_process = warehouse_turnover_process(self.manager)
         # Рассчитаем оборот с новой датой блокировки
         turnover_results_with_new_block = self.turnover_process.process(self.transactions)
 
         # Восстановим оригинальную дату блокировки
         self.manager.current_settings.block_period = original_block_period
-
+        self.turnover_process = warehouse_turnover_process(self.manager)
         # Рассчитаем оборот с оригинальной датой блокировки
         turnover_results_with_original_block = self.turnover_process.process(self.transactions)
 
-        self.assertEqual(turnover_results_with_new_block, turnover_results_with_original_block,
-                         "Изменение даты блокировки повлияло на расчет оборота.")
+        self.assertEqual(
+            [turnover.turnover for turnover in turnover_results_with_new_block],
+            [turnover.turnover for turnover in turnover_results_with_original_block],
+            "Изменение даты блокировки повлияло на расчет оборота."
+        )
 
 
 if __name__ == '__main__':
