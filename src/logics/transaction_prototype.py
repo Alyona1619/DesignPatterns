@@ -20,8 +20,6 @@ class transaction_prototype(model_prototype):
             self.data = self.filter_id(self.data, filter_transaction.nomenclature)
             self.data = self.filter_name(self.data, filter_transaction.nomenclature)
 
-        print("filter_transaction.start_period ", filter_transaction.start_period)
-        print("filter_transaction.end_period ", filter_transaction.end_period)
         if filter_transaction.start_period and filter_transaction.end_period:
             self.data = self.filter_period(self.data, filter_transaction.start_period,
                                            filter_transaction.end_period)
@@ -64,9 +62,6 @@ class transaction_prototype(model_prototype):
         validator.validate(end_period, datetime)
         filter_data = []
         for item in source:
-            print("start_period ", start_period)
-            print("getattr(item, 'period') ", getattr(item, "period"))
-            print("end_period ", end_period)
             if start_period <= getattr(item, "period") <= end_period:
                 filter_data.append(item)
         return filter_data

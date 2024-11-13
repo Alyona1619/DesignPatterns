@@ -1,5 +1,4 @@
 import json
-from datetime import datetime
 
 import connexion
 from flask import Response
@@ -13,7 +12,6 @@ from src.logics.model_prototype import model_prototype
 from src.logics.nomenclature_service import nomenclature_service
 from src.logics.observe_service import observe_service
 from src.logics.transaction_prototype import transaction_prototype
-from src.logics.turnover_service import turnover_service
 from src.processes.process_factory import process_factory
 from src.processes.wh_blocked_turnover_process import warehouse_blocked_turnover_process
 from src.processes.wh_turnover_process import warehouse_turnover_process
@@ -32,8 +30,6 @@ service.create()
 rep_factory = report_factory(manager)
 proc_factory = process_factory()
 nomenclature_serv = nomenclature_service(repository)
-
-turnover_serv = turnover_service(repository)
 
 
 @app.route("/api/reports/formats", methods=["GET"])
@@ -265,17 +261,17 @@ def get_osv_report(start_date, end_date, warehouse):
 
         # от до
         filter_data_between = {
-                "warehouse": {
-                    "name": warehouse,
-                    "unique_code": "",
-                    "filter_option": "like"},
-                "nomenclature": {
-                    "name": "",
-                    "unique_code": "",
-                    "filter_option": "like"},
-                "start_period": start_date,
-                "end_period": end_date
-            }
+            "warehouse": {
+                "name": warehouse,
+                "unique_code": "",
+                "filter_option": "like"},
+            "nomenclature": {
+                "name": "",
+                "unique_code": "",
+                "filter_option": "like"},
+            "start_period": start_date,
+            "end_period": end_date
+        }
         filter_obj_between = JsonDeserializer.deserialize(filter_data_between, 'filter_transaction')
 
         transaction_data_between = transaction_prototype(transactions).create(transactions, filter_obj_between)
@@ -327,5 +323,3 @@ def load_data():
 if __name__ == '__main__':
     app.add_api("swagger.yaml")
     app.run(port=8080)
-
-

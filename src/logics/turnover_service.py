@@ -1,8 +1,5 @@
-from datetime import datetime
-
 from src.core.abstract_logic import abstract_logic
 from src.core.event_type import event_type
-from src.core.validator import operation_exception
 from src.data_repository import data_repository
 from src.logics.nomenclature_service import nomenclature_service
 from src.logics.observe_service import observe_service

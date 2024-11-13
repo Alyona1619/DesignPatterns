@@ -5,7 +5,6 @@ from src.core.event_type import event_type
 class data_repository(abstract_logic):
     """Репозиторий данных"""
     __data = {}
-
     # instance: 'data_repository' = None
 
     def __new__(cls):
