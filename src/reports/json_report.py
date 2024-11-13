@@ -1,8 +1,10 @@
 import json
 import uuid
+from datetime import datetime
+from enum import Enum
 
-from src.core.format_reporting import format_reporting
 from src.core.abstract_report import abstract_report
+from src.core.format_reporting import format_reporting
 from src.core.validator import validator, operation_exception
 
 
@@ -21,7 +23,6 @@ class json_report(abstract_report):
         for row in data:
             report.append(self.serialize(row))
         self.result = json.dumps(report, ensure_ascii=False, indent=2)
-
 
     @staticmethod
     def serialize(data, visited=None) -> dict:
@@ -43,19 +44,20 @@ class json_report(abstract_report):
             #     continue
             if isinstance(value, property):
                 continue
-
             # Обработка UUID
             if isinstance(value, uuid.UUID):
                 row_data[field] = str(value)
+            elif isinstance(value, Enum):
+                row_data[field] = value.value
+            elif isinstance(value, datetime):
+                row_data[field] = value.strftime('%Y-%m-%d')
             elif hasattr(value, '__dict__') and not isinstance(value, (str, int, float, bool)):
                 row_data[field] = json_report.serialize(value, visited)
             elif isinstance(value, list):
                 row_data[field] = []
                 for val in value:
                     row_data[field].append(json_report.serialize(val, visited))
+                    print("+++")
             else:
                 row_data[field] = value
         return row_data
-
-
-

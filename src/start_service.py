@@ -1,11 +1,15 @@
+import enum
+import json
 from datetime import datetime, timedelta
 from random import choice, uniform, randint
 
 from src.core.abstract_logic import abstract_logic
 from src.core.event_type import event_type
+from src.core.format_reporting import format_reporting
 from src.core.transaction_type import transaction_type
 from src.core.validator import validator
 from src.data_repository import data_repository
+from src.logics.observe_service import observe_service
 from src.models.group_nomenclature_model import group_nomenclature_model
 from src.models.ingredient import ingredient
 from src.models.nomenclature_model import nomenclature_model
@@ -14,6 +18,7 @@ from src.models.recipe_model import recipe_model
 from src.models.settings_model import settings
 from src.models.warehouse_model import warehouse_model
 from src.models.warehouse_transaction import warehouse_transaction_model
+from src.reports.report_factory import report_factory
 from src.settings_manager import settings_manager
 
 
@@ -21,6 +26,7 @@ class start_service(abstract_logic):
     """Сервис для реализации первого старта приложения"""
     __repository: data_repository = None
     __settings_manager: settings_manager = None
+    __data_file: str = "data_repository.json"
 
     def __init__(self, repository: data_repository, manager: settings_manager) -> None:
         super().__init__()
@@ -28,6 +34,8 @@ class start_service(abstract_logic):
         validator.validate(manager, settings_manager)
         self.__repository = repository
         self.__settings_manager = manager
+
+        observe_service.append(self)
 
     @property
     def settings(self) -> settings:
@@ -134,13 +142,16 @@ class start_service(abstract_logic):
     def create(self) -> bool:
         """Первый старт"""
         try:
-            self.__create_nomenclature_groups()
-            self.__create_range()
-            self.__create_nomenclature()
-            self.__create_recipe()
-            self.__create_warehouses()
-            self.__create_transactions()
-            return True
+            if self.settings.first_start:
+                self.__create_nomenclature_groups()
+                self.__create_range()
+                self.__create_nomenclature()
+                self.__create_recipe()
+                self.__create_warehouses()
+                self.__create_transactions()
+                return True
+            else:
+                self.__load_data()
         except Exception as ex:
             self.set_exception(ex)
             return False
@@ -151,4 +162,41 @@ class start_service(abstract_logic):
 
     def handle_event(self, type: event_type, params):
         super().handle_event(type, params)
+
+        if type == event_type.SAVE_DATA:
+            self.__save_data()
+        if type == event_type.LOAD_DATA:
+            self.__load_data()
+
+    def __save_data(self):
+        rep_factory = report_factory(self.__settings_manager)
+        print("rep_factory ", rep_factory)
+        report = rep_factory.create(format_reporting.JSON)
+        print("report ", report)
+        try:
+            all_reports = {}
+            print("all_reports ", all_reports)
+            print("self.__repository.data.items() ", self.__repository.data.items())
+            for key, value in self.__repository.data.items():
+                print("key ", key)
+                print("value ", value)
+                if isinstance(value, list):
+                    if not value:
+                        all_reports[key] = []  # Если нужно сохранить ключ с пустым значением
+                        continue
+
+                    # if all(isinstance(item, warehouse_transaction_model) for item in value):
+                    #     continue
+
+                    report.create(value)
+                    print("report.create(value)")
+                    all_reports[key] = json.loads(report.result)
+                    print("report.result ", report.result)
+            with open(self.__data_file, "w", encoding="utf-8") as file:
+                json.dump(all_reports, file, ensure_ascii=False, indent=2)
+        except Exception as ex:
+            print(f"Ошибка при сохранении данных (strt_srv): {str(ex)}")
+
+    def __load_data(self):
+        pass
 

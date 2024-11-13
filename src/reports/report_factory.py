@@ -29,6 +29,8 @@ class report_factory(abstract_logic):
             return None
 
         format_str = format.name
+        print("format ", format)
+        print("format_str ", format_str)
         if format_str not in self.__reports.keys():
             self.set_exception(argument_exception(f"Указанный вариант формата '{format}' не реализован!"))
             return None
@@ -47,8 +49,3 @@ class report_factory(abstract_logic):
 
     def handle_event(self, type: event_type, params):
         super().handle_event(type, params)
-
-        if type == event_type.SAVE_DATA:
-            pass
-        if type == event_type.LOAD_DATA:
-            pass
