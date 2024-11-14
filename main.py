@@ -285,7 +285,6 @@ def get_tbs_report(start_date, end_date, warehouse):
         report = rep_factory.create(format_reporting.TBS)
         report.create(turnover_data)
 
-        #return report.result
         return Response(report.result, status=200, mimetype='application/json')
 
     except Exception as ex:

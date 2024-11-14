@@ -2,7 +2,6 @@ import json
 
 from src.core.abstract_report import abstract_report
 from src.core.format_reporting import format_reporting
-from src.core.transaction_type import transaction_type
 from src.core.validator import validator, operation_exception
 
 
@@ -25,7 +24,8 @@ class tbs_report(abstract_report):
         for turnover_before, turnover_between in zip(turnover_data_before, turnover_data_between):
             report_entry = {
                 "warehouse": turnover_before.warehouse.name,
-                "nomenclature": turnover_before.nomenclature.name,
+                "nomenclature": turnover_before.nomenclature.full_name,
+                "range": turnover_before.range.name,
                 "start_balance": turnover_before.turnover,
                 "turnover_for_period": turnover_between.turnover,
                 "end_balance": turnover_before.turnover + turnover_between.turnover
