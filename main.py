@@ -16,6 +16,7 @@ from src.processes.process_factory import process_factory
 from src.processes.wh_blocked_turnover_process import warehouse_blocked_turnover_process
 from src.processes.wh_turnover_process import warehouse_turnover_process
 from src.reports.report_factory import report_factory
+from src.repository_manager import repository_manager
 from src.settings_manager import settings_manager
 from src.start_service import start_service
 
@@ -25,7 +26,8 @@ manager = settings_manager()
 manager.open("settings.json")
 repository = data_repository()
 repository.data[data_repository.blocked_turnover_key()] = {}
-service = start_service(repository, manager)
+rep_manager = repository_manager(repository, manager)
+service = start_service(repository, manager, rep_manager)
 service.create()
 rep_factory = report_factory(manager)
 proc_factory = process_factory()
@@ -301,7 +303,7 @@ def get_osv_report(start_date, end_date, warehouse):
 def save_data():
     try:
 
-        observe_service.raise_event(event_type.SAVE_DATA, rep_factory)
+        observe_service.raise_event(event_type.SAVE_DATA, None)
 
         return Response("Данные успешно сохранены в файл.", status=200)
 
