@@ -56,41 +56,28 @@ class repository_manager(abstract_logic):
 
     def load_data(self):
         """Загрузить данные из data_repository.json в репозиторий данных."""
+        # генерация data_map для ключей, соответствующих общему принципу (_key, _model)
+        data_methods = [method for method in dir(data_repository)
+                        if callable(getattr(data_repository, method)) and method.endswith('_key')]
+
+        data_map = {
+            getattr(data_repository, method)(): (method.replace('_key', ''), f"{method.replace('_key', '')}_model")
+            for method in data_methods
+            if method not in ('blocked_turnover_key', 'transaction_key')
+        }
+
+        # исключения
+        data_map[data_repository.blocked_turnover_key()] = ("blocked_turnover", "warehouse_turnover_model")
+        data_map[data_repository.transaction_key()] = ("transaction", "warehouse_transaction_model")
+
         try:
             with open(self.__data_file, "r", encoding="utf-8") as file:
                 data = json.load(file)
 
-                # Инициализируем данные в репозитории
-                self.__repository.data[data_repository.blocked_turnover_key()] = [
-                    JsonDeserializer.deserialize(item, 'blocked_turnover_model') for item in
-                    data.get("blocked_turnover", [])
-                ]
-
-                self.__repository.data[data_repository.group_nomenclature_key()] = [
-                    JsonDeserializer.deserialize(item, 'group_nomenclature_model') for item in
-                    data.get("group_nomenclature", [])
-                ]
-
-                self.__repository.data[data_repository.range_key()] = [
-                    JsonDeserializer.deserialize(item, 'range_model') for item in data.get("range", [])
-                ]
-
-                self.__repository.data[data_repository.nomenclature_key()] = [
-                    JsonDeserializer.deserialize(item, 'nomenclature_model') for item in data.get("nomenclature", [])
-                ]
-
-                self.__repository.data[data_repository.recipe_key()] = [
-                    JsonDeserializer.deserialize(item, 'recipe_model') for item in data.get("recipe", [])
-                ]
-
-                self.__repository.data[data_repository.warehouse_key()] = [
-                    JsonDeserializer.deserialize(item, 'warehouse_model') for item in data.get("warehouse", [])
-                ]
-
-                self.__repository.data[data_repository.transaction_key()] = [
-                    JsonDeserializer.deserialize(item, 'warehouse_transaction_model') for item in
-                    data.get("transaction", [])
-                ]
+                for key, (data_key, model_name) in data_map.items():
+                    self.__repository.data[key] = [
+                        JsonDeserializer.deserialize(item, model_name) for item in data.get(data_key, [])
+                    ]
 
             print("Данные успешно загружены в репозиторий.")
 
