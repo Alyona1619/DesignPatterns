@@ -359,8 +359,8 @@ paths:
           description: Ошибка на сервере
   /osv/{start_date}/{end_date}/{warehouse}:
     get:
-      summary: Получить отчет по обороту за указанный период и склад
-      operationId: main.get_osv_report
+      summary: Получить оборотно-сальдовую ведомость за указанный период по складу
+      operationId: main.get_tbs_report
       consumes:
         - application/json
       produces:
@@ -378,7 +378,7 @@ paths:
           type: string
         - name: warehouse
           in: path
-          description: Идентификатор склада
+          description: Имя склада
           required: true
           type: string
 

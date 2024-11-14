@@ -10,7 +10,8 @@
         "MARKDOWN": "markdown_report",
         "JSON": "json_report",
         "XML": "xml_report",
-        "RTF": "rtf_report"
+        "RTF": "rtf_report",
+        "TBS": "tbs_report"
     },
     "default_format": 3,
     "block_period": "2024-10-01",

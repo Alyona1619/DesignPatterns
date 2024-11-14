@@ -229,8 +229,8 @@ def delete_nomenclature():
         return Response(f"Ошибка на сервере: {str(ex)}", status=500)
 
 
-@app.route("/api/osv/<start_date>/<end_date>/<warehouse>", methods=["GET"])
-def get_osv_report(start_date, end_date, warehouse):
+@app.route("/api/tbs/<start_date>/<end_date>/<warehouse>", methods=["GET"])
+def get_tbs_report(start_date, end_date, warehouse):
     try:
         if not start_date or not end_date or not warehouse:
             return Response("Необходимо указать 'Дата начала', 'Дата окончания' и 'Склад'.", status=400)
@@ -240,7 +240,6 @@ def get_osv_report(start_date, end_date, warehouse):
             return Response("Нет данных", 400)
 
         proc_factory.register_process(warehouse_turnover_process)
-        turnover_process_class = proc_factory.get_process('warehouse_turnover_process', manager)
         # до
         filter_data_before = {
             "warehouse": {
@@ -281,19 +280,13 @@ def get_osv_report(start_date, end_date, warehouse):
         turnover_process_class2 = proc_factory.get_process('warehouse_turnover_process', manager)
         turnover_data_between = turnover_process_class2.process(transaction_data_between.data)
 
-        osv_report = []
+        turnover_data = [turnover_data_before, turnover_data_between]
 
-        start_balance = turnover_data_before[0].turnover  # Начальное сальдо
-        turnover_for_period = turnover_data_between[0].turnover  # Обороты за период
-        end_balance = start_balance + turnover_for_period  # Конечное сальдо
-        osv_report.append({
-            "warehouse": warehouse,
-            "start_balance": start_balance,
-            "turnover_for_period": turnover_for_period,
-            "end_balance": end_balance
-        })
+        report = rep_factory.create(format_reporting.TBS)
+        report.create(turnover_data)
 
-        return Response(json.dumps(osv_report), status=200, mimetype='application/json')
+        #return report.result
+        return Response(report.result, status=200, mimetype='application/json')
 
     except Exception as ex:
         return Response(f"Ошибка на сервере: {str(ex)}", status=500)
