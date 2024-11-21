@@ -5,58 +5,65 @@ from datetime import datetime
 
 
 class filter_transaction(abstract_reference):
-    __nomenclature: filter
-    __warehouse: filter
-    __start_period: datetime
-    __end_period: datetime
+    _nomenclature: filter
+    _warehouse: filter
+    _start_period: datetime
+    _end_period: datetime
 
     @property
     def warehouse(self) -> filter:
-        return self.__warehouse
+        return self._warehouse
 
     @warehouse.setter
     def warehouse(self, value: filter):
-        validator.validate(value, filter)
-        self.__warehouse = value
+        if value:
+            validator.validate(value, filter)
+        self._warehouse = value
 
     @property
     def nomenclature(self) -> filter:
-        return self.__nomenclature
+        return self._nomenclature
 
     @nomenclature.setter
     def nomenclature(self, value: filter):
-        validator.validate(value, filter)
-        self.__nomenclature = value
+        if value:
+            validator.validate(value, filter)
+        self._nomenclature = value
 
     @property
     def start_period(self) -> datetime:
-        return self.__start_period
+        return self._start_period
 
     @start_period.setter
     def start_period(self, value: datetime):
-        self.__start_period = value
+        self._start_period = value
 
     @property
     def end_period(self) -> datetime:
-        return self.__end_period
+        return self._end_period
 
     @end_period.setter
     def end_period(self, value: datetime):
-        self.__end_period = value
+        self._end_period = value
 
     def from_json(self, data: dict):
         validator.validate(data, dict)
         try:
-            t_filter = filter_transaction()
-            warehouse_filter = data['warehouse']
-            nomenclature_filter = data['nomenclature']
-            t_filter.start_period = datetime.strptime(data["start_period"], "%Y-%m-%d")
-            t_filter.end_period = datetime.strptime(data["start_period"], "%Y-%m-%d")
-
-            t_filter.warehouse = filter().from_json(warehouse_filter)
-            t_filter.nomenclature = filter().from_json(nomenclature_filter)
-
-            return t_filter
+            # t_filter = filter_transaction()
+            # warehouse_filter = data['warehouse']
+            # nomenclature_filter = data['nomenclature']
+            # t_filter.start_period = datetime.strptime(data["start_period"], "%Y-%m-%d")
+            # t_filter.end_period = datetime.strptime(data["start_period"], "%Y-%m-%d")
+            #
+            # t_filter.warehouse = filter().from_json(warehouse_filter)
+            # t_filter.nomenclature = filter().from_json(nomenclature_filter)
+            #
+            # return t_filter
+            self.start_period = datetime.strptime(data["start_period"], "%Y-%m-%d")
+            self.end_period = datetime.strptime(data["end_period"], "%Y-%m-%d")
+            self.warehouse = filter().from_json(data['warehouse'])
+            self.nomenclature = filter().from_json(data['nomenclature'])
+            return self
         except Exception as e:
             raise e
 

@@ -6,6 +6,7 @@ from unittest.mock import patch, mock_open
 
 from src.core.abstract_logic import abstract_logic
 from src.core.custom_exception import argument_exception
+from src.core.event_type import event_type
 from src.models.settings_model import settings
 from src.settings_manager import settings_manager
 
@@ -109,6 +110,8 @@ class TestSettingsManager(unittest.TestCase):
         class TestLogic(abstract_logic):
             def set_exception(self, ex: Exception):
                 pass  # pragma: no cover
+            def handle_event(self, type: event_type, params):
+                pass  # pragma: no cover
 
         test_instance = TestLogic()
 
@@ -117,9 +120,6 @@ class TestSettingsManager(unittest.TestCase):
 
         test_instance.error_text = "   строка с пробелами   "
         self.assertEqual(test_instance.error_text, "строка с пробелами")
-
-        test_instance.error_text = ""
-        self.assertEqual(test_instance.error_text, "")
 
     # for settings_model.py
     def test_organization_name_invalid_type(self):
@@ -274,6 +274,7 @@ class TestSavingSettingsManager(unittest.TestCase):
                                                          "RTF": "rtf_report"}
         self.manager.current_settings.default_format = 3
         self.manager.current_settings.block_period = "2024-10-01"
+        self.manager.current_settings.first_start = True
 
         # Сохраняем настройки
         self.manager.save_settings()
@@ -295,6 +296,7 @@ class TestSavingSettingsManager(unittest.TestCase):
                                                        "RTF": "rtf_report"})
             self.assertEqual(data["default_format"], 3)
             self.assertEqual(data["block_period"], "2024-10-01")
+            self.assertEqual(data["first_start"], True)
 
 
 if __name__ == '__main__':

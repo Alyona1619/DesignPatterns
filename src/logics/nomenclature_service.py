@@ -105,8 +105,8 @@ class nomenclature_service(abstract_logic):
                 group_filter_obj = JsonDeserializer.deserialize(group_filter, 'filter')
                 validator.validate(group_filter_obj, filter)
 
-                group_data = model_prototype(self.repository.data[data_repository.group_key()]).create(
-                    self.repository.data[data_repository.group_key()], group_filter_obj)
+                group_data = model_prototype(self.repository.data[data_repository.group_nomenclature_key()]).create(
+                    self.repository.data[data_repository.group_nomenclature_key()], group_filter_obj)
 
                 if group_data:
                     nomenclature.group = group_data[0]
@@ -153,8 +153,8 @@ class nomenclature_service(abstract_logic):
                 group_filter_obj = JsonDeserializer.deserialize(group_filter, 'filter')
                 validator.validate(group_filter_obj, filter)
 
-                group_data = model_prototype(self.repository.data[data_repository.group_key()]).create(
-                    self.repository.data[data_repository.group_key()], group_filter_obj)
+                group_data = model_prototype(self.repository.data[data_repository.group_nomenclature_key()]).create(
+                    self.repository.data[data_repository.group_nomenclature_key()], group_filter_obj)
 
                 if group_data:
                     obj.group = group_data[0]

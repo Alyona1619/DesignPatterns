@@ -1,3 +1,5 @@
+import json
+
 import connexion
 from flask import Response
 from flask import request
@@ -14,6 +16,7 @@ from src.processes.process_factory import process_factory
 from src.processes.wh_blocked_turnover_process import warehouse_blocked_turnover_process
 from src.processes.wh_turnover_process import warehouse_turnover_process
 from src.reports.report_factory import report_factory
+from src.repository_manager import repository_manager
 from src.settings_manager import settings_manager
 from src.start_service import start_service
 
@@ -23,11 +26,11 @@ manager = settings_manager()
 manager.open("settings.json")
 repository = data_repository()
 repository.data[data_repository.blocked_turnover_key()] = {}
-service = start_service(repository, manager)
+rep_manager = repository_manager(repository, manager)
+service = start_service(repository, manager, rep_manager)
 service.create()
 rep_factory = report_factory(manager)
 proc_factory = process_factory()
-
 nomenclature_serv = nomenclature_service(repository)
 
 
@@ -79,6 +82,7 @@ def filter_data(category):
 
         prototype = model_prototype(repository.data[category]).create(repository.data[category], filter_obj)
         report = rep_factory.create_default()
+        print(prototype.data)
         report.create(prototype.data)
 
         return report.result
@@ -223,6 +227,91 @@ def delete_nomenclature():
 
     except Exception as ex:
         return Response(f"Ошибка на сервере: {str(ex)}", status=500)
+
+
+@app.route("/api/tbs/<start_date>/<end_date>/<warehouse>", methods=["GET"])
+def get_tbs_report(start_date, end_date, warehouse):
+    try:
+        if not start_date or not end_date or not warehouse:
+            return Response("Необходимо указать 'Дата начала', 'Дата окончания' и 'Склад'.", status=400)
+
+        transactions = repository.data[data_repository.transaction_key()]
+        if not transactions:
+            return Response("Нет данных", 400)
+
+        proc_factory.register_process(warehouse_turnover_process)
+        # до
+        filter_data_before = {
+            "warehouse": {
+                "name": warehouse,
+                "unique_code": "",
+                "filter_option": "like"},
+            "nomenclature": {
+                "name": "",
+                "unique_code": "",
+                "filter_option": "like"},
+            "start_period": "1900-01-01",
+            "end_period": start_date
+        }
+        filter_obj_before = JsonDeserializer.deserialize(filter_data_before, 'filter_transaction')
+
+        transaction_data_before = transaction_prototype(transactions).create(transactions, filter_obj_before)
+
+        turnover_process_class1 = proc_factory.get_process('warehouse_turnover_process', manager)
+        turnover_data_before = turnover_process_class1.process(transaction_data_before.data)
+
+        # от до
+        filter_data_between = {
+            "warehouse": {
+                "name": warehouse,
+                "unique_code": "",
+                "filter_option": "like"},
+            "nomenclature": {
+                "name": "",
+                "unique_code": "",
+                "filter_option": "like"},
+            "start_period": start_date,
+            "end_period": end_date
+        }
+        filter_obj_between = JsonDeserializer.deserialize(filter_data_between, 'filter_transaction')
+
+        transaction_data_between = transaction_prototype(transactions).create(transactions, filter_obj_between)
+
+        turnover_process_class2 = proc_factory.get_process('warehouse_turnover_process', manager)
+        turnover_data_between = turnover_process_class2.process(transaction_data_between.data)
+
+        turnover_data = [turnover_data_before, turnover_data_between]
+
+        report = rep_factory.create(format_reporting.TBS)
+        report.create(turnover_data)
+
+        return Response(report.result, status=200, mimetype='application/json')
+
+    except Exception as ex:
+        return Response(f"Ошибка на сервере: {str(ex)}", status=500)
+
+
+@app.route("/api/save_data", methods=["POST"])
+def save_data():
+    try:
+
+        observe_service.raise_event(event_type.SAVE_DATA, None)
+
+        return Response("Данные успешно сохранены в файл.", status=200)
+
+    except Exception as ex:
+        return Response(f"Ошибка при сохранении данных: {str(ex)}", status=500)
+
+
+@app.route("/api/load_data", methods=["POST"])
+def load_data():
+    try:
+        observe_service.raise_event(event_type.LOAD_DATA, None)
+
+        return Response("Данные успешно восстановлены из файла.", status=200)
+
+    except Exception as ex:
+        return Response(f"Ошибка при восстановлении данных: {str(ex)}", status=500)
 
 
 if __name__ == '__main__':
