@@ -7,6 +7,7 @@ from unittest.mock import patch, mock_open
 from src.core.abstract_logic import abstract_logic
 from src.core.custom_exception import argument_exception
 from src.core.event_type import event_type
+from src.core.logging_level import logging_level
 from src.models.settings_model import settings
 from src.settings_manager import settings_manager
 
@@ -61,6 +62,7 @@ class TestSettingsManager(unittest.TestCase):
         self.assertFalse(result)
         self.assertEqual(manager.current_settings.organization_name, "Рога и копыта (default)")
         self.assertEqual(manager.current_settings.inn, "380000000038")
+        self.assertEqual(manager.current_settings.logging_level, logging_level.DEBUG)
 
     @patch("builtins.open", new_callable=mock_open,
            read_data='{"organization_name": "TestNameOrg", "inn": "123456789101"}')

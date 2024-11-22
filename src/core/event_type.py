@@ -12,3 +12,7 @@ class event_type(Enum):
     SAVE_DATA = 7
     LOAD_DATA = 8
 
+    LOG_INFO = 9
+    LOG_ERROR = 10
+    LOG_DEBUG = 11
+

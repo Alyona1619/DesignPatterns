@@ -15,5 +15,6 @@
     },
     "default_format": 3,
     "block_period": "2024-10-01",
-    "first_start": true
+    "first_start": true,
+    "logging_level": 3
 }
