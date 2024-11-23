@@ -1,6 +1,5 @@
 import json
 import os
-from datetime import datetime
 
 from src.core.abstract_logic import abstract_logic
 from src.core.custom_exception import argument_exception
@@ -99,9 +98,16 @@ class settings_manager(abstract_logic):
         }
 
         try:
+            observe_service.raise_event(event_type.LOG_INFO, params="Начало сохранения настроек в файл.")
+
             with open(file_path, 'w', encoding='utf-8') as stream:
                 json.dump(settings_data, stream, ensure_ascii=False, indent=4)
+
+            observe_service.raise_event(event_type.LOG_INFO, params=f"Настройки успешно сохранены в файл: {file_path}")
+
         except Exception as ex:
+            observe_service.raise_event(event_type.LOG_ERROR, params=f"Ошибка при сохранении настроек: {str(ex)}")
+
             self.set_exception(ex)
             raise
 

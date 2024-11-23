@@ -10,7 +10,7 @@ from src.settings_manager import settings_manager
 
 class logging(abstract_logic):
     __settings_manager: settings_manager = None
-    __log_file_path: str = "../application.log"
+    __log_file_path: str = "application.log"
 
     def __init__(self, manager: settings_manager):
         validator.validate(manager, settings_manager)
@@ -66,3 +66,4 @@ class logging(abstract_logic):
                 log_file.write(message + "\n")
         except Exception as ex:
             raise operation_exception(f"Error writing to log file: {ex}")
+        #print(message)
