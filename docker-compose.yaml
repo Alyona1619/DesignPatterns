@@ -1,0 +1,24 @@
+version: "3.9"
+
+services:
+  app_8000:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: app_8000
+    ports:
+      - "8000:8080"
+    volumes:
+      - ./settings.json:/app/settings.json
+      - ./application.log:/app/application.log
+
+  app_8001:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: app_8001
+    ports:
+      - "8001:8080"
+    volumes:
+      - ./settings.json:/app/settings.json
+      - ./application.log:/app/application.log

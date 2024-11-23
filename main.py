@@ -422,7 +422,6 @@ def save_data():
     try:
         observe_service.raise_event(event_type.LOG_INFO, params="Начало процесса сохранения данных.")
 
-
         observe_service.raise_event(event_type.SAVE_DATA, None)
 
         observe_service.raise_event(event_type.LOG_INFO, params="Данные успешно сохранены в файл.")

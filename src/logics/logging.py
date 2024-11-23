@@ -66,4 +66,4 @@ class logging(abstract_logic):
                 log_file.write(message + "\n")
         except Exception as ex:
             raise operation_exception(f"Error writing to log file: {ex}")
-        #print(message)
+        # print(message)
