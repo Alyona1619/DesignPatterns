@@ -1,10 +1,10 @@
 import json
 import os
-from datetime import datetime
 
 from src.core.abstract_logic import abstract_logic
 from src.core.custom_exception import argument_exception
 from src.core.event_type import event_type
+from src.core.logging_level import logging_level
 from src.logics.observe_service import observe_service
 from src.models.settings_model import settings
 
@@ -64,6 +64,7 @@ class settings_manager(abstract_logic):
         data.ownership_type = "ООООО"
         data.block_period = "1900-01-01"
         data.first_start = True
+        data.logging_level = logging_level.DEBUG.value
 
         return data
 
@@ -92,13 +93,21 @@ class settings_manager(abstract_logic):
             "report_settings": self.__settings.report_settings,
             "default_format": self.__settings.default_format.value,
             "block_period": self.__settings.block_period.strftime("%Y-%m-%d"),
-            "first_start": self.__settings.first_start
+            "first_start": self.__settings.first_start,
+            "logging_level": self.__settings.logging_level.value
         }
 
         try:
+            observe_service.raise_event(event_type.LOG_INFO, params="Начало сохранения настроек в файл.")
+
             with open(file_path, 'w', encoding='utf-8') as stream:
                 json.dump(settings_data, stream, ensure_ascii=False, indent=4)
+
+            observe_service.raise_event(event_type.LOG_INFO, params=f"Настройки успешно сохранены в файл: {file_path}")
+
         except Exception as ex:
+            observe_service.raise_event(event_type.LOG_ERROR, params=f"Ошибка при сохранении настроек: {str(ex)}")
+
             self.set_exception(ex)
             raise
 

@@ -2,6 +2,7 @@ from datetime import datetime
 
 from src.core.custom_exception import argument_exception
 from src.core.format_reporting import format_reporting
+from src.core.logging_level import logging_level
 from src.core.validator import validator
 
 
@@ -18,6 +19,7 @@ class settings:
     __default_format: format_reporting = format_reporting.JSON
     __block_period: datetime
     __first_start: bool = True
+    __logging_level: logging_level = logging_level.DEBUG
 
     @property
     def organization_name(self):
@@ -143,3 +145,15 @@ class settings:
     def first_start(self, value: bool):
         validator.validate(value, bool)
         self.__first_start = value
+
+    @property
+    def logging_level(self):
+        return self.__logging_level
+
+    @logging_level.setter
+    def logging_level(self, value: int):
+        validator.validate(value, int)
+        try:
+            self.__logging_level = logging_level(value)
+        except Exception:
+            argument_exception.raise_value_error("logging_level", "valid format integer (1-3)")
